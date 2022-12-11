@@ -1,0 +1,96 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+{% block title %}{{ post.title }}{% endblock title %}
+
+
+{% block page_content %}
+
+    {% if messages %}
+    <div class="messages alert alert-success" role="alert">
+        {% for message in messages %}
+            {{ message }}
+            <button type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="container d-md-flex">
+            <div class="col-md-12">
+                <!-- Strat Blog Post List -->
+                <div class="card bg-dark mb-3">
+                    <div class="card-body text-white">
+                        <h5 class="card-title pb-3 m-1">{{ post.title }}</h5>
+                        <p class="card-subtitle text-muted"> By <a href="#">{{ post.author }}</a>,  In <time>{{ post.updated_at }}</time></p>
+                        <hr class="text-light">
+                        Tags: 
+                        {% for tag in tags %}
+                            <span class="badge rounded-pill bg-primary"><a href="{% url 'blog:tag-post-list' tag.slug %}" class="text-light">{{ tag.title }}</a></span>
+                        {% endfor %}
+
+
+                        <hr class="text-light">
+                        <p class="card-text pt-3 m-1">{{ post.content }}</p>
+
+
+                        {% if post.author == user %}
+                            <div class="form-inline my-2 my-lg-0">
+                                <button class="btn btn-info mx-2">
+                                    <a href="{% url 'blog:update-post' post.slug %}" class="text-white">Update</a>
+                                </button>
+
+                                <button class="btn btn-danger mx-2 my-4">
+                                    <a href="{% url 'blog:delete-post' post.slug %}" class="text-white">Delete</a>
+                                </button>
+                        </div>
+                        {% endif %}
+                        
+                        
+                        <div class="card-footer">
+                            <button class="btn btn-success mt-3">
+                                <a href="{% url 'blog:homepage' %}" class="card-link pt-2 text-white">Go back</a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Blog Post List -->
+            </div>
+        </div>
+    </div>
+
+    <hr class="text-light">
+
+    <section>
+        <div class="container d-md-flex">
+            <div class="col-md-12">
+                <div class="col-md-4 px-4">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary mx-2">
+                            Comments <span class="badge text-bg-danger">{% num_comments post.slug %}</span>
+                        </button>
+                        
+                        {% if user.is_authenticated %}
+                            <button type="button" class="btn btn-success">
+                                <a href="{% url 'blog:create-comment' post.slug %}" class="text-light mx-2">Add Comment</a>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr class="text-light">
+                <div class="list-group">
+                    {% for comment in comments %}
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">Comment By: {{ comment.name|title }}</h5>
+                                <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>
+                            </div>
+                            <p class="mb-1">{{ comment.comment }}</p>
+                        </a>
+                        {% empty %}
+                                <p class="lead text-light">This post has no comments yet.</p>
+                    {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock page_content %}

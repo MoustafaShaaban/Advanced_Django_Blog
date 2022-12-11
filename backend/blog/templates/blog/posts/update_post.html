@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_content %}
+    <h2 class="text-white">Update post</h2>
+        
+    <hr>
+
+    <form method="post" action="{% url 'blog:update-post' post.slug %}">
+        {% csrf_token %}
+        <div class="col text-white">
+            <div class="row text-white my-2">
+                {{ form.title|as_crispy_field }}
+            </div>
+            <div class="row text-white my-2">
+                {{ form.content|as_crispy_field }}
+            </div>
+            <div class="row text-white my-2">
+                {{ form.tag|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="form-inline my-2 my-lg-0">
+        <button class="btn btn-info mx-2" type="submit">
+            <a  class="text-white" href="{% url 'blog:homepage' %}">Cancel</a>
+        </button>
+        <button class="btn btn-danger text-white" type="submit">Update</button>
+    </div>
+    </form>
+{% endblock page_content %}

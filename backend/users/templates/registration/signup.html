@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block page_content %}
+<h2 class="text-white">Register</h2>
+<form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    <div class="col-md">
+        <div class="text-white">
+            {{ form.username|as_crispy_field }}
+        </div>
+        
+        <div class="text-white">
+            {{ form.email|as_crispy_field }}
+        </div>
+        
+        <div class="text-white">
+            {{ form.password1|as_crispy_field }}
+        </div>
+        
+        <div class="text-white">
+            {{ form.password2|as_crispy_field }}
+        </div>
+    </div>
+
+    <button class="btn btn-success" type="submit">Register</button>
+</form>
+{% endblock page_content %}
