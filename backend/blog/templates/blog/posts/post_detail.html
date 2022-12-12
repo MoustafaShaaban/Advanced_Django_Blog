@@ -21,7 +21,7 @@
                 <div class="card bg-dark mb-3">
                     <div class="card-body text-white">
                         <h5 class="card-title pb-3 m-1">{{ post.title }}</h5>
-                        <p class="card-subtitle text-muted"> By <a href="#">{{ post.author }}</a>,  In <time>{{ post.updated_at }}</time></p>
+                        <p class="card-subtitle text-muted"> By <a href="#">{{ post.author }}</a>,  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
                         <hr class="text-light">
                         Tags: 
                         {% for tag in tags %}

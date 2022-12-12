@@ -1,0 +1,9 @@
+https://learndjango.com/tutorials/django-best-practices-models
+
+https://learndjango.com/tutorials/django-slug-tutorial
+
+https://learndjango.com/tutorials/django-search-tutorial
+
+https://www.codesnail.com/adding-the-tagging-functionality-in-the-blog-django-blog-7/
+
+https://dontrepeatyourself.org/post/how-to-customize-the-validation-of-forms-in-django/

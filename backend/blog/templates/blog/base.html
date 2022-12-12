@@ -35,8 +35,8 @@
                             </li>
                         {% endif %}
                     </ul>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form action="{% url 'blog:search_results' %}" method="get" class="d-flex" role="search">
+                        <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success text-white" type="submit">Search</button>
                     </form>
                     {% if user.is_authenticated %}

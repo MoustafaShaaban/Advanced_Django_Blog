@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.http import Http404
+from django.db.models import Q
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -16,6 +16,19 @@ class HomePage(generic.ListView):
 	template_name = 'blog/index.html'
 	context_object_name = 'posts'
 	paginate_by = 5
+
+
+class SearchResultsView(generic.ListView):
+	model = Post
+	template_name = 'blog/search_results.html'
+	context_object_name = 'search_results'
+
+	def get_queryset(self):
+		query = self.request.GET.get("q")
+		search_results = Post.objects.filter(
+			Q(title__icontains=query)
+		)
+		return search_results
 
 
 class UserPostView(LoginRequiredMixin, generic.ListView):
