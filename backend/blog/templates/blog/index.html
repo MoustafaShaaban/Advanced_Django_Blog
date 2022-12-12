@@ -44,4 +44,24 @@
             </div>
         </div>
     </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1" class="page-link">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a>
+                {% endif %}
+            </li>
+            <li class="page-item">
+                {{ page_obj.number }}
+            </li>
+            <li class="page-item">
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">last &raquo;</a>
+                {% endif %}
+            </li>
+        </ul>
+    </nav>
 {% endblock page_content %}
