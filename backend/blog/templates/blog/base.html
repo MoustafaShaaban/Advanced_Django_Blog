@@ -67,7 +67,32 @@
         <hr class="text-light">
 
         {% block page_content %}{% endblock page_content %}
+
+        {% if is_paginated %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo;</a></li>
+                {% else %}
+                    <li class="page-item"><span class="page-link">&laquo;</span></li>
+                {% endif %}
+                
+                {% for i in paginator.page_range %}
+                    {% if page_obj.number == i %}
+                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                    {% else %}
+                        <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">&raquo;</a></li>
+                {% else %}
+                    <li class="page-item"><span class="page-link">&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
     </div>
+    
 
     <!-- End Container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
