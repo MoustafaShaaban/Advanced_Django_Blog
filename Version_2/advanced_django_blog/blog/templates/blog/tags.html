@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+
+{% block hero %}
+    <!-- Start Hero -->
+    <div class="bg-dark text-secondary px-4 py-5 text-center">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">Welcome to my blog</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="fs-5 mb-4">Here is a list of all the tags in the blog</p>
+                <ul class="list-group">
+                    {% for tag in tag_list %}
+                        <div class="list-group">
+                            <a href="{% url 'blog:tag-post-list' tag.slug %}" class="list-group-item list-group-item-action">
+                                {{ tag.title }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- End Hero -->
+{% endblock hero %}

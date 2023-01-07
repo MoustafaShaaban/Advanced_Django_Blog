@@ -65,23 +65,25 @@ This project is a Django project called `backend` and it has two registered apps
 
 * Clone the repository: git clone https://github.com/MoustafaShaaban/Advanced_Django_Blog.git
 
-* Change directory to backend ``` cd backend ```
+* Change directory to Version_1 directory ``` cd Version_1 ```
 
 * Open the terminal or CMD to create a virtual environment like Python virtual environment (venv) or pipenv and activate it.
 
-    * ``` python -m venv venv ```           *Create the venv*
+    ``` python -m venv venv ```           *Create the venv*
 
-    * ``` source venv/bin/activate ```      *On Linux*
+    ``` source venv/bin/activate ```      *On Linux*
 
-    * ``` venv/Scripts/activate ```         *On Windows*
+    ``` venv/Scripts/activate ```         *On Windows*
 
-    * ``` source venv/Scripts/activate ```  *Git Bash on Windows*
+    ``` source venv/Scripts/activate ```  *Git Bash on Windows*
+
 
 * Install requirements.txt: ``` python -m pip install -r requirements.txt ```
 
 * Change directory to backend ``` cd backend ```
 
 * Create the database by running the following commands:
+
 ``` python manage.py makemigrations blog ```
 ``` python manage.py migrate ```
 
@@ -90,3 +92,31 @@ This project is a Django project called `backend` and it has two registered apps
 * Run the project: ``` python manage.py runserver ```
 
 * Open the web browser and go to `http://localhost:8000/` to see the results.
+
+---------------------------------------------------------------------------------
+
+# Version 2:
+
+Recreated the project using [Django Cookiecutter](https://github.com/cookiecutter/cookiecutter-django) framework with support to [Docker](https://www.docker.com/)
+
+
+### To get started with this project
+
+* Make sure that Docker and docker-compose are installed in your system.
+
+* Clone the repository: git clone https://github.com/MoustafaShaaban/Advanced_Django_Blog.git
+
+* Change directory to Version_2 directory ``` cd Version_2 ```
+
+* Build the docker image to develop the project locally using docker-compose:
+
+``` docker-compose -f local.yml build ```
+
+* Now run the project:
+
+``` docker-compose -f local.yml up ```
+
+* Open the web browser and go to `http://localhost:8000/` to see the results.
+
+
+For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)

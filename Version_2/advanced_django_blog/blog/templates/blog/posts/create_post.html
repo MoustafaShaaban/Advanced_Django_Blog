@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block hero %}
+    <div class="bg-dark text-secondary px-4 py-5 text-center">
+        <div class="py-5">
+            <h1 class="display-5 fw-bold text-white">Add a new post</h1>
+        </div>
+    </div>
+{% endblock hero %}
+
+{% block page_content %}
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'blog:create-post' %}">
+        {% csrf_token %}
+        <div class="col-6">
+            <div class="row text-white my-2">
+                {{ form.title|as_crispy_field }}
+            </div>
+            <div class="row text-white my-2">
+                {{ form.content|as_crispy_field }}
+            </div>
+            <div class="row text-white my-2">
+                {{ form.tag|as_crispy_field }}
+            </div>
+        </div>
+
+        <button class="btn btn-success" type="submit" class="text-white">Create</button>
+    </form>
+    {% else %}
+        <p>You are not logged in, Please click <a href="{% url 'login' %}" class="text-white">here</a> to login and add a todo!</p>
+    {% endif %}
+{% endblock page_content %}

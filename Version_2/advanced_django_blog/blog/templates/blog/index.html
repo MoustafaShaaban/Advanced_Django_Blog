@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="container d-md-flex">
+            <div class="col-md-12 mx-4">
+                <!-- Strat Blog Post List -->
+                
+                {% for post in posts %}
+                    <div class="card bg-dark border-primary mb-3" style="width: 100%;">
+                        <div class="card-body text-white">
+                            <h5 class="card-title pb-3 m-1"><a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a></h5>
+                            <p class="card-subtitle text-muted"> By {{ post.author }},  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
+                            <hr class="text-light">
+                            <p class="card-text pt-3 m-1">{{ post.content|slice:':50' }}</p>
+                            
+                            
+                            <button class="btn btn-primary mt-3">
+                                <a href="{% url 'blog:post-detail' post.slug %}" class="card-link pt-2 text-white">Read more</a>
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="text-light">
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock page_content %}
