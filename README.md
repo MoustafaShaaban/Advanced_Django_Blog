@@ -6,6 +6,8 @@ A project built with Django web framework and Bootstrap.
 
 * All users can read or search for the posts on the blog.
 
+* Added a GraphQL used to query all available posts. Served on (http://127.0.0.1:8000/graphql/) url path
+
 * Authenticated users can:
 
     * Create, Read, Update and Delete (CRUD) blog posts on the website.

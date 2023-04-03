@@ -69,6 +69,8 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    'graphene_django',
+    'django_filters',
 ]
 
 LOCAL_APPS = [

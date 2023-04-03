@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     # Third Party Apps:
     'crispy_forms',
+    'graphene_django',
+    'django_filters',
 
 ]
 
