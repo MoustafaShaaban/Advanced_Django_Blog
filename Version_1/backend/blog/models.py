@@ -10,8 +10,7 @@ class Tag(models.Model):
     # TODO: Define fields here
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
-    
-    
+
     class Meta:
         """Meta definition for Tag."""
 
@@ -21,6 +20,11 @@ class Tag(models.Model):
     def __str__(self):
         """Unicode representation of Tag."""
         return self.title
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 class Post(models.Model):
     """Model definition for Post."""

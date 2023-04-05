@@ -5,10 +5,15 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
+from graphene_django.views import GraphQLView
 
 
 from .models import Post, Tag
 from .forms import CommentForm
+
+
+class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
+    pass
 
 
 class HomePage(generic.ListView):

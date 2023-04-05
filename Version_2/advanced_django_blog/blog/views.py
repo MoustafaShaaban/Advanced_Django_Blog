@@ -6,11 +6,15 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
+from graphene_django.views import GraphQLView
+
 
 
 from .models import Post, Tag
 from .forms import CommentForm
 
+class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
+    pass
 
 class HomePage(generic.ListView):
 	"""Home page that shows all posts with maximum 5 posts per page."""
@@ -122,7 +126,7 @@ def tag_list(request):
 def tag_post_list(request, slug):
 	""" A view to filter the posts by tags. """
 	tags = get_object_or_404(Tag, slug=slug)
-	# Filter posts by tag name  
+	# Filter posts by tag name
 	posts = Post.objects.filter(tag=tags)
 	context = {
 		'tags':tags,
