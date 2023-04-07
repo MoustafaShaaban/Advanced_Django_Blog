@@ -16,6 +16,8 @@
                                 {{ tag.title }}
                             </a>
                         </div>
+                        {% empty %}
+                            <p class="mx-3 text-light">There are no tags yet.</p>
                     {% endfor %}
                 </ul>
             </div>

@@ -114,11 +114,142 @@ Recreated the project using [Django Cookiecutter](https://github.com/cookiecutte
 
 ``` docker-compose -f local.yml build ```
 
+* Create the database by running the following commands:
+
+` docker-compose -f local.yml run --rm django python manage.py migrate `
+
+* Create a super user:
+
+` docker-compose -f local.yml run --rm django python manage.py createsuperuser `
+
 * Now run the project:
 
 ``` docker-compose -f local.yml up ```
 
-* Open the web browser and go to `http://localhost:8000/` to see the results.
+* Open the web browser and go to ` http://localhost:8000/ ` to see the results.
+
+
+#### GraphQL Queries Examples:
+
+```gql
+
+query ReturnAllPosts {
+  allPosts {
+    id
+    title
+    content
+    updatedAt
+    comments {
+      id
+      name
+    }
+    tag {
+      id
+      title
+    }
+  }
+}
+
+-----------------------------------------------------------------------------
+
+query ReturnMyPost {
+  myPostsWithFilters {
+    edges {
+      node {
+        id
+        title
+        content
+        updatedAt
+        comments {
+          id
+          name
+        }
+        tag {
+          id
+          title
+        }
+      }
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+query PostByTitle {
+  allPostsWithFilters(title: "Post Number 1") {
+    edges {
+      node {
+        id
+        title
+        updatedAt
+        content
+        comments {
+          id
+          name
+          name
+        }
+      }
+    }
+  }
+}
+
+--------------------------------------------------------------------------------
+
+query AllComments {
+  allComments {
+    id
+    name
+    post {
+      id
+      title
+      content
+      updatedAt
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+query AllTags {
+  allTags {
+    id
+    title
+  }
+}
+
+------------------------------------------------------------------------------
+
+mutation createTag {
+  createTag(title: "python") {
+    tag {
+      id
+      title
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+mutation UpdateTag {
+  updateTag(id: 1, title: "Python") {
+    tag {
+      id
+      title
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+mutation DeleteTag {
+  deleteTag(id: 6) {
+    tag {
+      title
+    }
+  }
+}
+
+```
 
 
 For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)

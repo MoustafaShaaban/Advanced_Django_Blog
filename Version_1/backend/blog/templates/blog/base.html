@@ -31,10 +31,10 @@
                                 <a class="nav-link active text-white" aria-current="page" href="{% url 'blog:create-post' %}">Add post</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{% url 'blog:tag-list' %}" class="nav-link text-white">Tags</a>
-                            </li>
-                             <li class="nav-item">
                                 <a href="{% url 'blog:graphql' %}" class="nav-link text-white">GraphQL</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{% url 'blog:tag-list' %}" class="nav-link text-white">Tags</a>
                             </li>
                         {% endif %}
                     </ul>

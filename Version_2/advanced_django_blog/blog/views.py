@@ -115,6 +115,29 @@ def favorite_post(request, slug):
 				context
 			)
 
+@login_required
+def create_comment(request, slug):
+	"""Add a comment."""
+	post = get_object_or_404(Post, slug=slug)
+
+	if request.method != 'POST':
+		form = CommentForm()
+	else:
+		form = CommentForm(data=request.POST)
+		if form.is_valid():
+			new_comment = form.save(commit=False)
+			new_comment.post = post
+			new_comment.name = request.user
+			new_comment.save()
+			messages.success(request, 'Thank you for commenting, Your comment is pending admin approval.')
+			return redirect('blog:post-detail', post.slug)
+	
+	context = {
+		'form': form,
+		'post': post,
+	}
+	return render(request, 'blog/posts/create_comment.html', context)
+
 
 def tag_list(request):
 	""" A view to show a list of the avaliable tags in the blog. """
