@@ -30,7 +30,7 @@
                         <hr class="text-light">
                         Tags: 
                         {% for tag in tags %}
-                            <span class="badge rounded-pill bg-primary"><a href="{% url 'blog:tag-post-list' tag.slug %}" class="text-light">{{ tag.title }}</a></span>
+                            <span class="badge rounded-pill bg-primary"><a href="{% url 'blog:tag-post-list' tag.slug %}" class="text-light">{{ tag.name }}</a></span>
                         {% endfor %}
 
 

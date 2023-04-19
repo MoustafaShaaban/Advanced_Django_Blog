@@ -213,17 +213,19 @@ query AllComments {
 query AllTags {
   allTags {
     id
-    title
+    name
   }
 }
 
 ------------------------------------------------------------------------------
 
-mutation createTag {
-  createTag(title: "python") {
+mutation {
+  createTag(input: {
+    name: "Python"
+  }) {
     tag {
       id
-      title
+      name
     }
   }
 }
@@ -231,10 +233,10 @@ mutation createTag {
 ------------------------------------------------------------------------------
 
 mutation UpdateTag {
-  updateTag(id: 1, title: "Python") {
+  updateTag(id: 1, name: "Python") {
     tag {
       id
-      title
+      name
     }
   }
 }
@@ -244,11 +246,159 @@ mutation UpdateTag {
 mutation DeleteTag {
   deleteTag(id: 6) {
     tag {
-      title
+      name
     }
   }
 }
 
+------------------------------------------------------------------------------
+
+mutation CreatePost {
+  createPost(input: {
+    title: "Post number 1",
+    content: "Post number 1 content",
+    
+  }) {
+    post {
+      id
+      content
+    }
+  }
+}
+
+------------------------------------------------------------------------------
+
+mutation {
+  createComment(input: {
+    user: 1,
+    post: 1,
+    email: "admin@admin.com",
+    comment: "Great Post!!"
+  }) {
+    comment {
+      id
+      comment
+      user {
+        username
+      }
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
+
+query PostsByAuthor {
+  postsByAuthor(author: "admin") {
+    id
+    title
+    updatedAt
+    tag {
+      name
+    }
+    content
+    comments {
+      id
+      user {
+        username
+      }
+      comment
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
+
+query PostsByTag {
+  postsByTag(tag: "Python") {
+    id
+    title
+    updatedAt
+    tag {
+      name
+    }
+    content
+    comments {
+      id
+      user {
+        username
+      }
+      comment
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
+
+query PostsByTitle {
+  postByTitle(title: "Post number 1") {
+    id
+    title
+    updatedAt
+    tag {
+      name
+    }
+    content
+    comments {
+      id
+      user {
+        username
+      }
+      comment
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
+
+query PostsByTitleWithDjangoFilters {
+  allPostsWithFilters(title_Icontains: "Post number") {
+   edges {
+    node {
+       id
+        title
+        updatedAt
+        tag {
+          name
+        }
+        content
+        comments {
+          id
+          user {
+            username
+          }
+          comment
+        }
+      }
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
+
+query PostsByTitleWithDjangoFilters {
+  allPostsWithFilters(title_Istartswith: "Post number") {
+   edges {
+    node {
+       id
+        title
+        updatedAt
+        tag {
+          name
+        }
+        content
+        comments {
+          id
+          user {
+            username
+          }
+          comment
+        }
+      }
+    }
+  }
+}
+
+---------------------------------------------------------------------------------
 ```
 
 

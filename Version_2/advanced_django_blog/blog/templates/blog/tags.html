@@ -13,7 +13,7 @@
                     {% for tag in tag_list %}
                         <div class="list-group">
                             <a href="{% url 'blog:tag-post-list' tag.slug %}" class="list-group-item list-group-item-action">
-                                {{ tag.title }}
+                                {{ tag.name }}
                             </a>
                         </div>
                         {% empty %}

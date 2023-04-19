@@ -8,7 +8,7 @@ class Tag(models.Model):
     """Model definition for Tag."""
 
     # TODO: Define fields here
-    title = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
 
     class Meta:
@@ -18,13 +18,14 @@ class Tag(models.Model):
         verbose_name_plural = 'tags'
 
     def __str__(self):
-        """Unicode representation of Tag."""
-        return self.title
+        """Unicode's representation of Tag."""
+        return self.name
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+
 
 class Post(models.Model):
     """Model definition for Post."""
@@ -35,13 +36,13 @@ class Post(models.Model):
         help_text='Post author'
     )
     title = models.CharField(
-        max_length=250, 
-        unique=True, 
+        max_length=250,
+        unique=True,
         help_text='Post title'
     )
     slug = models.SlugField(
-        max_length=250, 
-        unique=True, 
+        max_length=250,
+        unique=True,
         help_text='Post slug used in the urls instead of ids'
     )
     content = models.TextField(help_text='Post content')
@@ -53,7 +54,6 @@ class Post(models.Model):
         related_name='tags'
     )
 
-
     class Meta:
         """Meta definition for Post."""
 
@@ -62,7 +62,7 @@ class Post(models.Model):
         verbose_name_plural = 'posts'
 
     def __str__(self):
-        """Unicode representation of Post."""
+        """Unicode's representation of Post."""
         return f'Author: {self.author}, Post: {self.title}'
 
     def get_absolute_url(self):
@@ -84,16 +84,17 @@ class Comment(models.Model):
         related_name='comments',
         on_delete=models.CASCADE
     )
-    name = models.CharField(max_length=100)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     email = models.EmailField()
     comment = models.TextField()
     published_at = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(
-        default=False, 
+        default=False,
         help_text='Is the comment approved by admin?'
     )
-
-
 
     class Meta:
         """Meta definition for Comment."""
@@ -103,5 +104,5 @@ class Comment(models.Model):
         verbose_name_plural = 'comments'
 
     def __str__(self):
-        """Unicode representation of Comment."""
-        return f'Comment by: {self.name} on {self.post}'
+        """Unicode's representation of Comment."""
+        return f'Comment by: {self.user} on {self.post}'
