@@ -111,4 +111,4 @@ class Comment(models.Model):
 
     def __str__(self):
         """Unicode's representation of Comment."""
-        return f'Comment by: {self.user} on {self.post}'
+        return f'Comment by: ({self.user}) on ({self.post.title})'
