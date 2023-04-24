@@ -178,9 +178,6 @@ class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
 	template_name = 'blog/posts/update_post.html'
 	success_url = reverse_lazy('blog:homepage')
 
-	def form_valid(self, form):
-		form.instance.author = self.request.user
-		return super().form_valid(form)
 
 	def test_func(self):
 		post = self.get_object()
