@@ -131,7 +131,7 @@ Recreated the project using [Django Cookiecutter](https://github.com/cookiecutte
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
 
 
-#### GraphQL Queries Examples:
+#### GraphQL Queries and Mutations Examples:
 
 ```gql
 
@@ -271,17 +271,14 @@ mutation CreatePost {
 ------------------------------------------------------------------------------
 
 mutation {
-  createComment(input: {
-    user: 1,
-    post: 1,
-    email: "admin@admin.com",
-    comment: "Great Post!!"
-  }) {
-    comment {
-      id
-      comment
-      user {
-        username
+  createComment(postId: 1, comment: "Great post", email: "admin@admin.com") {
+    post {
+      title,
+      comments {
+        comment
+        user {
+          username
+        }
       }
     }
   }

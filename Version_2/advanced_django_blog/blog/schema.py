@@ -6,7 +6,8 @@ from .mutations import (
     CreatePostMutation, 
     CreatePostRelayMutation, 
     CreateTagMutation, 
-    CreateCommentMutation, 
+    CreateCommentMutation,
+    #CreateCommentRelayMutation,
     UpdateTagMutation, 
     DeleteTagMutation
 )

@@ -73,45 +73,64 @@ class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
         post.save()
 
         return CreatePostRelayMutation(post=post)
+    
+
+class CreateCommentMutation(graphene.Mutation):
+    user = graphene.Field(UserType)
+    post = graphene.Field(PostType)
+
+    class Arguments:
+        post_id = graphene.Int()
+        email = graphene.String()
+        comment = graphene.String()
+    
+    def mutate(self, info, post_id, email, comment):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('You must be logged to vote!')
+        
+        post = Post.objects.filter(id=post_id).first()
+        if not post:
+            raise Exception('Invalid Link!')
+        
+        Comment.objects.create(
+            user=user,
+            post=post,
+            email=email,
+            comment=comment,
+        )
+
+        return CreateCommentMutation(user=user, post=post)
 
 
 # class CreateCommentRelayMutation(graphene.relay.ClientIDMutation):
 #     comment = graphene.Field(CommentNode)
 #     post = graphene.Field(PostNode)
+#     name = graphene.Field(UserType)
 
 #     class Input:
 #         email = graphene.String()
 #         comment = graphene.String()
-#         post = graphene.ID(required=True)
+#         post = graphene.Int(required=True)
 
-#     def mutate_and_get_payload(root, info, post_id, **input):
+#     def mutate_and_get_payload(root, info, post_id, **kwargs):
 #         name = info.context.user
 #         if name.is_anonyomus:
 #             raise GraphQLError('You must be logged in to comment!')
 
-#         post = Post.objects.filter(pk=post_id).first()
+#         post = Post.objects.get(id=post_id)
 #         if not post:
 #             raise GraphQLError('Invaild post id!')
 
 #         data = Comment(
 #             post=post,
 #             name=name,
-#             email=input.get('email'),
-#             comment=input.get('comment')
+#             email=kwargs.get('email'),
+#             comment=kwargs.get('comment')
 #         )
 
 #         data.save()
-#         return CreateCommentRelayMutation(data=data)
-
-
-
-
-
-class CreateCommentMutation(DjangoModelFormMutation):
-    comment = graphene.Field(CommentType)
-
-    class Meta:
-        form_class = CommentForm
+#         return CreateCommentRelayMutation(data=data, name=name)
 
 
 class CreateTagMutation(DjangoModelFormMutation):
