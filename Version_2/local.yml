@@ -35,16 +35,6 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  pgadmin:
-    container_name: pgadmin4_container
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: 1234
-    ports:
-      - "8010:80"
-
   docs:
     image: advanced_django_blog_local_docs
     container_name: advanced_django_blog_local_docs
