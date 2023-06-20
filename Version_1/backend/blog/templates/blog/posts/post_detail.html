@@ -1,7 +1,12 @@
 {% extends 'blog/base.html' %}
 {% load blog_tags %}
+{% load crispy_forms_tags %}
 
 {% block title %}{{ post.title }}{% endblock title %}
+
+{% block hero %}
+
+{% endblock hero %}
 
 
 {% block page_content %}
@@ -18,9 +23,12 @@
         <div class="container d-md-flex">
             <div class="col-md-12">
                 <!-- Strat Blog Post List -->
-                <div class="card bg-dark mb-3">
-                    <div class="card-body text-white">
-                        <h5 class="card-title pb-3 m-1">{{ post.title }}</h5>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h5 class="flex-grow-1 card-title pb-3 m-1">{{ post.title }}</h5>
+                            {% include 'blog/posts/partials/favorite_post.html' %}
+                        </div>
                         <p class="card-subtitle text-muted"> By <a href="#">{{ post.author }}</a>,  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
                         <hr class="text-light">
                         Tags: 
@@ -48,7 +56,7 @@
                         
                         <div class="card-footer">
                             <button class="btn btn-success mt-3">
-                                <a href="{% url 'blog:homepage' %}" class="card-link pt-2 text-white">Go back</a>
+                                <a href="{% url 'blog:homepage' %}" class="card-link text-white pt-2">Return to blog</a>
                             </button>
                         </div>
                     </div>
@@ -70,9 +78,36 @@
                         </button>
                         
                         {% if user.is_authenticated %}
-                            <button type="button" class="btn btn-success">
-                                <a href="{% url 'blog:create-comment' post.slug %}" class="text-light mx-2">Add Comment</a>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                Add Comment
                             </button>
+                        
+                            <!-- Modal -->
+                            <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-dark text-light">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="row my-2">
+                                                    {{ form.email|as_crispy_field }}
+                                                </div>
+                                                <div class="row my-2">
+                                                    {{ form.comment|as_crispy_field }}
+                                                </div>
+												<div class="modal-footer">
+													<button class="btn btn-success" type="submit">Submit</button>
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+												</div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -80,7 +115,7 @@
                 <hr class="text-light">
                 <div class="list-group">
                     {% for comment in comments %}
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href="#" class="list-group-item list-group-item-action bg-dark text-light">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Comment By: {{ comment.name|title }}</h5>
                                 <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>

@@ -1,13 +1,16 @@
 aniso8601==9.0.1
 asgiref==3.5.2
 Django==4.1.4
+django-cors-headers==4.1.0
 django-crispy-forms==1.14.0
 django-filter==23.1
+django-graphql-jwt==0.3.4
 graphene==3.2.2
-graphene-django==3.0.0
+graphene-django==3.1.2
 graphql-core==3.2.3
 graphql-relay==3.2.0
 promise==2.3
+PyJWT==2.7.0
 six==1.16.0
 sqlparse==0.4.3
 text-unidecode==1.3

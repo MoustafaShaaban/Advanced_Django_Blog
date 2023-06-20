@@ -21,5 +21,6 @@ django-redis==5.2.0  # https://github.com/jazzband/django-redis
 
 # Graphene Django
 #------------------------------------------------------------------------------------------
-graphene-django==3.0.0
+graphene-django==3.1.2
 django-filter==23.1
+django-graphql-jwt==0.3.4

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.template.defaultfilters import slugify
+from django.conf import settings
+
 
 
 class Tag(models.Model):
@@ -52,6 +54,12 @@ class Post(models.Model):
     tag = models.ManyToManyField(
         Tag,
         related_name='tags'
+    )
+
+    favorites = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='favorite_posts'
     )
 
     class Meta:

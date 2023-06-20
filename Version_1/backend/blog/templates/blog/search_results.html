@@ -15,6 +15,8 @@
                 <small>Author: {{ post.author }}</small>
             </a>
             <br>
+            {% empty %}
+            <p>No posts found with your search query. Please search again.</p>
         {% endfor %}
     </div>
 

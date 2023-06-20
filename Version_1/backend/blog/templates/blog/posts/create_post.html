@@ -9,7 +9,7 @@
 
     <form method="post" action="{% url 'blog:create-post' %}">
         {% csrf_token %}
-        <div class="col">
+        <div class="col-6 mx-auto">
             <div class="row text-white my-2">
                 {{ form.title|as_crispy_field }}
             </div>
@@ -20,8 +20,9 @@
                 {{ form.tag|as_crispy_field }}
             </div>
         </div>
-
-        <button class="btn btn-success" type="submit" class="text-white">Create</button>
+        <div class="mx-auto">
+            <button class="btn btn-success text-white" type="submit">Create</button>
+        </div>
     </form>
     {% else %}
         <p>You are not logged in, Please click <a href="{% url 'login' %}" class="text-white">here</a> to login and add a todo!</p>
