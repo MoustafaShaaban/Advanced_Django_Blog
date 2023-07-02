@@ -5,6 +5,8 @@ from .queries import Query
 from .mutations import (
     CreatePostMutation,
     CreatePostRelayMutation,
+    UpdatePostMutation,
+    DeletePostMutation,
     CreateTagMutation,
     CreateCommentMutation,
     #CreateCommentRelayMutation,
@@ -15,6 +17,8 @@ from .mutations import (
 
 class Mutations(graphene.ObjectType):
     create_post = CreatePostMutation.Field()
+    update_post = UpdatePostMutation.Field()
+    delete_post = DeletePostMutation.Field()
 
     create_comment = CreateCommentMutation.Field()
 

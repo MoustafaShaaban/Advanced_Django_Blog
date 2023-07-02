@@ -138,14 +138,14 @@ def create_comment(request, slug):
 	}
 	return render(request, 'blog/posts/create_comment.html', context)
 
-
+@login_required
 def tag_list(request):
 	""" A view to show a list of the avaliable tags in the blog. """
 	tag_list = Tag.objects.all()
 	context = {'tag_list': tag_list}
 	return render(request, 'blog/tags.html', context)
 
-
+@login_required
 def tag_post_list(request, slug):
 	""" A view to filter the posts by tags. """
 	tags = get_object_or_404(Tag, slug=slug)

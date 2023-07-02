@@ -45,6 +45,56 @@ class CreatePostMutation(graphene.Mutation):
         return CreatePostMutation(ok=ok, post=post_instance)
 
 
+class UpdatePostMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int(required=True)
+        input = PostInput(required=True)
+
+    ok = graphene.Boolean()
+    post = graphene.Field(PostType)
+
+    @staticmethod
+    def mutate(root, info, id, input=None):
+        ok = False
+        user = info.context.user
+        tags = []
+        post_instance = Post.objects.get(pk=id)
+
+        if post_instance.author != user:
+            raise GraphQLError("Only post author can update it")
+        else:
+            for tag_input in input.tags:
+                tag = Tag.objects.get(slug=tag_input.slug)
+                if tag is None:
+                    return CreatePostMutation(ok=False, post=None)
+                tags.append(tag)
+
+            post_instance.title = input.title
+            post_instance.content = input.content
+            post_instance.save()
+            post_instance.tag.set(tags)
+        return UpdatePostMutation(ok=ok, post=post_instance)
+
+class DeletePostMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    ok = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, info, id, input=None):
+        ok = True
+        user = info.context.user
+        tags = []
+        post_instance = Post.objects.get(pk=id)
+
+        if post_instance.author != user:
+            raise GraphQLError("Only post author can delete it")
+        else:
+            post_instance.delete()
+        return DeletePostMutation(ok=ok)
+
+
 class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
     post = graphene.Field(PostNode)
 

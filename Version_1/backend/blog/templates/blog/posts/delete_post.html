@@ -9,7 +9,7 @@
 <form method="post" action="{% url 'blog:delete-post' post.slug %}">
     {% csrf_token %}
     <div class="col">
-        <div class="row text-white">
+        <div class="row">
             {{ form.title|crispy }}
         </div>
     </div>
@@ -17,9 +17,9 @@
     <hr>
     <div class="form-inline my-2 my-lg-0">
         <button class="btn btn-info mx-2" type="submit">
-            <a class="text-white" href="{% url 'blog:homepage' %}">Go back</a>
+            <a href="{% url 'blog:homepage' %}">Go back</a>
         </button>
-        <button class="btn btn-danger text-white" type="submit">Delete</button>
+        <button class="btn btn-danger" type="submit">Delete</button>
     </div>
     
 </form>

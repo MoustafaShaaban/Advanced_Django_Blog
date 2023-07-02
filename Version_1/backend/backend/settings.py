@@ -144,3 +144,8 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# AUTHENTICATION_BACKENDS = [
+#     #'graphql_jwt.backends.JSONWebTokenBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
