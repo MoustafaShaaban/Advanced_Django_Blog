@@ -3,18 +3,18 @@ import graphene
 from .queries import Query
 
 from .mutations import (
-    CreatePostMutation, 
-    CreatePostRelayMutation, 
-    CreateTagMutation, 
+    CreatePostMutation,
+    CreatePostRelayMutation,
+    CreateTagMutation,
     CreateCommentMutation,
     #CreateCommentRelayMutation,
-    UpdateTagMutation, 
+    UpdateTagMutation,
     DeleteTagMutation
 )
 
 
 class Mutations(graphene.ObjectType):
-    create_post = CreatePostRelayMutation.Field()
+    create_post = CreatePostMutation.Field()
 
     create_comment = CreateCommentMutation.Field()
 

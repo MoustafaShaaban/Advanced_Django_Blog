@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block page_content %}
-<h2 class="text-white">Delete Post</h2>
+<h2>Delete Post</h2>
     
 <hr>
 
@@ -13,11 +13,11 @@
             {{ form.title|crispy }}
         </div>
     </div>
-    <p class="text-white">Are you sure you want to delete this post?</p>
+    <p>Are you sure you want to delete this post?</p>
     <hr>
     <div class="form-inline my-2 my-lg-0">
         <button class="btn btn-info mx-2" type="submit">
-            <a  class="text-white" href="{% url 'blog:homepage' %}">Go back</a>
+            <a class="text-white" href="{% url 'blog:homepage' %}">Go back</a>
         </button>
         <button class="btn btn-danger text-white" type="submit">Delete</button>
     </div>

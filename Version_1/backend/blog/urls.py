@@ -21,6 +21,6 @@ urlpatterns = [
     path('delete/post/<slug:slug>/', views.DeletePost.as_view(), name='delete-post'),
     path('tag/<slug:slug>/',views.tag_post_list, name='tag-post-list'),
 
-    #path("graphql/", views.PrivateGraphQLView.as_view(graphiql=True, schema=schema), name="graphql"),
-    path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name="graphql"),
+    path("graphql/", views.PrivateGraphQLView.as_view(graphiql=True, schema=schema), name="graphql"),
+    #path("graphql/", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name="graphql"),
 ]

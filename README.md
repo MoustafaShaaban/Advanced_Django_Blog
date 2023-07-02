@@ -259,6 +259,9 @@ mutation CreatePost {
   createPost(input: {
     title: "Post number 1",
     content: "Post number 1 content",
+    tag: [
+      { slug: "python" }
+    ]
     
   }) {
     post {

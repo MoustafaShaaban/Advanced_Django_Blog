@@ -10,47 +10,39 @@ from .types import (
     PostType,
     PostNode,
     CommentType,
-    CommentNode,
     TagType,
     UserType
 )
-
-
-
+from .inputs import PostInput, TagInput
 
 
 class CreatePostMutation(graphene.Mutation):
-    id = graphene.Int()
-    title = graphene.String(required=True)
-    content = graphene.String(required=True)
-    tag = graphene.String(required=True)
-    author = graphene.Field(UserType)
-
     class Arguments:
-        title = graphene.String(required=True)
-        content = graphene.String(required=True)
-        tag = graphene.ID(required=True)
+        input = PostInput(required=True)
 
-    @classmethod
-    def mutate(cls, root, info, title, content, tag):
+    ok = graphene.Boolean()
+    post = graphene.Field(PostType)
+
+    @staticmethod
+    def mutate(root, info, input=None):
+        ok = True
         user = info.context.user
-        if user.is_anonyomus:
-            raise GraphQLError('You must be logged in to comment!')
+        tags = []
 
-        post = Post.objects.create(
-            title=title,
-            content=content,
-            tag=tag,
-            author = user
+        for tag_input in input.tags:
+            tag = Tag.objects.get(slug=tag_input.slug)
+            if tag is None:
+                return CreatePostMutation(ok=False, post=None)
+            tags.append(tag)
+        
+        post_instance = Post.objects.create(
+            title=input.get('title'),
+            author=user,
+            content=input.get('content'),
         )
-
-        return CreatePostMutation(
-            id=post.id,
-            title=post.title,
-            content=post.content,
-            tag=post.tag,
-            author=post.author,
-        )
+        post_instance.save()
+        post_instance.tag.set(tags)
+        return CreatePostMutation(ok=ok, post=post_instance)
 
 
 class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
@@ -59,6 +51,7 @@ class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
     class Input:
         title = graphene.String()
         content = graphene.String()
+
     #    tag = graphene.String()
 
     def mutate_and_get_payload(root, info, **input):
@@ -67,13 +60,13 @@ class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
         post = Post(
             title=input.get('title'),
             content=input.get('content'),
-        #    tag=input.get('tag'),
+            #    tag=input.get('tag'),
             author=user
         )
         post.save()
 
         return CreatePostRelayMutation(post=post)
-    
+
 
 class CreateCommentMutation(graphene.Mutation):
     user = graphene.Field(UserType)
@@ -83,16 +76,16 @@ class CreateCommentMutation(graphene.Mutation):
         post_id = graphene.Int()
         email = graphene.String()
         comment = graphene.String()
-    
+
     def mutate(self, info, post_id, email, comment):
         user = info.context.user
         if user.is_anonymous:
             raise Exception('You must be logged to vote!')
-        
+
         post = Post.objects.filter(id=post_id).first()
         if not post:
             raise Exception('Invalid Link!')
-        
+
         Comment.objects.create(
             user=user,
             post=post,
