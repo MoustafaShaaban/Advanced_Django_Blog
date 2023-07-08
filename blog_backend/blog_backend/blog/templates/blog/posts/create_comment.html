@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block inner %}
+    <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
+        {% csrf_token %}
+        <div class="row text-white my-2">
+            {{ form.email|as_crispy_field }}
+        </div>
+        <div class="row text-white my-2">
+            {{ form.comment|as_crispy_field }}
+        </div>
+        <button class="btn btn-success" type="submit" class="text-white">Submit</button>
+    </form>
+{% endblock inner %}

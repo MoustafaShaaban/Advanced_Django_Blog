@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+
+{% block inner %}
+    <h3 class="text-center my-5">Posts with the tag <span class="badge rounded-pill text-bg-primary">{{ tags.name|title }}</span></h3>
+    {% for post in posts %}
+    <div class="card mb-3" style="width: 100%;">
+        <div class="card-body">
+            <h3 class="card-title mb-3"><a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a></h3>
+            <p class="card-text text-muted"> By {{ post.author }},  In <time>{{ post.updated_at }}</time></p>
+            <hr class="text-light">
+            <p class="card-text pt-3">{{ post.content }}</p>
+
+            <button class="btn btn-primary mt-3">
+                <a href="{% url 'blog:post-detail' post.slug %}" class="card-link pt-2 text-white">Read more</a>
+            </button>
+        </div>
+    </div>
+
+    {% empty %}
+        <p class="mx-3 text-light">There are no posts with this tag yet.</p>
+    {% endfor %}
+{% endblock inner %}
