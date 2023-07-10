@@ -1,15 +1,9 @@
 from django.contrib.auth import get_user_model
 
-from graphql import GraphQLError
-
-import graphene
-from graphene import relay, ObjectType
+from graphene import relay
 from graphene_django.types import DjangoObjectType
-from graphene_django.filter import DjangoFilterConnectionField
-from graphene_django.forms.mutation import DjangoModelFormMutation
 
-from .models import Post, Comment, Tag
-from .forms import CommentForm, TagForm
+from blog_backend.blog.models import Post, Comment, Tag
 
 
 class UserType(DjangoObjectType):

@@ -1,15 +1,13 @@
 import graphene
 
-from .queries import Query
+from blog_backend.graphql_app.queries import Query
 
-from .mutations import (
+from blog_backend.graphql_app.mutations import (
     CreatePostMutation,
-    CreatePostRelayMutation,
     UpdatePostMutation,
     DeletePostMutation,
     CreateTagMutation,
     CreateCommentMutation,
-    #CreateCommentRelayMutation,
     UpdateTagMutation,
     DeleteTagMutation
 )

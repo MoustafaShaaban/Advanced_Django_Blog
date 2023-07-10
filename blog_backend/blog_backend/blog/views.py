@@ -6,15 +6,9 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 
-from graphene_django.views import GraphQLView
-
-
-
 from .models import Post, Tag
 from .forms import CommentForm
 
-class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
-    pass
 
 class HomePage(generic.ListView):
 	"""Home page that shows all posts with maximum 5 posts per page."""
@@ -58,6 +52,46 @@ class UserfavoritePostListView(LoginRequiredMixin, generic.ListView):
 
 	def get_queryset(self):
 		return Post.objects.filter(favorites=self.request.user).order_by('-published_at')
+	
+
+class CreatePost(LoginRequiredMixin, generic.CreateView):
+	""" A view to add a new post. """
+	model = Post
+	fields = ['title', 'content', 'tag']
+	template_name = 'blog/posts/create_post.html'
+	success_url = reverse_lazy('blog:homepage')
+
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		return super().form_valid(form)
+
+
+class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+	""" A view to update a specific post. """
+	model = Post
+	fields = ['title', 'content', 'tag']
+	template_name = 'blog/posts/update_post.html'
+	success_url = reverse_lazy('blog:homepage')
+
+
+	def test_func(self):
+		post = self.get_object()
+		if self.request.user == post.author:
+			return True
+		return False
+
+
+class DeletePost(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+	""" A view to delete a specific post. """
+	model = Post
+	template_name = 'blog/posts/delete_post.html'
+	success_url = reverse_lazy('blog:homepage')
+
+	def test_func(self):
+		post = self.get_object()
+		if self.request.user == post.author:
+			return True
+		return False
 
 
 
@@ -89,6 +123,7 @@ def post_detail(request, slug):
 
 	return render(request, 'blog/posts/post_detail.html', context)
 
+
 @login_required
 def favorite_post(request, slug):
 	""" A view to add a post to the user's favorites """
@@ -114,6 +149,7 @@ def favorite_post(request, slug):
 				'blog/posts/partials/favorite_post.html',
 				context
 			)
+
 
 @login_required
 def create_comment(request, slug):
@@ -157,43 +193,3 @@ def tag_post_list(request, slug):
 	}
 
 	return render(request, 'blog/posts/tags_post_list.html', context)
-
-
-class CreatePost(LoginRequiredMixin, generic.CreateView):
-	""" A view to add a new post. """
-	model = Post
-	fields = ['title', 'content', 'tag']
-	template_name = 'blog/posts/create_post.html'
-	success_url = reverse_lazy('blog:homepage')
-
-	def form_valid(self, form):
-		form.instance.author = self.request.user
-		return super().form_valid(form)
-
-
-class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
-	""" A view to update a specific post. """
-	model = Post
-	fields = ['title', 'content', 'tag']
-	template_name = 'blog/posts/update_post.html'
-	success_url = reverse_lazy('blog:homepage')
-
-
-	def test_func(self):
-		post = self.get_object()
-		if self.request.user == post.author:
-			return True
-		return False
-
-
-class DeletePost(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
-	""" A view to delete a specific post. """
-	model = Post
-	template_name = 'blog/posts/delete_post.html'
-	success_url = reverse_lazy('blog:homepage')
-
-	def test_func(self):
-		post = self.get_object()
-		if self.request.user == post.author:
-			return True
-		return False

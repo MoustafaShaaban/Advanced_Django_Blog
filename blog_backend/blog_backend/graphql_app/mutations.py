@@ -3,8 +3,8 @@ from graphql import GraphQLError
 import graphene
 from graphene_django.forms.mutation import DjangoModelFormMutation
 
-from .models import Post, Comment, Tag
-from .forms import CommentForm, TagForm
+from blog_backend.blog.models import Post, Comment, Tag
+from blog_backend.blog.forms import TagForm
 
 from .types import (
     PostType,

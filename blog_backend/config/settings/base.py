@@ -86,7 +86,9 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "blog_backend.users",
     # Your stuff: custom apps go here
-    "blog_backend.blog"
+    "blog_backend.blog",
+    "blog_backend.api",
+    "blog_backend.graphql_app",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

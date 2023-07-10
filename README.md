@@ -10,7 +10,9 @@ A project built with Django web framework and Bootstrap.
 
 * Authenticated users can:
 
-    * Access a GraphQL endpoint and Run several Quries and CRUD Mutations.
+    * Access a GraphQL endpoint and run several Quries and CRUD Mutations.
+
+    * Access a Rest API endpoint and run CRUD operations.
 
     * Create, Read, Update and Delete (CRUD) blog posts on the website.
 

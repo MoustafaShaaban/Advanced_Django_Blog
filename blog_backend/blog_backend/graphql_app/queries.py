@@ -3,8 +3,8 @@ from graphql import GraphQLError
 import graphene
 from graphene_django.filter import DjangoFilterConnectionField
 
-from .models import Post, Comment, Tag
-from .types import (
+from blog_backend.blog.models import Post, Comment, Tag
+from blog_backend.graphql_app.types import (
     PostType,
     PostNode,
     CommentType,
