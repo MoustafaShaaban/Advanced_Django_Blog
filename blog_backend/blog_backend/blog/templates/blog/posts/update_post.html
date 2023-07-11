@@ -22,7 +22,7 @@
 
         <div class="form-inline my-2 my-lg-0">
         <button class="btn btn-danger mx-2" type="submit">
-            <a class="text-white" href="{% url 'blog:homepage' %}">Cancel</a>
+            <a class="text-white" href="{% url 'blog:post-detail' post.slug %}">Cancel</a>
         </button>
         <button class="btn btn-info" type="submit">Update</button>
     </div>

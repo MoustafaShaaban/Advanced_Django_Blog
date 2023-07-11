@@ -27,7 +27,7 @@ class Query(graphene.ObjectType):
 
     @classmethod
     def resolve_all_comments(cls, root, info):
-        return Comment.objects.select_related('post').filter(approved=True).all()
+        return Comment.objects.filter(approved=True).all()
 
     @classmethod
     def resolve_all_tags(cls, root, info):

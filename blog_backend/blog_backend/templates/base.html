@@ -18,12 +18,22 @@
 
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
-    <div class="container">
+    <div>
         {% include 'blog/navbar.html' %}
 
         <hr class="text-light">
 
-        {% block inner %}{% endblock inner %}
+        <div class="container">
+            {% if messages %}
+            <div class="messages alert alert-success" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                    <btton type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        
+            {% block inner %}{% endblock inner %}
 
         {% if is_paginated %}
         <ul class="pagination">
@@ -48,6 +58,7 @@
             {% endif %}
         </ul>
         {% endif %}
+        </div>
     </div>
 
 

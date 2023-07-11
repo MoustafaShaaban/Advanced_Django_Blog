@@ -8,12 +8,10 @@ from blog_backend.blog.forms import TagForm
 
 from .types import (
     PostType,
-    PostNode,
     CommentType,
     TagType,
-    UserType
 )
-from .inputs import PostInput, TagInput
+from .inputs import PostInput, CommentInput
 
 
 class CreatePostMutation(graphene.Mutation):
@@ -95,85 +93,31 @@ class DeletePostMutation(graphene.Mutation):
         return DeletePostMutation(ok=ok)
 
 
-class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
-    post = graphene.Field(PostNode)
-
-    class Input:
-        title = graphene.String()
-        content = graphene.String()
-
-    #    tag = graphene.String()
-
-    def mutate_and_get_payload(root, info, **input):
-        user = info.context.user
-
-        post = Post(
-            title=input.get('title'),
-            content=input.get('content'),
-            #    tag=input.get('tag'),
-            author=user
-        )
-        post.save()
-
-        return CreatePostRelayMutation(post=post)
-
-
 class CreateCommentMutation(graphene.Mutation):
-    user = graphene.Field(UserType)
-    post = graphene.Field(PostType)
-
     class Arguments:
-        post_id = graphene.Int()
-        email = graphene.String()
-        comment = graphene.String()
+        inputs = CommentInput(required=True)
 
-    def mutate(self, info, post_id, email, comment):
+    post = graphene.Field(PostType)
+    comment = graphene.Field(CommentType)
+        
+
+    def mutate(self, info, inputs=None):
         user = info.context.user
         if user.is_anonymous:
-            raise Exception('You must be logged to vote!')
+            raise GraphQLError('You must be logged to add a comment!')
 
-        post = Post.objects.filter(id=post_id).first()
+        post = Post.objects.filter(id=inputs.post_id).first()
         if not post:
-            raise Exception('Invalid Link!')
+            raise GraphQLError('Invalid Post Id!')
 
         Comment.objects.create(
             user=user,
             post=post,
-            email=email,
-            comment=comment,
+            email=inputs.email,
+            comment=inputs.comment,
         )
 
-        return CreateCommentMutation(user=user, post=post)
-
-
-# class CreateCommentRelayMutation(graphene.relay.ClientIDMutation):
-#     comment = graphene.Field(CommentNode)
-#     post = graphene.Field(PostNode)
-#     name = graphene.Field(UserType)
-
-#     class Input:
-#         email = graphene.String()
-#         comment = graphene.String()
-#         post = graphene.Int(required=True)
-
-#     def mutate_and_get_payload(root, info, post_id, **kwargs):
-#         name = info.context.user
-#         if name.is_anonyomus:
-#             raise GraphQLError('You must be logged in to comment!')
-
-#         post = Post.objects.get(id=post_id)
-#         if not post:
-#             raise GraphQLError('Invaild post id!')
-
-#         data = Comment(
-#             post=post,
-#             name=name,
-#             email=kwargs.get('email'),
-#             comment=kwargs.get('comment')
-#         )
-
-#         data.save()
-#         return CreateCommentRelayMutation(data=data, name=name)
+        return CreateCommentMutation(post=post)
 
 
 class CreateTagMutation(DjangoModelFormMutation):
