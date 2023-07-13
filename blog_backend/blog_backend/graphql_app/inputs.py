@@ -14,4 +14,5 @@ class PostInput(graphene.InputObjectType):
 class CommentInput(graphene.InputObjectType):
     email = graphene.String()
     comment = graphene.String()
-    post_id = graphene.Int()
+    #post_id = graphene.Int()
+    post_slug = graphene.String()

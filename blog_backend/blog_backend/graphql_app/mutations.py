@@ -18,19 +18,19 @@ class CreatePostMutation(graphene.Mutation):
     class Arguments:
         input = PostInput(required=True)
 
-    ok = graphene.Boolean()
+    success = graphene.Boolean()
     post = graphene.Field(PostType)
 
     @staticmethod
     def mutate(root, info, input=None):
-        ok = True
+        success = True
         user = info.context.user
         tags = []
 
         for tag_input in input.tags:
             tag = Tag.objects.get(slug=tag_input.slug)
             if tag is None:
-                return CreatePostMutation(ok=False, post=None)
+                return CreatePostMutation(success=False, post=None)
             tags.append(tag)
         
         post_instance = Post.objects.create(
@@ -40,7 +40,8 @@ class CreatePostMutation(graphene.Mutation):
         )
         post_instance.save()
         post_instance.tag.set(tags)
-        return CreatePostMutation(ok=ok, post=post_instance)
+        success = True
+        return CreatePostMutation(success=success, post=post_instance)
 
 
 class UpdatePostMutation(graphene.Mutation):
@@ -48,12 +49,12 @@ class UpdatePostMutation(graphene.Mutation):
         id = graphene.Int(required=True)
         input = PostInput(required=True)
 
-    ok = graphene.Boolean()
+    success = graphene.Boolean()
     post = graphene.Field(PostType)
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = False
+        success = False
         user = info.context.user
         tags = []
         post_instance = Post.objects.get(pk=id)
@@ -64,33 +65,34 @@ class UpdatePostMutation(graphene.Mutation):
             for tag_input in input.tags:
                 tag = Tag.objects.get(slug=tag_input.slug)
                 if tag is None:
-                    return CreatePostMutation(ok=False, post=None)
+                    return CreatePostMutation(success=False, post=None)
                 tags.append(tag)
 
             post_instance.title = input.title
             post_instance.content = input.content
             post_instance.save()
             post_instance.tag.set(tags)
-        return UpdatePostMutation(ok=ok, post=post_instance)
+            success = True
+        return UpdatePostMutation(success=success, post=post_instance)
+    
 
 class DeletePostMutation(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
 
-    ok = graphene.Boolean()
+    success = graphene.Boolean()
 
     @staticmethod
     def mutate(root, info, id, input=None):
-        ok = True
         user = info.context.user
-        tags = []
         post_instance = Post.objects.get(pk=id)
 
         if post_instance.author != user:
             raise GraphQLError("Only post author can delete it")
         else:
             post_instance.delete()
-        return DeletePostMutation(ok=ok)
+            success = True
+        return DeletePostMutation(success=success)
 
 
 class CreateCommentMutation(graphene.Mutation):
@@ -106,9 +108,9 @@ class CreateCommentMutation(graphene.Mutation):
         if user.is_anonymous:
             raise GraphQLError('You must be logged to add a comment!')
 
-        post = Post.objects.filter(id=inputs.post_id).first()
+        post = Post.objects.filter(slug=inputs.post_slug).first()
         if not post:
-            raise GraphQLError('Invalid Post Id!')
+            raise GraphQLError('Invalid Post Slug!')
 
         Comment.objects.create(
             user=user,
@@ -118,6 +120,47 @@ class CreateCommentMutation(graphene.Mutation):
         )
 
         return CreateCommentMutation(post=post)
+    
+
+class UpdateCommentMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+        comment = graphene.String()
+
+    success = graphene.Boolean()
+    comment = graphene.Field(CommentType)
+
+    def mutate(root, info, id, comment):
+        success = False
+        user = info.context.user
+        comment_instance = Comment.objects.get(pk=id)
+
+        if comment_instance.user != user:
+            raise GraphQLError("Only comment user can update it")
+        else:
+            comment_instance.comment = comment
+            comment_instance.save()
+            success = True
+        return UpdateCommentMutation(success=success, comment=comment_instance)
+
+
+class DeleteCommentMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    success = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, info, id):
+        user = info.context.user
+        comment_instance = Comment.objects.get(pk=id)
+
+        if comment_instance.user != user:
+            raise GraphQLError("Only comment user can delete it")
+        else:
+            comment_instance.delete()
+            success = True
+        return DeleteCommentMutation(success=success, comment_instance=comment_instance)
 
 
 class CreateTagMutation(DjangoModelFormMutation):
@@ -129,15 +172,17 @@ class CreateTagMutation(DjangoModelFormMutation):
 
 class UpdateTagMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID()
+        id = graphene.ID(required=True)
         name = graphene.String(required=True)
+        slug = graphene.String()
 
     tag = graphene.Field(TagType)
 
     @classmethod
-    def mutate(cls, root, info, id, name):
+    def mutate(cls, root, info, id, name, slug):
         tag = Tag.objects.get(id=id)
         tag.name = name
+        tag.slug = slug
         tag.save()
 
         return UpdateTagMutation(tag=tag)
@@ -148,9 +193,11 @@ class DeleteTagMutation(graphene.Mutation):
         id = graphene.ID()
 
     tag = graphene.Field(TagType)
+    success = graphene.Boolean()
 
     @classmethod
     def mutate(cls, root, info, id):
         tag = Tag.objects.get(id=id)
         tag.delete()
-        return DeleteTagMutation(tag=tag)
+        success = True
+        return DeleteTagMutation(tag=tag, success=success)
