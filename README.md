@@ -1,12 +1,8 @@
 # Advanced Django Blog
 
-A project built with Django web framework and Bootstrap.
+A Blog website built using [Django Web Framework](https://www.djangoproject.com/), [Django REST Framework](https://www.django-rest-framework.org), [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/) and [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django).
 
 ###  Project Goals
-
-* All users can read or search for the posts on the blog.
-
-* Added a GraphQL used to query all available posts. Served on (http://127.0.0.1:8000/graphql/) url path
 
 * Authenticated users can:
 
@@ -16,9 +12,11 @@ A project built with Django web framework and Bootstrap.
 
     * Create, Read, Update and Delete (CRUD) blog posts on the website.
 
-    * Add comments on blog posts, but the comments will not be shown until the website admin approves it.
+    * Add comments on blog posts, but the comments will not be visiable until the website admin approves it.
 
-    * Access their profile which lists all their added blog posts.
+    * Access their profile which lists all their blog posts and their favorite posts.
+
+* All users can read or search for the posts on the blog.
 
 
 ### Project preview
@@ -28,10 +26,14 @@ A project built with Django web framework and Bootstrap.
 
 ###  Project Description:
 
-This project is a Django project called `backend` and it has two registered apps and one third-party app.
+This project is a Django project called `blog_backend` and it has four registered apps and one third-party app.
 
     * The `blog` app which contians an app-level templates and urls, used for most of the functionalities of our app, like, models, forms, views, urls, and custom template tags.
 
+    * The `api` app which contains the Django Rest Framework integration used to build a REST API.
+
+    * The `graphql_app` which contains the Graphene Django integration used to build a GraphQL endpoint.
+    
     * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to thier accounts.
 
     * `crispy forms` third-party app which makes beautify django forms design.

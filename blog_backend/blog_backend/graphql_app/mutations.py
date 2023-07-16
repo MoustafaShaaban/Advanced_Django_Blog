@@ -101,25 +101,27 @@ class CreateCommentMutation(graphene.Mutation):
 
     post = graphene.Field(PostType)
     comment = graphene.Field(CommentType)
+    success = graphene.Boolean()
         
 
     def mutate(self, info, inputs=None):
         user = info.context.user
         if user.is_anonymous:
-            raise GraphQLError('You must be logged to add a comment!')
+            raise GraphQLError('You must be logged in to add a comment!')
 
-        post = Post.objects.filter(slug=inputs.post_slug).first()
+        post = Post.objects.get(slug=inputs.post_slug)
         if not post:
             raise GraphQLError('Invalid Post Slug!')
 
-        Comment.objects.create(
+        comment = Comment.objects.create(
             user=user,
             post=post,
             email=inputs.email,
             comment=inputs.comment,
         )
+        success = True
 
-        return CreateCommentMutation(post=post)
+        return CreateCommentMutation(comment=comment, success=success)
     
 
 class UpdateCommentMutation(graphene.Mutation):
