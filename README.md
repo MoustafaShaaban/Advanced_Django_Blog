@@ -108,11 +108,15 @@ query ReturnAllPosts {
     updatedAt
     comments {
       id
-      name
+      comment
+      email
+      user {
+        username
+      }
     }
     tag {
       id
-      title
+      name
     }
   }
 }
@@ -129,11 +133,15 @@ query ReturnMyPost {
         updatedAt
         comments {
           id
-          name
+          comment
+          email
+          user {
+            username
+          }
         }
         tag {
           id
-          title
+          name
         }
       }
     }
@@ -152,8 +160,7 @@ query PostByTitle {
         content
         comments {
           id
-          name
-          name
+          comment
         }
       }
     }
@@ -165,7 +172,10 @@ query PostByTitle {
 query AllComments {
   allComments {
     id
-    name
+    user {
+      name
+    }
+    comment
     post {
       id
       title
@@ -181,6 +191,7 @@ query AllTags {
   allTags {
     id
     name
+    slug
   }
 }
 
@@ -212,9 +223,7 @@ mutation UpdateTag {
 
 mutation DeleteTag {
   deleteTag(id: 6) {
-    tag {
-      name
-    }
+    success
   }
 }
 
@@ -224,7 +233,7 @@ mutation CreatePost {
   createPost(input: {
     title: "Post number 1",
     content: "Post number 1 content",
-    tag: [
+    tags: [
       { slug: "python" }
     ]
     
@@ -239,7 +248,11 @@ mutation CreatePost {
 ------------------------------------------------------------------------------
 
 mutation {
-  createComment(postId: 1, comment: "Great post", email: "admin@admin.com") {
+  createComment(inputs: {
+    postSlug: "post-1", 
+    comment: "Great post", 
+    email: "admin@admin.com"
+  }) {
     post {
       title,
       comments {

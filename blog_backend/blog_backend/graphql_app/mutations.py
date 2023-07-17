@@ -87,6 +87,9 @@ class DeletePostMutation(graphene.Mutation):
         user = info.context.user
         post_instance = Post.objects.get(pk=id)
 
+        if not post_instance:
+            raise GraphQLError("No post found with the provided id")
+
         if post_instance.author != user:
             raise GraphQLError("Only post author can delete it")
         else:
@@ -162,7 +165,7 @@ class DeleteCommentMutation(graphene.Mutation):
         else:
             comment_instance.delete()
             success = True
-        return DeleteCommentMutation(success=success, comment_instance=comment_instance)
+        return DeleteCommentMutation(success=success)
 
 
 class CreateTagMutation(DjangoModelFormMutation):
@@ -174,15 +177,15 @@ class CreateTagMutation(DjangoModelFormMutation):
 
 class UpdateTagMutation(graphene.Mutation):
     class Arguments:
-        id = graphene.ID(required=True)
+        id = graphene.ID()
         name = graphene.String(required=True)
-        slug = graphene.String()
+        slug = graphene.String(required=True)
 
     tag = graphene.Field(TagType)
 
     @classmethod
-    def mutate(cls, root, info, id, name, slug):
-        tag = Tag.objects.get(id=id)
+    def mutate(cls, root, info, name, slug):
+        tag = Tag.objects.get(slug=slug)
         tag.name = name
         tag.slug = slug
         tag.save()
