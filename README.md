@@ -28,13 +28,13 @@ A Blog website built using [Django Web Framework](https://www.djangoproject.com/
 
 This project is a Django project called `blog_backend` and it has four registered apps and one third-party app.
 
-    * The `blog` app which contians an app-level templates and urls, used for most of the functionalities of our app, like, models, forms, views, urls, and custom template tags.
+    * The `blog` app which contains an app-level templates and urls, used for most of the functionalities of our app, like, models, forms, views, urls, and custom template tags.
 
     * The `api` app which contains the Django Rest Framework integration used to build a REST API.
 
     * The `graphql_app` which contains the Graphene Django integration used to build a GraphQL endpoint.
     
-    * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to thier accounts.
+    * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to their accounts.
 
     * `crispy forms` third-party app which makes beautify django forms design.
 

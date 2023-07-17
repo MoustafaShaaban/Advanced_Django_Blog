@@ -14,7 +14,7 @@ from blog_backend.graphql_app.types import (
 
 class Query(graphene.ObjectType):
     all_posts = graphene.List(PostType)
-    post_by_title = graphene.Field(PostType, title=graphene.String(required=True))
+    post_by_title = graphene.List(PostType, title=graphene.String(required=True))
     posts_by_author = graphene.List(PostType, author=graphene.String())
     posts_by_tag = graphene.List(PostType, tag=graphene.String())
 
@@ -22,11 +22,16 @@ class Query(graphene.ObjectType):
     my_posts_with_filters = DjangoFilterConnectionField(PostNode)
 
     all_comments = graphene.List(CommentType)
-    comments_by_post = graphene.List(CommentType, post=graphene.String())
+    approved_comments = graphene.List(CommentType)
+    comments_by_post = graphene.List(CommentType, postTitle=graphene.String())
     all_tags = graphene.List(TagType)
 
     @classmethod
     def resolve_all_comments(cls, root, info):
+        return Comment.objects.all()
+    
+    @classmethod
+    def resolve_approved_comments(cls, root, info):
         return Comment.objects.filter(approved=True).all()
 
     @classmethod
@@ -44,7 +49,7 @@ class Query(graphene.ObjectType):
     @classmethod
     def resolve_post_by_title(cls, root, info, title):
         try:
-            return Post.objects.prefetch_related("tag").select_related("author").get(title=title)
+            return Post.objects.prefetch_related("tag").select_related("author").filter(title__contains=title)
         except Post.DoesNotExist:
             return GraphQLError('No post found with the provided title')
 
@@ -58,10 +63,10 @@ class Query(graphene.ObjectType):
             return GraphQLError('No post found with the provided tag')
 
     @classmethod
-    def resolve_comments_by_post(cls, root, info, post):
+    def resolve_comments_by_post(cls, root, info, postTitle):
         try:
             return (
-                Comment.objects.filter(post__title__iexact=post)
+                Comment.objects.filter(post__title__icontains=postTitle)
             )
         except Comment.DoesNotExist:
             return GraphQLError('No comments found in this post')
