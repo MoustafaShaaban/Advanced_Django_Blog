@@ -7,8 +7,10 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['title', 'author', 'content', 'published_at', 'updated_at', 'tag']
+        fields = ['title', 'slug', 'author', 'content', 'published_at', 'updated_at', 'tag']
 
         extra_kwargs = {
-            'author': { 'read_only': True }
+            'author': { 'read_only': True },
+            'url': {'lookup_field': 'slug'}
         }
+        lookup_field = 'slug'

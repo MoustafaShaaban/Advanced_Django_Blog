@@ -18,7 +18,7 @@ urlpatterns = [
     path('post/<slug:slug>/', views.post_detail, name='post-detail'),
     path('favorite-post/<slug:slug>/', views.favorite_post, name='favorite_post'),
 
-    path('profile/', views.UserPostView.as_view(), name='profile'),
+    path('user-post-list/', views.UserPostView.as_view(), name='user-post-list'),
     path('profile/favorites/', views.UserfavoritePostListView.as_view(), name='favorite-post-list'),
     
     # URL for adding comments to blog posts:

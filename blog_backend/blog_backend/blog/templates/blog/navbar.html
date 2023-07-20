@@ -21,7 +21,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'blog:profile' %}">Your Posts</a></li>
+                            <li><a class="dropdown-item" href="{% url 'blog:user-post-list' %}">Your Posts</a></li>
                             <li><a class="dropdown-item" href="{% url 'blog:favorite-post-list' %}">Your Favorite posts</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:detail' request.user %}">Your profile</a></li>
                         </ul>
@@ -35,12 +35,13 @@
                             Rest API
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" aria-current="page" href="{% url 'api-docs' %}">API Documentation</a></li>
                             <li><a class="dropdown-item" aria-current="page" href="{% url 'api:api-root' %}">API Root</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item" href="{% url 'api:posts-list' %}">All Posts</a></li>
-                            <li><a class="dropdown-item" href="{% url 'api:user_posts-list' %}">Yourposts</a></li>
+                            <li><a class="dropdown-item" href="{% url 'api:user_posts-list' %}">Your Posts</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

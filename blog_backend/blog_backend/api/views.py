@@ -13,6 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
+    lookup_field = 'slug'
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -23,6 +24,7 @@ class UserPostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
+    lookup_field = 'slug'
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user)

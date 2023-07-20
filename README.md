@@ -36,7 +36,7 @@ This project is a Django project called `blog_backend` and it has four registere
     
     * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to their accounts.
 
-    * `crispy forms` third-party app which makes beautify django forms design.
+    * `crispy forms` third-party app which beautify django forms design.
 
 
 ### What could you learn from this project?

@@ -4,7 +4,7 @@
     <div class="row">
         <div class="container d-md-flex">
             <div class="col-md-12 mx-4">
-                <!-- Strat Blog Post List -->
+                <!-- Start Blog Post List -->
                 <div class="text-secondary px-4 py-5 text-center">
                     <div class="py-5">
                       <h1 class="display-5 fw-bold">Hello, {{ user.username }}</h1>
@@ -12,6 +12,7 @@
                         <p class="fs-5 mb-4">In this page you can see a list of all your posts.</p>
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                             <a href="{% url 'blog:create-post' %}" role="button" class="btn btn-outline-info btn-lg px-4 me-sm-3 fw-bold">Add post</a>
+                            <a href="{% url 'users:detail' request.user %}" role="button" class="btn btn-outline-info btn-lg px-4">Return to your Profile</a>
                             <a href="{% url 'blog:homepage' %}" role="button" class="btn btn-outline-dark btn-lg px-4">Return to Blog</a>
                         </div>
                       </div>
@@ -34,6 +35,8 @@
                             </button>
                         </div>
                     </div>
+                    {% empty %}
+                        <p class="card-text pt-3 m-1">You didn't add any posts yet.</p>
                 {% endfor %}
 
                 <!-- End Blog Post List -->
