@@ -2,6 +2,9 @@
 
 A Blog website built using [Django Web Framework](https://www.djangoproject.com/), [Django REST Framework](https://www.django-rest-framework.org), [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/) and [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django).
 
+
+[Full Review](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
+
 ###  Project Goals
 
 * Authenticated users can:
