@@ -26,6 +26,8 @@ A Blog website built using [Django Web Framework](https://www.djangoproject.com/
 
 * [Youtube](https://www.youtube.com/watch?v=mxe6Ca5yLOo)
 
+* [Article](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
+
 
 ###  Project Description:
 
@@ -91,6 +93,10 @@ This project is a Django project called `blog_backend` and it has four registere
 * Create a super user:
 
 ` docker-compose -f local.yml run --rm django python manage.py createsuperuser `
+
+* Run the test using pytest:
+
+``` docker compose -f local.yml run --rm django pytest blog_backend/blog ```
 
 * Now run the project:
 
@@ -385,3 +391,8 @@ query PostsByTitleWithDjangoFilters {
 
 
 For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)
+
+
+# References:
+
+*[Testing](https://www.valentinog.com/blog/testing-django/)

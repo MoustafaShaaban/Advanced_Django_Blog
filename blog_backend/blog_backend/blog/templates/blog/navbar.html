@@ -1,74 +1,71 @@
 <!-- Start NavBar -->
-<div class="container">
-    <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary mt-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'blog:homepage' %}">Blog Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+<nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary mt-3">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'blog:homepage' %}">Blog Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        My Profile
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" aria-current="page" href="{% url 'blog:create-post' %}">Add post</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'blog:user-post-list' %}">Your Posts</a></li>
+                        <li><a class="dropdown-item" href="{% url 'blog:favorite-post-list' %}">Your Favorite posts</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users:detail' request.user %}">Your profile</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'blog:graphql' %}" class="nav-link">GraphQL</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Rest API
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" aria-current="page" href="{% url 'api-docs' %}">API Documentation</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'api:posts-list' %}">All Posts</a></li>
+                        <li><a class="dropdown-item" href="{% url 'api:user_posts-list' %}">Your Posts</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link"></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'blog:tag-list' %}" class="nav-link">Tags</a>
+                </li>
+            </ul>
+            <form action="{% url 'blog:search_results' %}" method="get" class="d-flex" role="search">
+                <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success mx-2" type="submit">Search</button>
+            </form>
+            <button class="btn btn-outline-danger my-4 my-sm-0">
+                <a href="{% url 'account_logout' %}" class="mx-2">Logout</a>
             </button>
-    
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                {% if user.is_authenticated %}
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            My Profile
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" aria-current="page" href="{% url 'blog:create-post' %}">Add post</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{% url 'blog:user-post-list' %}">Your Posts</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:favorite-post-list' %}">Your Favorite posts</a></li>
-                            <li><a class="dropdown-item" href="{% url 'users:detail' request.user %}">Your profile</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'blog:graphql' %}" class="nav-link">GraphQL</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Rest API
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" aria-current="page" href="{% url 'api-docs' %}">API Documentation</a></li>
-                            <li><a class="dropdown-item" aria-current="page" href="{% url 'api:api-root' %}">API Root</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{% url 'api:posts-list' %}">All Posts</a></li>
-                            <li><a class="dropdown-item" href="{% url 'api:user_posts-list' %}">Your Posts</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link"></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'blog:tag-list' %}" class="nav-link">Tags</a>
-                    </li>
-                </ul>
-                <form action="{% url 'blog:search_results' %}" method="get" class="d-flex" role="search">
-                    <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success mx-2" type="submit">Search</button>
-                </form>
-                <button class="btn btn-outline-danger my-4 my-sm-0">
-                    <a href="{% url 'account_logout' %}" class="mx-2">Logout</a>
-                </button>
-                {% else %}
-                <button class="btn btn-outline-info my-2 my-sm-0">
-                    <a href="{% url 'account_login' %}" class="mx-2">Login</a>
-                </button>
-                <button class="btn btn-outline-success my-4 my-sm-0 mx-2">
-                    <a href="{% url 'account_signup' %}">Register</a>
-                </button>
-                {% endif %}
-    
-            </div>
+            {% else %}
+            <button class="btn btn-outline-info my-2 my-sm-0">
+                <a href="{% url 'account_login' %}" class="mx-2">Login</a>
+            </button>
+            <button class="btn btn-outline-success my-4 my-sm-0 mx-2">
+                <a href="{% url 'account_signup' %}">Register</a>
+            </button>
+            {% endif %}
+
         </div>
+    </div>
     </nav>
-</div>
 <!-- End NavBar -->
