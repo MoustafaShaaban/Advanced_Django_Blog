@@ -26,6 +26,7 @@ class Tag(models.Model):
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
+
 class Post(models.Model):
     """Model definition for Post."""
     author = models.ForeignKey(
@@ -73,7 +74,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         """ A method to tell Django how to calculate the canonical URL (official url of a page) for an object """
-        return reverse('post-detail', kwargs={'slug': self.slug})
+        return reverse('blog:post-detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:

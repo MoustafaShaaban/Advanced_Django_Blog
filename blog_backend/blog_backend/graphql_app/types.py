@@ -15,6 +15,8 @@ class UserType(DjangoObjectType):
 class PostNode(DjangoObjectType):
     class Meta:
         model = Post
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'comments', 'tag')
+
         filter_fields = {
             'id': ['exact'],
             'title': ['exact', 'icontains', 'istartswith'],
@@ -28,6 +30,7 @@ class PostNode(DjangoObjectType):
 class TagNode(DjangoObjectType):
     class Meta:
         model = Tag
+        fields = ('id', 'name', 'slug')
         interfaces = (relay.Node,)
 
 
@@ -46,3 +49,4 @@ class CommentType(DjangoObjectType):
 class TagType(DjangoObjectType):
     class Meta:
         model = Tag
+        fields = ('id', 'name', 'slug')

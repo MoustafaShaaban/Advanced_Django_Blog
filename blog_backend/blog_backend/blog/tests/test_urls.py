@@ -8,6 +8,9 @@ from blog_backend.users.models import User
 from blog_backend.blog.models import Tag, Comment, Post
 
 
+def createUser():
+    return User.objects.create_user("test", "test@test.com", "test")
+
 class HomepageTests(TestCase):
     def test_url_exists_at_correct_location(self):
         response = self.client.get("/")
@@ -23,42 +26,42 @@ class HomepageTests(TestCase):
 
 
 class CreatePostTests(TestCase):
+
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         response = self.client.get(reverse("blog:create-post"))
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:create-post"))
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:create-post"))
         self.assertTemplateUsed(response, "blog/posts/create_post.html")
 
 
 class UpdatePostTests(TestCase):
+
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
             content="Post 1 content",
             author=user,
         )
-        python_tag = Tag.objects.create(name="Python")
-        django_tag = Tag.objects.create(name="Django")
-        post.tag.set([python_tag.pk, django_tag.pk])
+        
         response = self.client.get(reverse("blog:update-post", kwargs={'slug':post.slug}))
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
@@ -72,7 +75,7 @@ class UpdatePostTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
@@ -88,8 +91,9 @@ class UpdatePostTests(TestCase):
 
 
 class DeletePostTests(TestCase):
+    
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
@@ -103,7 +107,7 @@ class DeletePostTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
@@ -117,7 +121,7 @@ class DeletePostTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         post = Post.objects.create(
             title="Post 1",
@@ -132,60 +136,63 @@ class DeletePostTests(TestCase):
 
 
 class UserPostListTests(TestCase):
+    
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         response = self.client.get(reverse("blog:user-post-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:user-post-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:user-post-list"))
         self.assertTemplateUsed(response, "blog/posts/user_post_list.html")
 
 
 class UserFavoritePostListTests(TestCase):
+    
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         response = self.client.get(reverse("blog:favorite-post-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:favorite-post-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:favorite-post-list"))
         self.assertTemplateUsed(response, "blog/posts/user_favorite_post_list.html")
 
 
 class TagtListTests(TestCase):
+    
     def test_url_exists_at_correct_location(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)
         response = self.client.get(reverse("blog:tag-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_url_available_by_name(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:tag-list"))
         self.assertEqual(response.status_code, 200)
 
     def test_template_name_correct(self):
-        user = User.objects.create_user("test", "test@test.io", "test")
+        user = createUser()
         self.client.force_login(user=user)  
         response = self.client.get(reverse("blog:tag-list"))
         self.assertTemplateUsed(response, "blog/tags.html")
@@ -222,7 +229,7 @@ class TagtListTests(TestCase):
 
 # class TestAuthPage(TestCase):
 #     def test_tags_page(self):
-#         user = User.objects.create_user("Juliana," "juliana@dev.io", "some_pass")
+#         user = User.objects.create_user("Juliana," "juliana@dev.com", "some_pass")
 #         self.client.force_login(user=user)
 #         response = self.client.get(reverse('blog:homepage'))
 #         self.assertEqual(response.status_code, 200)
