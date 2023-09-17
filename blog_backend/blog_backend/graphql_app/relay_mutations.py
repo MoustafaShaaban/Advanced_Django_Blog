@@ -10,29 +10,34 @@ from .types import (
     PostType,
     PostNode,
     CommentType,
+    CommentNode,
     TagNode,
     TagType,
 )
 from .inputs import PostInput, CommentInput, TagInput
 
 
-class CreatePostMutation(graphene.Mutation):
-    class Arguments:
-        input = PostInput(required=True)
+
+class CreatePostRelayMutation(graphene.relay.ClientIDMutation):
+
+    class Input:
+        title = graphene.String()
+        tags = graphene.List(TagInput)
+        content = graphene.String()
 
     success = graphene.Boolean()
-    post = graphene.Field(PostType)
+    post = graphene.Field(PostNode)
 
-    @staticmethod
-    def mutate(root, info, input=None):
+
+    def mutate_and_get_payload(root, info, **input):
         success = True
         user = info.context.user
         tags = []
 
-        for tag_input in input.tags:
-            tag = Tag.objects.get(slug=tag_input.slug)
+        for tag_input in input.get('tags'):
+            tag = Tag.objects.get(slug=tag_input['slug'])
             if tag is None:
-                return CreatePostMutation(success=False, post=None)
+                return CreatePostRelayMutation(success=False, post=None)
             tags.append(tag)
         
         post_instance = Post.objects.create(
@@ -43,20 +48,23 @@ class CreatePostMutation(graphene.Mutation):
         post_instance.save()
         post_instance.tag.set(tags)
         success = True
-        return CreatePostMutation(success=success, post=post_instance)
-    
+        return CreatePostRelayMutation(success=success, post=post_instance)
 
-class UpdatePostMutation(graphene.Mutation):
-    class Arguments:
+
+class UpdatePostRelayMutation(graphene.relay.ClientIDMutation):
+
+    class Input:
         id = graphene.Int(required=True)
-        input = PostInput(required=True)
+        title = graphene.String()
+        tags = graphene.List(TagInput)
+        content = graphene.String()
 
     success = graphene.Boolean()
-    post = graphene.Field(PostType)
+    post = graphene.Field(PostNode)
 
-    @staticmethod
-    def mutate(root, info, id, input=None):
-        success = False
+
+    def mutate_and_get_payload(root, info, id, **input):
+        success = True
         user = info.context.user
         tags = []
         post_instance = Post.objects.get(pk=id)
@@ -64,29 +72,28 @@ class UpdatePostMutation(graphene.Mutation):
         if post_instance.author != user:
             raise GraphQLError("Only post author can update it")
         else:
-            for tag_input in input.tags:
-                tag = Tag.objects.get(slug=tag_input.slug)
+            for tag_input in input.get('tags'):
+                tag = Tag.objects.get(slug=tag_input.get('slug'))
                 if tag is None:
-                    return UpdatePostMutation(success=False, post=None)
+                    return UpdatePostRelayMutation(success=False, post=None)
                 tags.append(tag)
 
-            post_instance.title = input.title
-            post_instance.content = input.content
+            post_instance.title = input.get('title')
+            post_instance.content = input.get('content')
             post_instance.save()
             post_instance.tag.set(tags)
             success = True
-        return UpdatePostMutation(success=success, post=post_instance)
-    
-  
+        return UpdatePostRelayMutation(success=success, post=post_instance)
 
-class DeletePostMutation(graphene.Mutation):
-    class Arguments:
-        id = graphene.Int(required=True)
+
+class DeletePostRelayMutation(graphene.relay.ClientIDMutation):
+
+    class Input:
+        id = graphene.Int()
 
     success = graphene.Boolean()
 
-    @staticmethod
-    def mutate(root, info, id):
+    def mutate_and_get_payload(root, info, id):
         user = info.context.user
         post_instance = Post.objects.get(pk=id)
 
@@ -98,47 +105,52 @@ class DeletePostMutation(graphene.Mutation):
         else:
             post_instance.delete()
             success = True
-        return DeletePostMutation(success=success)
+
+        return DeletePostRelayMutation(success=success)
+    
 
 
-class CreateCommentMutation(graphene.Mutation):
-    class Arguments:
-        inputs = CommentInput(required=True)
+class CreateCommentRelayMutation(graphene.relay.ClientIDMutation):
+    class Input:
+        email = graphene.String()
+        comment = graphene.String()
+        #post_id = graphene.Int()
+        post_slug = graphene.String()
 
     post = graphene.Field(PostType)
     comment = graphene.Field(CommentType)
     success = graphene.Boolean()
         
 
-    def mutate(self, info, inputs=None):
+    def mutate_and_get_payload(self, info, **input):
         user = info.context.user
         if user.is_anonymous:
             raise GraphQLError('You must be logged in to add a comment!')
 
-        post = Post.objects.get(slug=inputs.post_slug)
+        post = Post.objects.get(slug=input.get('post_slug'))
         if not post:
             raise GraphQLError('Invalid Post Slug!')
 
         comment = Comment.objects.create(
             user=user,
             post=post,
-            email=inputs.email,
-            comment=inputs.comment,
+            email=input.get('email'),
+            comment=input.get('comment'),
         )
         success = True
 
-        return CreateCommentMutation(comment=comment, success=success)
+        return CreateCommentRelayMutation(comment=comment, success=success)
     
 
-class UpdateCommentMutation(graphene.Mutation):
-    class Arguments:
+class UpdateCommentRelayMutation(graphene.relay.ClientIDMutation):
+    class Input:
         id = graphene.Int()
         comment = graphene.String()
 
     success = graphene.Boolean()
     comment = graphene.Field(CommentType)
 
-    def mutate(root, info, id, comment):
+    def mutate_and_get_payload(root, info, id, comment):
         success = False
         user = info.context.user
         comment_instance = Comment.objects.get(pk=id)
@@ -149,17 +161,17 @@ class UpdateCommentMutation(graphene.Mutation):
             comment_instance.comment = comment
             comment_instance.save()
             success = True
-        return UpdateCommentMutation(success=success, comment=comment_instance)
+        return UpdateCommentRelayMutation(success=success, comment=comment_instance)
 
 
-class DeleteCommentMutation(graphene.Mutation):
-    class Arguments:
+class DeleteCommentRelayMutation(graphene.relay.ClientIDMutation):
+    class Input:
         id = graphene.Int(required=True)
 
     success = graphene.Boolean()
 
     @staticmethod
-    def mutate(root, info, id):
+    def mutate_and_get_payload(root, info, id):
         user = info.context.user
         comment_instance = Comment.objects.get(pk=id)
 
@@ -168,44 +180,4 @@ class DeleteCommentMutation(graphene.Mutation):
         else:
             comment_instance.delete()
             success = True
-        return DeleteCommentMutation(success=success)
-
-
-class CreateTagMutation(DjangoModelFormMutation):
-    tag = graphene.Field(TagType)
-
-    class Meta:
-        form_class = TagForm
-
-
-class UpdateTagMutation(graphene.Mutation):
-    class Arguments:
-        id = graphene.ID()
-        name = graphene.String(required=True)
-        slug = graphene.String(required=True)
-
-    tag = graphene.Field(TagType)
-
-    @classmethod
-    def mutate(cls, root, info, name, slug):
-        tag = Tag.objects.get(slug=slug)
-        tag.name = name
-        tag.slug = slug
-        tag.save()
-
-        return UpdateTagMutation(tag=tag)
-
-
-class DeleteTagMutation(graphene.Mutation):
-    class Arguments:
-        id = graphene.ID()
-
-    tag = graphene.Field(TagType)
-    success = graphene.Boolean()
-
-    @classmethod
-    def mutate(cls, root, info, id):
-        tag = Tag.objects.get(id=id)
-        tag.delete()
-        success = True
-        return DeleteTagMutation(tag=tag, success=success)
+        return DeleteCommentRelayMutation(success=success)

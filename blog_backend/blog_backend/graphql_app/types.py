@@ -46,6 +46,12 @@ class CommentType(DjangoObjectType):
         fields = ('id', 'user', 'post', 'email', 'comment')
 
 
+class CommentNode(DjangoObjectType):
+    class Meta:
+        model = Comment
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'comments', 'tag')
+        interfaces = (relay.Node,)
+
 class TagType(DjangoObjectType):
     class Meta:
         model = Tag
