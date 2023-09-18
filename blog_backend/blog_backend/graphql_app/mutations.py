@@ -8,12 +8,10 @@ from blog_backend.blog.forms import TagForm
 
 from .types import (
     PostType,
-    PostNode,
     CommentType,
-    TagNode,
     TagType,
 )
-from .inputs import PostInput, CommentInput, TagInput
+from .inputs import PostInput, CommentInput
 
 
 class CreatePostMutation(graphene.Mutation):

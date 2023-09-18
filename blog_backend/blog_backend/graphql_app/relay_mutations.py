@@ -1,20 +1,15 @@
 from graphql import GraphQLError
 
 import graphene
-from graphene_django.forms.mutation import DjangoModelFormMutation
 
 from blog_backend.blog.models import Post, Comment, Tag
-from blog_backend.blog.forms import TagForm
 
 from .types import (
     PostType,
     PostNode,
     CommentType,
-    CommentNode,
-    TagNode,
-    TagType,
 )
-from .inputs import PostInput, CommentInput, TagInput
+from .inputs import TagInput
 
 
 
