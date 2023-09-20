@@ -14,7 +14,7 @@ urlpatterns = [
     path('update/post/<slug:slug>/', views.UpdatePost.as_view(), name='update-post'),
     path('delete/post/<slug:slug>/', views.DeletePost.as_view(), name='delete-post'),
 
-    # URLs for post details and favorite posts:
+    # URLs for post details and user posts and favorite posts:
     path('post/<slug:slug>/', views.post_detail, name='post-detail'),
     path('favorite-post/<slug:slug>/', views.favorite_post, name='favorite_post'),
 

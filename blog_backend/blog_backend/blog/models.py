@@ -65,6 +65,9 @@ class Post(models.Model):
         """Meta definition for Post."""
 
         ordering = ['-updated_at']
+        indexes = [
+            models.Index(fields=['-published_at', 'author', 'updated_at'])
+        ]
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
@@ -76,7 +79,7 @@ class Post(models.Model):
         """ A method to tell Django how to calculate the canonical URL (official url of a page) for an object """
         return reverse('blog:post-detail', kwargs={'slug': self.slug})
 
-    def save(self, *args, **kwargs):  # new
+    def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
         return super().save(*args, **kwargs)
@@ -85,7 +88,6 @@ class Post(models.Model):
 class Comment(models.Model):
     """Model definition for Comment."""
 
-    # TODO: Define fields here
     post = models.ForeignKey(
         Post,
         related_name='comments',
@@ -107,6 +109,9 @@ class Comment(models.Model):
         """Meta definition for Comment."""
 
         ordering = ['-published_at']
+        indexes = [
+            models.Index(fields=['-published_at'])
+        ]
         verbose_name = 'comment'
         verbose_name_plural = 'comments'
 
