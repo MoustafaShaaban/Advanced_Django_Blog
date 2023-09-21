@@ -9,15 +9,15 @@ A Blog website built using [Django Web Framework](https://www.djangoproject.com/
 
 * Authenticated users can:
 
-    * Access a GraphQL endpoint and run several Quries and CRUD Mutations.
+  * Access a GraphQL endpoint and run several Quries and CRUD Mutations.
 
-    * Access a Rest API endpoint and run CRUD operations.
+  * Access a Rest API endpoint and run CRUD operations.
 
-    * Create, Read, Update and Delete (CRUD) blog posts on the website.
+  * Create, Read, Update and Delete (CRUD) blog posts on the website.
 
-    * Add comments on blog posts, but the comments will not be visiable until the website admin approves it.
+  * Add comments on blog posts, but the comments will not be visiable until the website admin approves it.
 
-    * Access their profile which lists all their blog posts and their favorite posts.
+  * Access their profile which lists all their blog posts and their favorite posts.
 
 * All users can read or search for the posts on the blog.
 
@@ -33,15 +33,15 @@ A Blog website built using [Django Web Framework](https://www.djangoproject.com/
 
 This project is a Django project called `blog_backend` and it has four registered apps and one third-party app.
 
-    * The `blog` app which contains an app-level templates and urls, used for most of the functionalities of our app, like, models, forms, views, urls, and custom template tags.
+  * The `blog` app which contains an app-level templates and urls, used for most of the functionalities of our app, like, models, forms, views, urls, and custom template tags.
 
-    * The `api` app which contains the Django Rest Framework integration used to build a REST API.
+  * The `api` app which contains the Django Rest Framework integration used to build a REST API.
 
-    * The `graphql_app` which contains the Graphene Django integration used to build a GraphQL endpoint.
+  * The `graphql_app` which contains the Graphene Django integration used to build a GraphQL endpoint.
     
-    * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to their accounts.
+  * The `users` app which uses `django.contrib.auth.urls` to allow users register and login to their accounts.
 
-    * `crispy forms` third-party app which beautify django forms design.
+  * `crispy forms` third-party app which beautify django forms design.
 
 
 ### What could you learn from this project?
@@ -58,7 +58,7 @@ This project is a Django project called `blog_backend` and it has four registere
 
 * How to protect your post so that only you who can modify or delete it.
 
-* Throw a 403 forbidden page to any user who try to guss the URL to change something they are not authorized to do.
+* Throw a 403 forbidden page to any user who try to guess the URL to change something they are not authorized to change.
 
 * Create a search form on your website.
 
@@ -105,7 +105,15 @@ This project is a Django project called `blog_backend` and it has four registere
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
 
 
-#### GraphQL Queries and Mutations Examples:
+For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)
+
+
+### References:
+
+*[Testing](https://www.valentinog.com/blog/testing-django/)
+
+
+### GraphQL Queries and Mutations Examples:
 
 ```gql
 
@@ -388,11 +396,3 @@ query PostsByTitleWithDjangoFilters {
 }
 
 ---------------------------------------------------------------------------------
-
-
-For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)
-
-
-# References:
-
-*[Testing](https://www.valentinog.com/blog/testing-django/)
