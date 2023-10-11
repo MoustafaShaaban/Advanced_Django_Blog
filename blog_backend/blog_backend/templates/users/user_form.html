@@ -19,6 +19,7 @@
 </h1>
 <form class="form-horizontal"
       method="post"
+      enctype="multipart/form-data"
       action="{% url 'users:update' %}">
   {% csrf_token %}
   {{ form|crispy }}

@@ -110,7 +110,9 @@ For more information about the available commands in this project check the Cook
 
 ### References:
 
-*[Testing](https://www.valentinog.com/blog/testing-django/)
+* [Testing](https://www.valentinog.com/blog/testing-django/)
+
+* [Date Field in Forms](https://mrasimzahid.medium.com/how-to-implement-django-datepicker-calender-in-forms-date-field-9e23479b5db)
 
 
 ### GraphQL Queries and Mutations Examples:

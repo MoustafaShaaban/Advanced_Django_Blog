@@ -1,5 +1,7 @@
+import datetime
+
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.db.models import CharField, DateField, ImageField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -13,6 +15,8 @@ class User(AbstractUser):
 
     # First and last name do not cover name patterns around the globe
     name = CharField(_("Name of User"), blank=True, max_length=255)
+    date_of_birth = DateField(_("User Date of Birth"), blank=True, default=datetime.datetime.now)
+    avatar = ImageField(_("User Avatar"), upload_to="users_avatar", default="default.jpg")
     first_name = None  # type: ignore
     last_name = None  # type: ignore
 

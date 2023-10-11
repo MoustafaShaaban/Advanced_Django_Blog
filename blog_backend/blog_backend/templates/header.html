@@ -1,0 +1,91 @@
+
+
+<header class="p-3 mb-3 border-bottom">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="{% url 'blog:homepage' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">Blog Home</a>
+
+        {% if user.is_authenticated %}
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'blog:graphql' %}" class="nav-link px-3 link-secondary">GraphQL</a></li>
+                <li class="nav-item dropdown">
+                    <a
+                      class="nav-link link-secondary dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Rest API
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a
+                          class="dropdown-item"
+                          aria-current="page"
+                          href="{% url 'api-docs' %}"
+                          >API Documentation</a
+                        >
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'api:posts-list' %}"
+                          >All Posts</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'api:user_posts-list' %}"
+                          >Your Posts</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'api:comments-list' %}"
+                          >All Comments</a
+                        >
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'api:tags-list' %}">Tags</a>
+                      </li>
+                    </ul>
+                  </li>
+
+                <li><a href="{% url 'blog:tag-list' %}" class="nav-link px-2 link-secondary">Tags</a></li>
+            </ul>
+
+            <form action="{% url 'blog:search_results' %}" method="get" class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input name="q" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <button class="btn btn-outline-success mx-2" type="submit">
+                    Search
+                </button>
+            </form>
+
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" alt="User Avatar" width="32" height="32" class="rounded-circle"> 
+                    {% else %}
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    {% endif %}
+                </a>
+
+                <ul class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="{% url 'users:detail' request.user %}">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign out</a></li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="col-md-10 text-end">
+                <button class="btn btn-outline-light me-2">
+                    <a href="{% url 'account_login' %}" class="mx-2">Sign In</a>
+                </button>
+                <button class="btn btn-warning">
+                    <a href="{% url 'account_signup' %}">Register</a>
+                </button>
+            </div>
+        {% endif %}
+      </div>
+    </div>
+  </header>

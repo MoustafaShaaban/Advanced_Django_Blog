@@ -1,8 +1,11 @@
 from allauth.account.forms import SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
+from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.contrib.admin.widgets import AdminDateWidget
+from django.contrib.postgres.forms.ranges import DateRangeField, RangeWidget
 
 User = get_user_model()
 
@@ -24,6 +27,8 @@ class UserAdminCreationForm(admin_forms.UserCreationForm):
             "username": {"unique": _("This username has already been taken.")},
         }
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class UserSignupForm(SignupForm):
     """
@@ -31,6 +36,9 @@ class UserSignupForm(SignupForm):
     Default fields will be added automatically.
     Check UserSocialSignupForm for accounts created from social.
     """
+    date_of_birth = forms.DateField(widget=DateInput)
+    avatar = forms.ImageField()
+
 
 
 class UserSocialSignupForm(SocialSignupForm):
@@ -39,3 +47,4 @@ class UserSocialSignupForm(SocialSignupForm):
     Default fields will be added automatically.
     See UserSignupForm otherwise.
     """
+    
