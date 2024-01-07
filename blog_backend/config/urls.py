@@ -32,6 +32,7 @@ urlpatterns += [
         name="api-docs",
     ),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/accounts/', include('rest_registration.api.urls')),
 ]
 
 if settings.DEBUG:

@@ -28,13 +28,13 @@ djangorestframework-simplejwt==5.2.2	# https://github.com/jazzband/djangorestfra
 # Graphene Django
 # ------------------------------------------------------------------------------
 
-graphene-django==3.1.2
-django-filter==22.1
-django-graphql-jwt==0.3.4
+graphene-django==3.2.0
+django-filter==23.2
+django-graphql-jwt==0.4.0
 
 pyyaml==6.0
 uritemplate==4.1.1
 coreapi==2.3.3
 
-strawberry-graphql-django==0.9.4
+django-rest-registration==0.8.3
 

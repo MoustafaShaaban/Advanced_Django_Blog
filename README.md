@@ -96,7 +96,7 @@ This project is a Django project called `blog_backend` and it has four registere
 
 * Run the test using pytest:
 
-``` docker compose -f local.yml run --rm django pytest blog_backend/blog ```
+``` docker compose -f local.yml run --rm django test blog_backend/blog ```
 
 * Now run the project:
 
