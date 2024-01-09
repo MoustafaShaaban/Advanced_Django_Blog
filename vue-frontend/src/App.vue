@@ -1,85 +1,190 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="q-pa-md">
+    <q-layout view="hHh lpR fFf">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <q-header reveal elevated class="bg-primary text-white">
+        <q-toolbar>
+          <q-btn flat icon="menu" @click="drawerLeft = !drawerLeft" />
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
+          <q-toolbar-title>
+            <q-breadcrumbs active-color="white" style="font-size: 16px">
+              <q-breadcrumbs-el label="Home" icon="home" to="/" />
+              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Posts" icon="notes" />
+              <q-breadcrumbs-el label="About" icon="info" to="/about" />
+              <q-breadcrumbs-el label="DarkMode" icon="dark_mode" @click="toggleDarkMode" />
+              <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
+              <q-breadcrumbs-el v-else label="Logout" icon="logout" to="/logout" />
+            </q-breadcrumbs>
+          </q-toolbar-title>
 
-  <RouterView />
+          <q-btn flat icon="menu" @click="drawerRight = !drawerRight" />
+        </q-toolbar>
+      </q-header>
+
+      <q-drawer v-model="drawerLeft" :width="200" :breakpoint="700" side="left" bordered>
+        <q-scroll-area class="fit">
+          <q-list padding class="menu-list">
+            <q-item clickable v-ripple to="/">
+              <q-item-section avatar>
+                <q-icon name="home" />
+              </q-item-section>
+
+              <q-item-section>
+                Home
+              </q-item-section>
+            </q-item>
+
+            <q-item active clickable v-ripple to="/about">
+              <q-item-section avatar>
+                <q-icon name="info" />
+              </q-item-section>
+
+              <q-item-section>
+                About
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+
+      <q-drawer v-if="authStore.$state.isAuthenticated" v-model="drawerRight" :width="250" :breakpoint="700" side="right" bordered>
+        <!-- drawer content -->
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
+          <q-list padding>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="inbox" />
+              </q-item-section>
+
+              <q-item-section>
+                Inbox
+              </q-item-section>
+            </q-item>
+
+            <q-item active clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="star" />
+              </q-item-section>
+
+              <q-item-section>
+                Star
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="send" />
+              </q-item-section>
+
+              <q-item-section>
+                Send
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple @click="logout">
+              <q-item-section avatar>
+                <q-icon name="logout" />
+              </q-item-section>
+
+              <q-item-section>
+                Logout
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+
+        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+          <div class="absolute-bottom bg-transparent">
+            <q-avatar size="56px" class="q-mb-sm">
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+            <div class="text-weight-bold">Razvan Stoenescu</div>
+            <div>@rstoenescu</div>
+          </div>
+        </q-img>
+      </q-drawer>
+
+      <q-drawer v-if="!authStore.$state.isAuthenticated" v-model="drawerRight" :width="250" :breakpoint="700" side="right" bordered>
+        <!-- drawer content -->
+        <q-scroll-area style="height: calc(100% - 150px); border-right: 1px solid #ddd">
+          <q-list padding>
+            <q-item clickable v-ripple to="/login">
+              <q-item-section avatar>
+                <q-icon name="login" />
+              </q-item-section>
+
+              <q-item-section>
+                Login
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+      </q-drawer>
+
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+
+      <q-footer reveal elevated class="bg-grey-8 text-white">
+        <q-toolbar>
+          <q-toolbar-title>
+            <div>Footer</div>
+          </q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
+
+    </q-layout>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+import { ref } from 'vue'
+import { Dark, Notify } from 'quasar'
+import { OnClickOutside } from '@vueuse/components'
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+import { useAuthStore } from './stores/authStore';
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+export default {
+  setup() {
+    const authStore = useAuthStore();
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+    return {
+      authStore,
+      drawerLeft: ref(false),
+      drawerRight: ref(false),
+      toggleDarkMode() {
+        Dark.toggle()
+      },
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
+    }
+  },
+  methods: {
+    async logout() {
+      try {
+        await this.authStore.logout()
+        this.$router.push('/login')
+        Notify.create({
+          message: 'Logged out Successfully',
+          type: "positive",
+          actions: [
+            { icon: 'close', color: 'white', round: true, }
+          ]
+        })
+      } catch (error) {
+        Notify.create({
+          message: error.message,
+          type: "negative",
+          actions: [
+            { icon: 'close', color: 'white', round: true, }
+          ]
+        })
+      }
+    }
   }
 }
+</script>
+
+<style lang="sass" scoped>
+.menu-list .q-item
+  border-radius: 0 32px 32px 0
 </style>

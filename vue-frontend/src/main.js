@@ -1,5 +1,3 @@
-import './assets/main.css'
-
 import { createApp, h } from 'vue'
 import { createPinia } from 'pinia'
 import { Quasar, Notify, Dialog, Dark, Cookies } from 'quasar'

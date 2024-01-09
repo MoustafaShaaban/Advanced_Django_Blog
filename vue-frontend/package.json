@@ -15,6 +15,8 @@
     "@vue/apollo-components": "^4.0.0-beta.12",
     "@vue/apollo-composable": "^4.0.0-beta.12",
     "@vue/apollo-option": "^4.0.0-beta.12",
+    "@vueuse/components": "^10.7.1",
+    "@vueuse/core": "^10.7.1",
     "axios": "^1.6.5",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
