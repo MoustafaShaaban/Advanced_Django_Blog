@@ -13,7 +13,7 @@
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
               <q-breadcrumbs-el label="DarkMode" icon="dark_mode" @click="toggleDarkMode" />
               <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
-              <q-breadcrumbs-el v-else label="Logout" icon="logout" to="/logout" />
+              <q-breadcrumbs-el clickable v-else label="Logout" icon="logout" @click="logout" />
             </q-breadcrumbs>
           </q-toolbar-title>
 
