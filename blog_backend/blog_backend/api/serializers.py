@@ -11,10 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('name', 'username', 'avatar',)
 
 
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+
 class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
-    author = UserSerializer()
-    published_at = serializers.DateTimeField(format='%Y/%m/%d %H:%M')
+    author = UserSerializer(required=False)
+    published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
     
     class Meta:
         model = Post
@@ -27,6 +33,24 @@ class PostSerializer(serializers.ModelSerializer):
         }
         lookup_field = 'slug'
 
+    def create(self, validated_data):
+        tags_list = []
+        tags_data = validated_data.get('tag')
+
+        new_post = Post.objects.create(
+            title=validated_data.get('title'),
+            content=validated_data.get('content')
+        )
+
+        for tag_input in tags_data:
+            tag_instance = Tag.objects.get(pk=tag.id)
+            tags_list.append(tag_instance)
+
+        new_post.save()
+        new_post.tag.add(tags_list)
+
+        return new_post
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
@@ -37,9 +61,3 @@ class CommentSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True},
         }
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
-        fields = ['name', 'slug']

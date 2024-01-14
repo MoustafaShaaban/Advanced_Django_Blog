@@ -1,6 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, useRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginPageVue from '@/components/auth/LoginPage.vue'
+import AddBlogPost from '@/components/posts/CreateBlogPost.vue'
+import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,12 +10,26 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: {
+        requireAuth: false
+      }
     },
     {
       path: '/login',
       name: 'login',
       component: LoginPageVue,
+      meta: {
+        requireAuth: false
+      }
+    },
+    {
+      path: '/add-post',
+      name: 'add-post',
+      component: AddBlogPost,
+      meta: {
+        requireAuth: true
+      }
     },
     {
       path: '/about',
@@ -24,6 +40,22 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+  let authenticated = authStore.$state.isAuthenticated
+  const router = useRouter()
+  
+  if (to.meta.requireAuth && !authenticated) {
+    next({ name: 'login'})
+  } else if (to.name == "login" && authenticated) {
+    next({ name: 'home'})
+  } else if (to.name == "register" && authenticated) {
+    next({ name: 'home'})
+  } else {
+    next()
+  }
 })
 
 export default router

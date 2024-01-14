@@ -6,6 +6,9 @@ export const axiosAPI = axios.create({
     baseURL: import.meta.env.VITE_REST_API_URL,
     withCredentials: true,
     timeout: 4000,
+    headers: {
+        'X-CSRFToken': Cookies.get('csrftoken')
+    }
 })
 
 
@@ -41,5 +44,10 @@ export const getAllComments = async () => {
 
 export const getCommentById = async (id) => {
     const response = await axiosAPI.get("comments/" + id)
+    return response.data
+}
+
+export const createPost = async (post) => {
+    const response = await axiosAPI.post("posts/", post)
     return response.data
 }

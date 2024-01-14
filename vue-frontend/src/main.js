@@ -10,6 +10,8 @@ import VueApolloComponents from '@vue/apollo-components'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
 
+
+
 // Import Quasar css
 import 'quasar/src/css/index.sass'
 

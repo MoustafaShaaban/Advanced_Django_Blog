@@ -121,7 +121,7 @@
         </q-scroll-area>
       </q-drawer>
 
-      <q-page-container>
+      <q-page-container class="absolute-center q-mt-lg">
         <router-view />
       </q-page-container>
 

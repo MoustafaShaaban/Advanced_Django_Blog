@@ -33,7 +33,9 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='posts',
-        help_text='Post author'
+        help_text='Post author',
+        null=True,
+        blank=True
     )
     title = models.CharField(
         max_length=250, 
@@ -43,10 +45,11 @@ class Post(models.Model):
     slug = models.SlugField(
         max_length=250, 
         unique=True, 
-        help_text='Post slug used in the urls instead of ids'
+        help_text='Post slug used in the urls instead of ids',
+        null=True
     )
     content = models.TextField(help_text='Post content')
-    published_at = models.DateTimeField(auto_now_add=True)
+    published_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     tag = models.ManyToManyField(

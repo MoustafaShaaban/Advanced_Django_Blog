@@ -14,12 +14,12 @@ const { isPending, isError, data, error } = useQuery({
 </script>
 
 <template>
-  <main>
+  <main class="absolute-center q-mt-lg">
     <span v-if="isPending">Loading...</span>
     <span v-else-if="isError">Error: {{ error.message }}</span>
     <!-- We can assume by this point that `isSuccess === true` -->
     <span v-else-if="data.length == 0">No posts found</span>
-    <div v-else class="fixed-center q-mt-4">
+    <div v-else class="q-mt-lg">
       <q-card v-for="post in data" :key="post.id" class="my-card q-mt-md" flat bordered>
         <q-item>
           <q-item-section avatar>
