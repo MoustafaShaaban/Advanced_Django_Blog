@@ -22,8 +22,8 @@ export const getUserBlogPosts = async () => {
     return response.data
 }
 
-export const getPostById = async (id) => {
-    const response = await axiosAPI.get("posts/" + id)
+export const getPostById = async (slug) => {
+    const response = await axiosAPI.get("posts/" + slug)
     return response.data
 }
 

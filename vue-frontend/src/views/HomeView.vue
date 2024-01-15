@@ -14,7 +14,7 @@ const { isPending, isError, data, error } = useQuery({
 </script>
 
 <template>
-  <main class="absolute-center q-mt-lg">
+  <main class="q-mt-sm flex flex-center">
     <span v-if="isPending">Loading...</span>
     <span v-else-if="isError">Error: {{ error.message }}</span>
     <!-- We can assume by this point that `isSuccess === true` -->
@@ -31,7 +31,7 @@ const { isPending, isError, data, error } = useQuery({
           <q-item-section>
             <div class="text-h5">{{ post.title }}</div>
             <div class="q-gutter-sm q-mt-xs">
-              <q-badge v-for="tag in post.tag" caption outline color="primary" :label="tag.name" />
+              <q-badge v-for="tag in post.tag" :key="tag.id" caption outline color="primary" :label="tag.id" />
             </div>
           </q-item-section>
         </q-item>
@@ -51,9 +51,11 @@ const { isPending, isError, data, error } = useQuery({
           <q-btn flat>
             {{ post.published_at }}
           </q-btn>
-          <q-btn flat color="primary">
-            Detail
-          </q-btn>
+          <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
+            <q-btn flat color="primary">
+              Detail
+            </q-btn>
+          </router-link>
         </q-card-actions>
       </q-card>
     </div>

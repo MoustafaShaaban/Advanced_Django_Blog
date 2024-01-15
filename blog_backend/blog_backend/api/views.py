@@ -8,8 +8,8 @@ from blog_backend.api.permissions import PostPermissions, CommentPermissions
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
     queryset = Post.objects.all()
+    serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, PostPermissions]
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
@@ -28,13 +28,13 @@ class UserPostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user)
-    
+
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, CommentPermissions]
+    permission_classes = [permissions.IsAuthenticated, CommentPermissions]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -42,6 +42,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class TagViewSet(viewsets.ModelViewSet):
-    serializer_class = TagSerializer
     queryset = Tag.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = TagSerializer
+    permission_classes = [permissions.IsAuthenticated]

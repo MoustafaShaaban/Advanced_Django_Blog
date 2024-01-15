@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="">
     <q-layout view="hHh lpR fFf">
 
       <q-header reveal elevated class="bg-primary text-white">
@@ -57,17 +57,9 @@
               </q-item-section>
 
               <q-item-section>
-                Inbox
-              </q-item-section>
-            </q-item>
-
-            <q-item active clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="star" />
-              </q-item-section>
-
-              <q-item-section>
-                Star
+                <router-link :to="{ name: 'add-post' }">
+                  Add Post
+                </router-link>
               </q-item-section>
             </q-item>
 
@@ -121,7 +113,7 @@
         </q-scroll-area>
       </q-drawer>
 
-      <q-page-container class="absolute-center q-mt-lg">
+      <q-page-container>
         <router-view />
       </q-page-container>
 

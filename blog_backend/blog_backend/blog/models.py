@@ -35,21 +35,20 @@ class Post(models.Model):
         related_name='posts',
         help_text='Post author',
         null=True,
-        blank=True
     )
     title = models.CharField(
-        max_length=250, 
-        unique=True, 
+        max_length=250,
+        unique=True,
         help_text='Post title'
     )
     slug = models.SlugField(
-        max_length=250, 
-        unique=True, 
+        max_length=250,
+        unique=True,
         help_text='Post slug used in the urls instead of ids',
         null=True
     )
     content = models.TextField(help_text='Post content')
-    published_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    published_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     tag = models.ManyToManyField(
@@ -61,7 +60,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         blank=True,
         related_name='favorite_posts'
-    ) 
+    )
 
 
     class Meta:

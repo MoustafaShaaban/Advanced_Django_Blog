@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginPageVue from '@/components/auth/LoginPage.vue'
 import AddBlogPost from '@/components/posts/CreateBlogPost.vue'
 import { useAuthStore } from '@/stores/authStore'
+import EditPostVue from '@/components/posts/EditPost.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,14 @@ const router = createRouter({
       path: '/add-post',
       name: 'add-post',
       component: AddBlogPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/edit-post/:slug',
+      name: 'edit-post',
+      component: EditPostVue,
       meta: {
         requireAuth: true
       }

@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     # https://github.com/encode/django-rest-framework/issues/1984#issuecomment-60267220
     class Meta:
         model = get_user_model()
-        fields = ('name', 'username', 'avatar',)
+        fields = ('name', 'username', 'avatar')
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -21,11 +21,12 @@ class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
     author = UserSerializer(required=False)
     published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
-    
+
+
     class Meta:
         model = Post
-        depth = 1
-        fields = ['title', 'author', 'slug', 'content', 'published_at', 'updated_at', 'tag']
+        fields = '__all__'
+        #depth = 1
 
         extra_kwargs = {
             'author': {'read_only': True},
@@ -36,20 +37,28 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tags_list = []
         tags_data = validated_data.get('tag')
+        author = validated_data.get('author')
 
         new_post = Post.objects.create(
             title=validated_data.get('title'),
-            content=validated_data.get('content')
+            content=validated_data.get('content'),
+            author=author
         )
 
-        for tag_input in tags_data:
+        for tag in tags_data:
             tag_instance = Tag.objects.get(pk=tag.id)
             tags_list.append(tag_instance)
 
         new_post.save()
-        new_post.tag.add(tags_list)
+        new_post.tag.set(tags_list)
 
         return new_post
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.content = validated_data.get('content', instance.content)
+        instance.tag = validated_data.get('tag', instance.tag)
+        return instance
 
 
 class CommentSerializer(serializers.ModelSerializer):
