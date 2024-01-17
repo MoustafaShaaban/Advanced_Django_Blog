@@ -8,25 +8,29 @@ class UserSerializer(serializers.ModelSerializer):
     # https://github.com/encode/django-rest-framework/issues/1984#issuecomment-60267220
     class Meta:
         model = get_user_model()
-        fields = ('name', 'username', 'avatar')
+        fields = ('id', 'name', 'username', 'avatar')
 
 
 class TagSerializer(serializers.ModelSerializer):
+    tag_name = serializers.SerializerMethodField(source='get_tag_name')
     class Meta:
         model = Tag
         fields = '__all__'
 
+    def get_tag_name(self, obj):
+        return obj.name
+
 
 class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
-    author = UserSerializer(required=False)
-    published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
-
+    #author = UserSerializer(required=False)
+    # published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
+    tag_name = serializers.SerializerMethodField(source='get_tag_name')
 
     class Meta:
         model = Post
         fields = '__all__'
-        #depth = 1
+        # depth = 1
 
         extra_kwargs = {
             'author': {'read_only': True},
@@ -55,10 +59,26 @@ class PostSerializer(serializers.ModelSerializer):
         return new_post
 
     def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
-        instance.content = validated_data.get('content', instance.content)
-        instance.tag = validated_data.get('tag', instance.tag)
-        return instance
+        tags_list = []
+        tags_data = validated_data.get('tag')
+        try:
+            for current_tag in instance.tag.all():
+                instance.tag.remove(current_tag)
+
+            for tag in tags_data:
+                tag_instance = Tag.objects.get(pk=tag.id)
+                tags_list.append(tag_instance)
+
+            post_updated = super().update(instance, validated_data)
+            post_updated.tag.set(tags_list)
+            return post_updated
+        except Exception as e:
+            raise serializers.ValidationError({'detail': e})
+
+    def get_tag_name(self, instance):
+        return instance.tag.name
+
+    
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -51,3 +51,11 @@ export const createPost = async (post) => {
     const response = await axiosAPI.post("posts/", post)
     return response.data
 }
+
+export const deletePost = async (slug) => {
+    await axiosAPI.delete("/posts/" + slug, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
+}

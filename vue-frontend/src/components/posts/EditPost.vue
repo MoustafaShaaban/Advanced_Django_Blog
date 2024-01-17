@@ -1,6 +1,7 @@
 <script>
 import { Notify, Cookies } from 'quasar'
-import { axiosAPI } from "../../api/axios"
+import { useQuery } from '@tanstack/vue-query'
+import { axiosAPI, getAllTags } from "../../api/axios"
 
 export default {
   name: "EditPost",
@@ -8,9 +9,30 @@ export default {
     return {
       post: {
         title: "",
-        content: ""
+        content: "",
+        tag: [
+          { id: ''},
+        ]
       },
+      
     }
+  },
+  setup() {
+    const { isFetching, data, tagsError } = useQuery({
+    queryKey: ['tags'],
+    queryFn: getAllTags,
+    onError: async (error) => {
+        $q.notify({
+            message: error.message,
+            color: "negative",
+            actions: [
+                { icon: 'close', color: 'white', round: true, }
+            ]
+        })
+    }
+  })
+
+  return { data }
   },
   async created() {
     await axiosAPI.get("/posts/" + this.$route.params.slug)
@@ -29,7 +51,7 @@ export default {
           .then(response => {
             this.$router.push('/');
             Notify.create({
-              message: 'Note Updated Successfully',
+              message: 'Post Updated Successfully',
               type: "positive",
               actions: [
                 { icon: 'close', color: 'white', round: true, }
@@ -46,12 +68,6 @@ export default {
         })
       }
     },
-    onReset() {
-
-    },
-    async navigateToNotes() {
-      await router.push({ name: "notes" })
-    }
   }
 }
 </script>
@@ -69,16 +85,20 @@ export default {
       </q-card-section>
 
       <q-card-section>
-        <q-form @submit.prevent="updatePost" @reset="onReset">
+        <q-form @submit.prevent="updatePost">
           <q-input filled v-model="post.title" label="Post Title" required lazy-rules
             :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
-          <q-input filled v-model="post.content" type="text" required label="Post Content" lazy-rules
+          <q-input filled v-model="post.content" type="textarea" required label="Post Content" lazy-rules
             :rules="[val => val && val.length > 0 || 'Post Content is required']" />
           <q-separator />
+          <select v-model="post.tag" multiple>
+            <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
+          </select>
           <div class="q-pa-sm q-mt-md">
             <q-btn label="Edit" type="submit" color="primary" />
-            <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
+            <q-btn label="Cancel" type="button" @click="() => { this.$router.push('/') }"
+              class="bg-grey-8 text-white q-ml-sm" />
           </div>
         </q-form>
       </q-card-section>
