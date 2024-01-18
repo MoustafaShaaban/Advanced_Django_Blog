@@ -17,7 +17,7 @@
                     <q-input filled v-model="title" label="Post Title" required lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
-                    <q-input filled v-model="content" type="text" required label="Post Content" lazy-rules
+                    <q-input filled v-model="content" type="textarea" required label="Post Content" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                     <q-separator />
                     <select v-model="tag" multiple>

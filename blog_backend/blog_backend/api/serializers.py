@@ -12,20 +12,17 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-    tag_name = serializers.SerializerMethodField(source='get_tag_name')
     class Meta:
         model = Tag
         fields = '__all__'
 
-    def get_tag_name(self, obj):
-        return obj.name
 
 
 class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
     #author = UserSerializer(required=False)
     # published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
-    tag_name = serializers.SerializerMethodField(source='get_tag_name')
+    #tag_name = serializers.SerializerMethodField(source='get_tag_name')
 
     class Meta:
         model = Post
@@ -38,45 +35,45 @@ class PostSerializer(serializers.ModelSerializer):
         }
         lookup_field = 'slug'
 
-    def create(self, validated_data):
-        tags_list = []
-        tags_data = validated_data.get('tag')
-        author = validated_data.get('author')
+    # def create(self, validated_data):
+    #     tags_list = []
+    #     tags_data = validated_data.get('tag')
+    #     author = validated_data.get('author')
 
-        new_post = Post.objects.create(
-            title=validated_data.get('title'),
-            content=validated_data.get('content'),
-            author=author
-        )
+    #     new_post = Post.objects.create(
+    #         title=validated_data.get('title'),
+    #         content=validated_data.get('content'),
+    #         author=author
+    #     )
 
-        for tag in tags_data:
-            tag_instance = Tag.objects.get(pk=tag.id)
-            tags_list.append(tag_instance)
+    #     for tag in tags_data:
+    #         tag_instance = Tag.objects.get(pk=tag.id)
+    #         tags_list.append(tag_instance)
 
-        new_post.save()
-        new_post.tag.set(tags_list)
+    #     new_post.save()
+    #     new_post.tag.set(tags_list)
 
-        return new_post
+    #     return new_post
 
-    def update(self, instance, validated_data):
-        tags_list = []
-        tags_data = validated_data.get('tag')
-        try:
-            for current_tag in instance.tag.all():
-                instance.tag.remove(current_tag)
+    # def update(self, instance, validated_data):
+    #     tags_list = []
+    #     tags_data = validated_data.get('tag')
+    #     try:
+    #         for current_tag in instance.tag.all():
+    #             instance.tag.remove(current_tag)
 
-            for tag in tags_data:
-                tag_instance = Tag.objects.get(pk=tag.id)
-                tags_list.append(tag_instance)
+    #         for tag in tags_data:
+    #             tag_instance = Tag.objects.get(pk=tag.id)
+    #             tags_list.append(tag_instance)
 
-            post_updated = super().update(instance, validated_data)
-            post_updated.tag.set(tags_list)
-            return post_updated
-        except Exception as e:
-            raise serializers.ValidationError({'detail': e})
+    #         post_updated = super().update(instance, validated_data)
+    #         post_updated.tag.set(tags_list)
+    #         return post_updated
+    #     except Exception as e:
+    #         raise serializers.ValidationError({'detail': e})
 
-    def get_tag_name(self, instance):
-        return instance.tag.name
+    # def get_tag_name(self, instance):
+    #     return instance.tag.name
 
     
 

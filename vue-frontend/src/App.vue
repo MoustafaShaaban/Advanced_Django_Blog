@@ -9,11 +9,10 @@
           <q-toolbar-title>
             <q-breadcrumbs active-color="white" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Posts" icon="notes" />
+              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Posts" icon="notes" to="/"  />
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
-              <q-breadcrumbs-el label="DarkMode" icon="dark_mode" @click="toggleDarkMode" />
               <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
-              <q-breadcrumbs-el clickable v-else label="Logout" icon="logout" @click="logout" />
+              <q-breadcrumbs-el v-else label="Logout" icon="logout" @click="logout" to="/" />
             </q-breadcrumbs>
           </q-toolbar-title>
 
@@ -73,12 +72,22 @@
               </q-item-section>
             </q-item>
 
+            <q-item clickable v-ripple @click="toggleDarkMode">
+              <q-item-section avatar>
+                <q-icon name="dark_mode" />
+              </q-item-section>
+
+              <q-item-section>
+                Toggle Dark Mode
+              </q-item-section>
+            </q-item>
+
             <q-item clickable v-ripple @click="logout">
               <q-item-section avatar>
                 <q-icon name="logout" />
               </q-item-section>
 
-              <q-item-section>
+              <q-item-section clickable>
                 Logout
               </q-item-section>
             </q-item>
