@@ -4,6 +4,8 @@ import LoginPageVue from '@/components/auth/LoginPage.vue'
 import AddBlogPost from '@/components/posts/CreateBlogPost.vue'
 import { useAuthStore } from '@/stores/authStore'
 import EditPostVue from '@/components/posts/EditPost.vue'
+import GraphQLPostList  from "../components/graphql/PostList.vue"
+import GraphQLPostEdit from "../components/graphql/PostEdit.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +30,22 @@ const router = createRouter({
       path: '/add-post',
       name: 'add-post',
       component: AddBlogPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/graphql/post-list',
+      name: 'graphql-post-list',
+      component: GraphQLPostList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/graphql/post-edit/:slug',
+      name: 'graphql-post-edit',
+      component: GraphQLPostEdit,
       meta: {
         requireAuth: true
       }
