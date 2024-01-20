@@ -2,22 +2,58 @@ import gql from "graphql-tag";
 
 export const getAllPosts = gql`
     query ReturnAllPosts {
-        allPosts {
-                id
-                title
-                content
-                updatedAt
-                author {
-                    username,
-                    avatar
-                }
-                tag {
-                    id
-                    name
-                }
+      allPosts {
+        id
+        slug
+        title
+        author {
+          username
+          avatar
         }
+        content
+        updatedAt
+        comments {
+          id
+          comment
+          email
+          user {
+            username
+          }
+        }
+        tag {
+          id
+          name
+        }
+      }
     }
 `;
+
+export const getPostBySlug = gql`
+    query returnPostBySlug($slug: String!) {
+      postBySlug(slug: $slug) {
+        id
+        title
+        content
+        author {
+          username
+          avatar
+        }
+        updatedAt
+        comments {
+          id
+          comment
+          email
+          user {
+            username
+          }
+        }
+        tag {
+          id
+          name
+        }
+      }
+    }
+`
 
 export const getUserPosts = gql`
 query ReturnMyPost {

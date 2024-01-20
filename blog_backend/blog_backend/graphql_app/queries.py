@@ -14,6 +14,8 @@ from blog_backend.graphql_app.types import (
 
 class Query(graphene.ObjectType):
     all_posts = graphene.List(PostType)
+    post_by_id = graphene.Field(PostType, id=graphene.Int(required=True))
+    post_by_slug = graphene.Field(PostType, slug=graphene.String(required=True))
     post_by_title = graphene.List(PostType, title=graphene.String(required=True))
     posts_by_author = graphene.List(PostType, author=graphene.String())
     posts_by_tag = graphene.List(PostType, tag=graphene.String())
@@ -27,9 +29,23 @@ class Query(graphene.ObjectType):
     all_tags = graphene.List(TagType)
 
     @classmethod
+    def resolve_post_by_id(cls, root, info, id):
+        try:
+            return Post.objects.get(pk=id)
+        except Post.DoesNotExist:
+            return GraphQLError('No note found with the provided id')
+
+    @classmethod
+    def resolve_post_by_slug(cls, root, info, slug):
+        try:
+            return Post.objects.get(slug=slug)
+        except Post.DoesNotExist:
+            return GraphQLError('No post found with the provided slug')
+
+    @classmethod
     def resolve_all_comments(cls, root, info):
         return Comment.objects.all()
-    
+
     @classmethod
     def resolve_approved_comments(cls, root, info):
         return Comment.objects.filter(approved=True).all()

@@ -2,7 +2,7 @@ import graphene
 
 
 class TagInput(graphene.InputObjectType):
-    name = graphene.String()
+    #name = graphene.String()
     slug = graphene.String()
 
 

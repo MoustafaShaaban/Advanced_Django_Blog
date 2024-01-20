@@ -64,6 +64,18 @@
 
             <q-item clickable v-ripple>
               <q-item-section avatar>
+                <q-icon name="inbox" />
+              </q-item-section>
+
+              <q-item-section>
+                <router-link :to="{ name: 'graphql-add-post' }">
+                  GraphQL Add Post
+                </router-link>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
                 <q-icon name="send" />
               </q-item-section>
 
