@@ -1,6 +1,14 @@
 # Advanced Django Blog
 
-A Blog website built using [Django Web Framework](https://www.djangoproject.com/), [Django REST Framework](https://www.django-rest-framework.org), [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/) and [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django).
+A blog project built using 
+    [Django Web Framework](https://www.djangoproject.com/), 
+    [Django REST Framework](https://www.django-rest-framework.org), 
+    [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/), 
+    [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django),
+    [Vue.js 3](https://vuejs.org/),
+    [Quasar Framework](https://quasar.dev/),
+    [Tanstack Vue Query](https://tanstack.com/query/latest/docs/vue/overview),
+    [Vue Apollo](https://apollo.vuejs.org/)
 
 
 [Full Review](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
@@ -20,6 +28,10 @@ A Blog website built using [Django Web Framework](https://www.djangoproject.com/
   * Access their profile which lists all their blog posts and their favorite posts.
 
 * All users can read or search for the posts on the blog.
+
+* Users can access separate frontend project built using Vue.js 3, Tanstack-Vue-Query, Vue-Apollo and Quasar Framework which connects with django through Django Rest Framework using Session Authentication.
+
+* The frontend vue.js app also allows users to perform CRUD operations through connecting to a REST API and a GraphQL endpoints.
 
 
 ### Project preview
@@ -65,15 +77,6 @@ This project is a Django project called `blog_backend` and it has four registere
 * And many more.
 
 
-### Libraries and Packages used
-
-* [Django Web Framework](https://www.djangoproject.com/)
-
-* [django-crispy-forms](https://django-crispy-forms.readthedocs.io/en/latest/) package
-
-* UI components from the official [Bootstrap 5.2](https://getbootstrap.com/docs/5.2/getting-started/introduction/) website documentation.
-
-
 ### To get started with this project
 
 * Make sure that Docker and docker-compose are installed in your system.
@@ -103,6 +106,24 @@ This project is a Django project called `blog_backend` and it has four registere
 ``` docker-compose -f local.yml up ```
 
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
+
+* Start a new terminal and change directory to vue-frontend directory and install the requirements:
+
+```bash
+
+cd vue-frontend
+
+npm install
+
+```
+
+* Run the Vue.js 3 frontend project:
+
+```bash
+
+    npm run dev
+
+```
 
 
 For more information about the available commands in this project check the Cookiecutter Django [Documentation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.html#build-the-stack)
@@ -139,9 +160,45 @@ query ReturnAllPosts {
     }
   }
 }
-
+```
 -----------------------------------------------------------------------------
 
+```gql
+
+ query returnPostBySlug($slug: String!) {
+      postBySlug(slug: $slug) {
+        id
+        title
+        content
+        author {
+          username
+          avatar
+        }
+        updatedAt
+        comments {
+          id
+          comment
+          email
+          user {
+            username
+          }
+        }
+        tag {
+          id
+          name
+        }
+      }
+    }
+```
+
+and in the variables:
+```js
+{
+"slug: "post-1"
+}
+```
+-----------------------------------------------------------------------------
+```gql
 query ReturnMyPost {
   myPostsWithFilters {
     edges {
@@ -166,9 +223,9 @@ query ReturnMyPost {
     }
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 query PostByTitle {
   allPostsWithFilters(title: "Post Number 1") {
     edges {
@@ -185,9 +242,9 @@ query PostByTitle {
     }
   }
 }
-
+```
 --------------------------------------------------------------------------------
-
+```gql
 query AllComments {
   allComments {
     id
@@ -203,9 +260,9 @@ query AllComments {
     }
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 query AllTags {
   allTags {
     id
@@ -213,9 +270,9 @@ query AllTags {
     slug
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 mutation createTag {
   createTag(input: {
     name: "Python"
@@ -226,9 +283,9 @@ mutation createTag {
     }
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 mutation UpdateTag {
   updateTag(id: 1, name: "Python") {
     tag {
@@ -237,17 +294,17 @@ mutation UpdateTag {
     }
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 mutation DeleteTag {
   deleteTag(id: 6) {
     success
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 mutation CreatePost {
   createPost(input: {
     title: "Post number 1",
@@ -263,9 +320,9 @@ mutation CreatePost {
     }
   }
 }
-
+```
 ------------------------------------------------------------------------------
-
+```gql
 mutation {
   createComment(inputs: {
     postSlug: "post-1", 
@@ -283,9 +340,9 @@ mutation {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
-
+```gql
 query PostsByAuthor {
   postsByAuthor(author: "admin") {
     id
@@ -304,9 +361,9 @@ query PostsByAuthor {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
-
+```gql
 query PostsByTag {
   postsByTag(tag: "Python") {
     id
@@ -325,9 +382,9 @@ query PostsByTag {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
-
+```gql
 query PostsByTitle {
   postByTitle(title: "Post number 1") {
     id
@@ -346,9 +403,9 @@ query PostsByTitle {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
-
+```gql
 query PostsByTitleWithDjangoFilters {
   allPostsWithFilters(title_Icontains: "Post number") {
    edges {
@@ -371,9 +428,9 @@ query PostsByTitleWithDjangoFilters {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
-
+```gql
 query PostsByTitleWithDjangoFilters {
   allPostsWithFilters(title_Istartswith: "Post number") {
    edges {
@@ -396,5 +453,5 @@ query PostsByTitleWithDjangoFilters {
     }
   }
 }
-
+```
 ---------------------------------------------------------------------------------
