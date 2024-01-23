@@ -1,36 +1,54 @@
-<script setup>
-import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useQuery } from '@vue/apollo-composable';
+<script>
+import { Notify } from 'quasar'
 
-import { useAuthStore } from '@/stores/authStore';
+
 import { getPostBySlug, getAllTags } from '@/graphqlQueries';
+import { updatePostMutation } from "@/graphqlMutations"
 
-const route = useRoute()
-const authStore = useAuthStore()
+export default {
+    name: "GraphQLPostEdit",
+    data() {
+        return {
+            allTags: [],
+            post: {
+                title: "",
+                content: "",
+                tags: [
+                    { id: '' }
+                ]
+            }
+        }
+    },
+    mounted() {
+        this.getPost();
+        this.getTags();
+    },
+    methods: {
+        refreshPage() {
+            window.location.reload();
+        },
 
-const post = ref({
-    title: "",
-    content: "",
-    tag: [
-        { id: '' },
-    ]
-})
+        async getPost() {
+            let data = await this.$apollo.query({
+                query: getPostBySlug,
+                variables: {
+                    slug: this.$route.params.slug
+                },
+            })
 
+            // Make a copy of the returned data because the data saved in the cache is read-only
+            const postData = { ...data.data.postBySlug }
+            this.post = postData
+        },
+        async getTags() {
+            let data = await this.$apollo.query({
+                query: getAllTags,
+            })
 
-const variables = ref({
-    slug: route.params.slug
-})
-
-const { result: data, loading: tagsLoading, tagsErrorrror } = useQuery(getAllTags)
-
-const { result, loading, error } = useQuery(getPostBySlug, variables)
-
-const title = ref("")
-const content = ref("")
-
-title.value = result.value?.postBySlug.title
-content.value = result.value?.postBySlug.content
+            this.allTags = data.data.allTags
+        }
+    }
+}
 
 </script>
 
@@ -46,17 +64,17 @@ content.value = result.value?.postBySlug.content
             </q-card-section>
 
             <q-card-section>
-                <span v-if="loading">Loading...</span>
-                <span v-else-if="error">Error: {{ error.message }}</span>
-                <q-form v-else-if="result" @submit.prevent="">
-                    <q-input filled v-model="title" label="Post Title" required lazy-rules
+                <span v-if="$apollo.loading">Loading...</span>
+                <span v-else-if="$apollo.error">Error: {{ error.message }}</span>
+                <q-form v-else @submit.prevent="">
+                    <q-input filled v-model="post.title" label="Post Title" required lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
-                    <q-input filled v-model="content" type="textarea" required label="Post Content" lazy-rules
+                    <q-input filled v-model="post.content" type="textarea" required label="Post Content" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                     <q-separator />
-                    <select v-model="post.tag">
-                        <option v-for="tag in data?.allTags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
+                    <select v-model="post.tag" multiple>
+                        <option v-for="tag in allTags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
                     </select>
                     <div class="q-pa-sm q-mt-md">
                         <q-btn label="Edit" type="submit" color="primary" />

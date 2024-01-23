@@ -2,10 +2,8 @@ import { createApp, provide, h } from 'vue'
 import { createPinia } from 'pinia'
 import { Quasar, Notify, Dialog, Dark, Cookies } from 'quasar'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { createApolloProvider } from '@vue/apollo-option'
-import VueApolloComponents from '@vue/apollo-components'
-import { DefaultApolloClient } from '@vue/apollo-composable'
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -32,13 +30,12 @@ const apolloClient = new ApolloClient({
     }
 })
 
-
-const app = createApp({
-    setup() {
-        provide(DefaultApolloClient, apolloClient)
-    },
-    render: () => h(App),
+const apolloProvider = createApolloProvider({
+    defaultClient: apolloClient,
 })
+
+
+const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
@@ -54,7 +51,6 @@ app.use(Quasar, {
 
 app.use(VueQueryPlugin)
 
-// app.use(apolloProvider)
-app.use(VueApolloComponents)
+app.use(apolloProvider)
 
 app.mount('#app')

@@ -26,8 +26,9 @@ class CreatePostMutation(graphene.Mutation):
         success = True
         user = info.context.user
         tags = []
+        tags_data = input.get('tags')
 
-        for tag_input in input.tags:
+        for tag_input in tags_data:
             tag = Tag.objects.get(slug=tag_input.slug)
             if tag is None:
                 return CreatePostMutation(success=False, post=None)

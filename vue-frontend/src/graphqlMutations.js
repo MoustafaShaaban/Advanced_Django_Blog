@@ -5,13 +5,36 @@ export const createPostMutation = gql`
     mutation CreatePost($title: String, $content: String, $tags: TagInput!) {
         createPost(input: {title: $title, content: $content, tags: [$tags]}) {
             post {
-            id
-            title
-            content
-            tag {
-                name
+                id
+                title
+                content
+                tag {
+                    name
+                }
             }
+        }
+    }
+`
+
+export const updatePostMutation = gql`
+    mutation CreatePost($id: Int!, $title: String, $content: String, $tags: TagInput!) {
+        createPost(id: $id, input: {title: $title, content: $content, tags: [$tags]}) {
+            post {
+                id
+                title
+                content
+                tag {
+                    name
+                }
             }
+        }
+    }
+`
+
+export const deletePostMutation = gql`
+    mutation deletePost($id: Int!) {
+        deletePost(id: $id) {
+            success
         }
     }
 `
