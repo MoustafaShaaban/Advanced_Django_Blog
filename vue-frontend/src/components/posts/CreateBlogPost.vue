@@ -94,7 +94,6 @@ function handleSubmit() {
     title: title.value,
     content: content.value,
     tag: tag.value
-    
   })
 }
 

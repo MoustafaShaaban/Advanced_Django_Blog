@@ -4,17 +4,13 @@ from blog_backend.graphql_app.queries import Query
 
 from blog_backend.graphql_app.mutations import (
     CreatePostMutation,
-    
-
     UpdatePostMutation,
-    
-
     DeletePostMutation,
-    
+
     CreateCommentMutation,
     UpdateCommentMutation,
     DeleteCommentMutation,
-    
+
     CreateTagMutation,
     UpdateTagMutation,
     DeleteTagMutation

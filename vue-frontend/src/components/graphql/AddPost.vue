@@ -1,20 +1,37 @@
 <script>
 import { Notify } from "quasar";
 import { createPostMutation } from "@/graphqlMutations";
-import { getAllTags } from "@/graphqlQueries";
+import { useQuery } from '@tanstack/vue-query'
+
+import { getAllTags } from '../../api/axios';
 
 
 export default {
     name: "GraphQLAddPost",
-    mounted() {
-        this.getTags()
+    setup() {
+        const { isFetching, data, tagsError } = useQuery({
+            queryKey: ['tags'],
+            queryFn: getAllTags,
+            onError: async (error) => {
+                $q.notify({
+                    message: error.message,
+                    color: "negative",
+                    actions: [
+                        { icon: 'close', color: 'white', round: true, }
+                    ]
+                })
+            }
+        })
+
+        return { isFetching, data, tagsError }
     },
+
     data() {
         return {
             allTags: [],
             title: "",
             content: "",
-            tags: {}
+            tags: []
         }
     },
     methods: {
@@ -36,7 +53,7 @@ export default {
                 variables: {
                     "title": this.title,
                     "content": this.content,
-                    "tags": { "slug": this.tags }
+                    "tags": this.tags
                 }
             })
             this.$router.push("/graphql/post-list")
@@ -78,11 +95,11 @@ export default {
                     <q-input filled v-model.lazy.trim="content" type="textarea" required label="Post Content" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                     <q-separator />
-                    <select v-model="tags">
+                    <select v-model="tags" multiple>
                         <option value="">Choose a tag</option>
                         <hr />
                         <optgroup>
-                            <option v-for="tag in allTags" id="tag.slug" :value="tag.slug">{{ tag.name }}</option>
+                            <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
                         </optgroup>
                     </select>
                     <div class="q-pa-sm q-mt-md">

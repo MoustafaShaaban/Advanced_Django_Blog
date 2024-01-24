@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 
 
 export const createPostMutation = gql`
-    mutation CreatePost($title: String, $content: String, $tags: TagInput!) {
-        createPost(input: {title: $title, content: $content, tags: [$tags]}) {
+    mutation CreatePost($title: String, $content: String, $tags: [Int]!) {
+        createPost(input: {title: $title, content: $content, tags: $tags}) {
             post {
                 id
                 title
@@ -17,8 +17,8 @@ export const createPostMutation = gql`
 `
 
 export const updatePostMutation = gql`
-    mutation CreatePost($id: Int!, $title: String, $content: String, $tags: TagInput!) {
-        createPost(id: $id, input: {title: $title, content: $content, tags: [$tags]}) {
+    mutation UpdatePost($id: Int!, $title: String, $content: String, $tags: [Int]!) {
+        updatePost(id: $id, input: {title: $title, content: $content, tags: $tags}) {
             post {
                 id
                 title

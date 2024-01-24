@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('title', 'content', 'tag', 'slug', 'author',)
         # depth = 1
 
         extra_kwargs = {
@@ -75,7 +75,7 @@ class PostSerializer(serializers.ModelSerializer):
     # def get_tag_name(self, instance):
     #     return instance.tag.name
 
-    
+
 
 
 class CommentSerializer(serializers.ModelSerializer):

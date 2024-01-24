@@ -1,7 +1,8 @@
 <script setup>
+import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar } from 'quasar';
-import { getBlogPosts, deletePost } from '@/api/axios';
+import { getBlogPosts, deletePost, getAllTags, createPost } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -11,10 +12,40 @@ const queryClient = useQueryClient()
 const authStore = useAuthStore();
 const $q = useQuasar();
 
+const card = ref(false);
+const title = ref('')
+const content = ref('')
+const tag = ref([
+  { id: ''},
+])
+
 // Query
 const { isPending, isError, data, error } = useQuery({
   queryKey: ['allBlogPosts'],
   queryFn: getBlogPosts,
+  onError: async (error) => {
+    $q.notify({
+      message: error.message,
+      color: "negative",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  }
+})
+
+const { isFetching, data: tags, tagsError } = useQuery({
+  queryKey: ['tags'],
+  queryFn: getAllTags,
+  onError: async (error) => {
+    $q.notify({
+      message: error.message,
+      color: "negative",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  }
 })
 
 const deletePostMutation = useMutation({
@@ -24,6 +55,30 @@ const deletePostMutation = useMutation({
       queryKey: ["allBlogPosts"]
     })
   }
+})
+
+const { isPendingAddBlogPost, isErrorAddBlogPost, errorAddBlogPost, isSuccess, mutate, reset } = useMutation({
+  mutationFn: createPost,
+  onSuccess: async () => {
+    queryClient.invalidateQueries("allBlogPosts")
+    await router.push('/')
+    $q.notify({
+      message: 'Post Added Successfully',
+      type: "positive",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  },
+  onError: async (error) => {
+    $q.notify({
+      message: error.message,
+      color: "negative",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  },
 })
 
 const deletePostFunction = (slug) => {
@@ -51,6 +106,23 @@ function confirm(slug) {
   }).onDismiss(() => {
     return
   })
+}
+
+function handleSubmit() {
+  mutate({
+    title: title.value,
+    content: content.value,
+    tag: tag.value
+  })
+  card.value = false;
+  title.value = null
+  content.value = null
+  tag.value = null
+}
+
+function onReset() {
+  title.value = null
+  content.value = null
 }
 </script>
 
@@ -100,6 +172,39 @@ function confirm(slug) {
           <q-btn color="info" flat @click="confirm(post.slug)">Delete</q-btn>
         </q-card-actions>
       </q-card>
+
+      <q-dialog v-model="card">
+        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">Add Post</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+
+          <q-card-section>
+            <q-form @submit.prevent="handleSubmit" @reset="onReset">
+              <q-input filled v-model="title" label="Post Title" required lazy-rules
+                :rules="[val => val && val.length > 0 || 'Post Title is required']" />
+
+              <q-input filled v-model="content" type="textarea" required label="Post Content" lazy-rules
+                :rules="[val => val && val.length > 0 || 'Post Content is required']" />
+              <q-separator />
+              <select v-model="tag" multiple>
+                <option v-for="tag in tags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
+              </select>
+              <div class="q-pa-sm q-mt-md">
+                <q-btn label="Add Post" type="submit" color="primary" />
+                <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn fab icon="add" color="primary" @click="card = true">
+        </q-btn>
+      </q-page-sticky>
     </div>
   </main>
 </template>

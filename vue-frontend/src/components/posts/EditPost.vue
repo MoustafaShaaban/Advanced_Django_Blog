@@ -32,7 +32,7 @@ export default {
     }
   })
 
-  return { data }
+  return { isFetching, data, tagsError }
   },
   async created() {
     await axiosAPI.get("/posts/" + this.$route.params.slug)

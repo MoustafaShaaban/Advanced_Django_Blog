@@ -13,7 +13,11 @@ export const axiosAPI = axios.create({
 
 
 export const getBlogPosts = async () => {
-    const response = await axiosAPI.get("posts/")
+    const response = await axiosAPI.get("posts/", {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
     return response.data
 }
 
@@ -48,7 +52,11 @@ export const getCommentById = async (id) => {
 }
 
 export const createPost = async (post) => {
-    const response = await axiosAPI.post("posts/", post)
+    const response = await axiosAPI.post("posts/", post, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
     return response.data
 }
 

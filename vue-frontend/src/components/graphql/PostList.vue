@@ -1,17 +1,31 @@
 <script>
 import { Notify, Dialog, useQuasar } from 'quasar';
-import { useQuery } from '@vue/apollo-composable';
+import { useQuery } from "@tanstack/vue-query"
 
 import { useAuthStore } from '@/stores/authStore';
 import { getAllPosts } from "../../graphqlQueries";
+import { getAllTags } from '@/api/axios';
 import { createPostMutation, deletePostMutation } from '@/graphqlMutations';
 
 export default {
     name: "GraphQLPostList",
     setup() {
         const authStore = useAuthStore();
+        const { isFetching, data, tagsError } = useQuery({
+            queryKey: ['tags'],
+            queryFn: getAllTags,
+            onError: async (error) => {
+                $q.notify({
+                    message: error.message,
+                    color: "negative",
+                    actions: [
+                        { icon: 'close', color: 'white', round: true, }
+                    ]
+                })
+            }
+        })
 
-        return { authStore }
+        return { isFetching, data, tagsError, authStore }
     },
     mounted() {
         this.getPosts();
@@ -46,12 +60,15 @@ export default {
                 variables: {
                     "title": this.title,
                     "content": this.content,
-                    "tag": this.tags,
+                    "tags": this.tags
                 }
             })
             this.card = false,
+            this.title = null
+            this.content = null
+            this.tags = null
 
-                await this.$router.push("/graphql/post-list")
+            await this.$router.push("/graphql/post-list")
 
             Notify.create({
                 message: 'Post Added Successfully',
@@ -179,7 +196,7 @@ export default {
                                 :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                             <q-separator />
                             <select v-model="tags" multiple>
-                                <option v-for="tag in tags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
+                                <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
                             </select>
                             <div class="q-pa-sm q-mt-md">
                                 <q-btn label="Add Post" type="submit" color="primary" />

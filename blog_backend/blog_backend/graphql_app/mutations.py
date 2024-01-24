@@ -2,9 +2,11 @@ from graphql import GraphQLError
 
 import graphene
 from graphene_django.forms.mutation import DjangoModelFormMutation
+from graphene_django.rest_framework.mutation import SerializerMutation
 
 from blog_backend.blog.models import Post, Comment, Tag
-from blog_backend.blog.forms import TagForm
+from blog_backend.blog.forms import TagForm, PostForm
+from blog_backend.api.serializers import PostSerializer
 
 from .types import (
     PostType,
@@ -29,11 +31,11 @@ class CreatePostMutation(graphene.Mutation):
         tags_data = input.get('tags')
 
         for tag_input in tags_data:
-            tag = Tag.objects.get(slug=tag_input.slug)
+            tag = Tag.objects.get(pk=tag_input)
             if tag is None:
                 return CreatePostMutation(success=False, post=None)
             tags.append(tag)
-        
+
         post_instance = Post.objects.create(
             title=input.get('title'),
             author=user,
@@ -43,7 +45,7 @@ class CreatePostMutation(graphene.Mutation):
         post_instance.tag.set(tags)
         success = True
         return CreatePostMutation(success=success, post=post_instance)
-    
+
 
 class UpdatePostMutation(graphene.Mutation):
     class Arguments:
@@ -58,13 +60,14 @@ class UpdatePostMutation(graphene.Mutation):
         success = False
         user = info.context.user
         tags = []
+        tags_data = input.get('tags')
         post_instance = Post.objects.get(pk=id)
 
         if post_instance.author != user:
             raise GraphQLError("Only post author can update it")
         else:
-            for tag_input in input.tags:
-                tag = Tag.objects.get(slug=tag_input.slug)
+            for tag_input in tags_data:
+                tag = Tag.objects.get(pk=tag_input)
                 if tag is None:
                     return UpdatePostMutation(success=False, post=None)
                 tags.append(tag)
@@ -75,8 +78,8 @@ class UpdatePostMutation(graphene.Mutation):
             post_instance.tag.set(tags)
             success = True
         return UpdatePostMutation(success=success, post=post_instance)
-    
-  
+
+
 
 class DeletePostMutation(graphene.Mutation):
     class Arguments:
@@ -107,7 +110,7 @@ class CreateCommentMutation(graphene.Mutation):
     post = graphene.Field(PostType)
     comment = graphene.Field(CommentType)
     success = graphene.Boolean()
-        
+
 
     def mutate(self, info, inputs=None):
         user = info.context.user
@@ -127,7 +130,7 @@ class CreateCommentMutation(graphene.Mutation):
         success = True
 
         return CreateCommentMutation(comment=comment, success=success)
-    
+
 
 class UpdateCommentMutation(graphene.Mutation):
     class Arguments:
