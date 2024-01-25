@@ -26,7 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'content', 'tag', 'slug', 'author',)
+        fields = '__all__'
         # depth = 1
 
         extra_kwargs = {

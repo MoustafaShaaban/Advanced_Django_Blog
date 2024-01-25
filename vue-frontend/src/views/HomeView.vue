@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
-import { Dialog, Notify, useQuasar } from 'quasar';
+import { Dialog, Notify, useQuasar, date } from 'quasar';
 import { getBlogPosts, deletePost, getAllTags, createPost } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
@@ -16,7 +16,7 @@ const card = ref(false);
 const title = ref('')
 const content = ref('')
 const tag = ref([
-  { id: ''},
+  { id: '' },
 ])
 
 // Query
@@ -158,18 +158,26 @@ function onReset() {
         </q-card-section>
 
         <q-separator />
-
-        <q-card-actions v-if="authStore.$state.isAuthenticated">
-          <q-btn flat round icon="event" />
-          <q-btn flat>
-            {{ post.published_at }}
+        
+        <q-card-actions vertical>
+          <q-btn size="sm" flat icon="event">
+            Published At: {{ date.formatDate(post.published_at, 'DD MMMM YYYY') }}
           </q-btn>
+          <q-btn size="sm" flat icon="event">
+            Last Updated: {{ date.formatDate(post.updated_at, 'DD MMMM YYYY') }}
+          </q-btn>
+        </q-card-actions>
+
+        <q-separator />
+        
+        <q-card-actions v-if="authStore.$state.isAuthenticated">
           <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
-            <q-btn flat color="primary">
+            <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
               Detail
             </q-btn>
           </router-link>
-          <q-btn color="info" flat @click="confirm(post.slug)">Delete</q-btn>
+          <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
+            @click="confirm(post.slug)">Delete</q-btn>
         </q-card-actions>
       </q-card>
 

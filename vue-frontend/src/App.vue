@@ -35,10 +35,10 @@
 
             <q-item active clickable v-ripple to="/about">
               <q-item-section avatar>
-                <q-icon name="info" />
+                <q-icon :class="$q.dark.isActive ? 'text-white' : 'text-dark'" name="info" />
               </q-item-section>
 
-              <q-item-section>
+              <q-item-section :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
                 About
               </q-item-section>
             </q-item>
@@ -56,7 +56,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :to="{ name: 'add-post' }">
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'add-post' }">
                   Add Post
                 </router-link>
               </q-item-section>
@@ -68,7 +68,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :to="{ name: 'graphql-add-post' }">
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-add-post' }">
                   GraphQL Add Post
                 </router-link>
               </q-item-section>
@@ -80,7 +80,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :to="{ name: 'graphql-post-list' }">
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-post-list' }">
                   GraphQL Post List
                 </router-link>
               </q-item-section>
