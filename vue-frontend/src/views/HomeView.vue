@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar, date } from 'quasar';
-import { getBlogPosts, deletePost, getAllTags, createPost } from '@/api/axios';
+import Multiselect from 'vue-multiselect'
+import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -15,9 +16,7 @@ const $q = useQuasar();
 const card = ref(false);
 const title = ref('')
 const content = ref('')
-const tag = ref([
-  { id: '' },
-])
+const tag = ref([])
 
 // Query
 const { isPending, isError, data, error } = useQuery({
@@ -158,7 +157,7 @@ function onReset() {
         </q-card-section>
 
         <q-separator />
-        
+
         <q-card-actions vertical>
           <q-btn size="sm" flat icon="event">
             Published At: {{ date.formatDate(post.published_at, 'DD MMMM YYYY') }}
@@ -169,7 +168,7 @@ function onReset() {
         </q-card-actions>
 
         <q-separator />
-        
+
         <q-card-actions v-if="authStore.$state.isAuthenticated">
           <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
             <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
@@ -198,9 +197,21 @@ function onReset() {
               <q-input filled v-model="content" type="textarea" required label="Post Content" lazy-rules
                 :rules="[val => val && val.length > 0 || 'Post Content is required']" />
               <q-separator />
-              <select v-model="tag" multiple>
+              <!-- <select v-model="tag" multiple>
                 <option v-for="tag in tags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
-              </select>
+              </select> -->
+              <label>Post Tags</label>
+              <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
+              <multiselect 
+                v-model="tag" 
+                :multiple="true" 
+                :custom-label="opt => tags.find(e => e.id === opt).name" 
+                deselect-label="You must select at least one tag" 
+                :options="tags.map(tag => tag.id)" 
+                :searchable="true" 
+                :allow-empty="false">
+                  <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+              </multiselect>
               <div class="q-pa-sm q-mt-md">
                 <q-btn label="Add Post" type="submit" color="primary" />
                 <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
@@ -209,7 +220,7 @@ function onReset() {
           </q-card-section>
         </q-card>
       </q-dialog>
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-page-sticky v-if="authStore.$state.isAuthenticated" position="bottom-right" :offset="[18, 18]">
         <q-btn fab icon="add" color="primary" @click="card = true">
         </q-btn>
       </q-page-sticky>

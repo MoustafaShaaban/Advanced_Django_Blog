@@ -1,14 +1,16 @@
 # Advanced Django Blog
 
 A blog project built using 
-    [Django Web Framework](https://www.djangoproject.com/), 
-    [Django REST Framework](https://www.django-rest-framework.org), 
-    [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/), 
-    [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django),
-    [Vue.js 3](https://vuejs.org/),
-    [Quasar Framework](https://quasar.dev/),
-    [Tanstack Vue Query](https://tanstack.com/query/latest/docs/vue/overview),
-    [Vue Apollo](https://apollo.vuejs.org/)
+
+  [Django Web Framework](https://www.djangoproject.com/), 
+  [Django REST Framework](https://www.django-rest-framework.org), 
+  [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/), 
+  [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django),
+  [Vue.js 3](https://vuejs.org/),
+  [Quasar Framework](https://quasar.dev/),
+  [Tanstack Vue Query](https://tanstack.com/query/latest/docs/vue/overview),
+  [Vue Apollo](https://apollo.vuejs.org/)
+  [Vue-multiselect](https://vue-multiselect.js.org/)
 
 
 [Full Review](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
