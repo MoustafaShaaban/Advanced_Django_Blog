@@ -9,7 +9,8 @@
           <q-toolbar-title>
             <q-breadcrumbs active-color="white" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Posts" icon="notes" to="/"  />
+              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Rest API Post List" icon="notes" to="/"  />
+              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="GraphQL Post List" icon="notes" to="/graphql/post-list"  />
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
               <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
               <q-breadcrumbs-el v-else label="Logout" icon="logout" @click="logout" to="/" />

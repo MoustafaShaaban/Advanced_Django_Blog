@@ -27,13 +27,12 @@ export default {
     },
     data() {
         return {
-            allTags: [],
             post: {
                 id: "",
                 title: "",
                 content: "",
                 tag: [
-                  { id: ''},
+                  { id: '',},
                 ]
             }
         }
@@ -56,7 +55,6 @@ export default {
 
             // Make a copy of the returned data because the data saved in the cache is read-only
             const postData = { ...data.data.postBySlug }
-            console.log(postData)
             this.post = postData
         },
 

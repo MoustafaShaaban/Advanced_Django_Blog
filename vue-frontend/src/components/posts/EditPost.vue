@@ -1,38 +1,29 @@
 <script>
 import { Notify, Cookies } from 'quasar'
+import Multiselect from 'vue-multiselect'
 import { useQuery } from '@tanstack/vue-query'
 import { axiosAPI, getAllTags } from "../../api/axios"
 
 export default {
   name: "EditPost",
+  components: {
+    Multiselect
+  },
   data() {
     return {
       post: {
         title: "",
         content: "",
-        tag: [
-          { id: ''},
-        ]
+        tag: [],
       },
+      tags: []
       
     }
   },
-  setup() {
-    const { isFetching, data, tagsError } = useQuery({
-    queryKey: ['tags'],
-    queryFn: getAllTags,
-    onError: async (error) => {
-        $q.notify({
-            message: error.message,
-            color: "negative",
-            actions: [
-                { icon: 'close', color: 'white', round: true, }
-            ]
-        })
-    }
-  })
-
-  return { isFetching, data, tagsError }
+  async mounted() {
+    await axiosAPI.get('/tags/').then(response => {
+      this.tags = response.data
+    })
   },
   async created() {
     await axiosAPI.get("/posts/" + this.$route.params.slug)
@@ -92,9 +83,17 @@ export default {
           <q-input filled v-model="post.content" type="textarea" required label="Post Content" lazy-rules
             :rules="[val => val && val.length > 0 || 'Post Content is required']" />
           <q-separator />
-          <select v-model="post.tag" multiple>
-            <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
-          </select>
+          <q-separator />
+            <label>Post Tags</label>
+            <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
+            <multiselect v-model="post.tag" :multiple="true" :custom-label="opt => tags.find(e => e.id === opt).name"
+                deselect-label="You must select at least one tag" :options="tags.map(i => i.id)" :searchable="true"
+                :allow-empty="false">
+                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+            </multiselect>
+          <!-- <select v-model="post.tag" multiple>
+            <option v-for="tag in tags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
+          </select> -->
           <div class="q-pa-sm q-mt-md">
             <q-btn label="Edit" type="submit" color="primary" />
             <q-btn label="Cancel" type="button" @click="() => { this.$router.push('/') }"

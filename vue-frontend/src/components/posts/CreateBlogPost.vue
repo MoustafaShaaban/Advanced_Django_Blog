@@ -9,25 +9,30 @@ import { createPost, getAllTags } from '../../api/axios';
 const title = ref('')
 const content = ref('')
 const tag = ref([])
+const tags = ref([])
 
 const queryClient = useQueryClient();
 
 const router = useRouter();
 const $q = useQuasar();
 
-const { isFetching, data: tags, tagsError } = useQuery({
-    queryKey: ['tags'],
-    queryFn: getAllTags,
-    onError: async (error) => {
-        $q.notify({
-            message: error.message,
-            color: "negative",
-            actions: [
-                { icon: 'close', color: 'white', round: true, }
-            ]
-        })
-    }
-})
+onMounted(async () => {
+    tags.value = await getAllTags();
+});
+
+// const { isFetching, data: tags, tagsError } = useQuery({
+//     queryKey: ['tags'],
+//     queryFn: getAllTags,
+//     onError: async (error) => {
+//         $q.notify({
+//             message: error.message,
+//             color: "negative",
+//             actions: [
+//                 { icon: 'close', color: 'white', round: true, }
+//             ]
+//         })
+//     }
+// })
 
 const { isPending, isError, error, isSuccess, mutate, reset } = useMutation({
     mutationFn: createPost,

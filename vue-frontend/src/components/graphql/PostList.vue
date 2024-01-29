@@ -1,34 +1,27 @@
 <script>
 import { Notify, Dialog, useQuasar, date } from 'quasar';
 import { useQuery } from "@tanstack/vue-query"
+import Multiselect from 'vue-multiselect'
 
 import { useAuthStore } from '@/stores/authStore';
 import { getAllPosts } from "../../graphqlQueries";
-import { getAllTags } from '@/api/axios';
+import { getAllTags, axiosAPI } from '@/api/axios';
 import { createPostMutation, deletePostMutation } from '@/graphqlMutations';
 
 export default {
     name: "GraphQLPostList",
+    components: {
+        Multiselect
+    },
     setup() {
         const authStore = useAuthStore();
-        const { isFetching, data, tagsError } = useQuery({
-            queryKey: ['tags'],
-            queryFn: getAllTags,
-            onError: async (error) => {
-                $q.notify({
-                    message: error.message,
-                    color: "negative",
-                    actions: [
-                        { icon: 'close', color: 'white', round: true, }
-                    ]
-                })
-            }
-        })
-
-        return { isFetching, data, tagsError, authStore }
+        return { authStore }
     },
-    mounted() {
-        this.getPosts();
+    async mounted() {
+        await axiosAPI.get('/tags/').then(response => {
+            this.tags = response.data
+        })
+        await this.getPosts();
     },
     data() {
         return {
@@ -36,9 +29,8 @@ export default {
             card: false,
             title: "",
             content: "",
-            tags: [
-                { id: '' }
-            ]
+            tag: [],
+            tags: []
         }
     },
     methods: {
@@ -60,11 +52,11 @@ export default {
                 variables: {
                     "title": this.title,
                     "content": this.content,
-                    "tags": this.tags
+                    "tags": this.tag
                 }
             })
             this.card = false,
-            this.title = null
+                this.title = null
             this.content = null
             this.tags = null
 
@@ -192,12 +184,20 @@ export default {
                             <q-input filled v-model.lazy.trim="title" label="Post Title" required lazy-rules
                                 :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
-                            <q-input filled v-model.lazy.trim="content" type="text" required label="Post Content" lazy-rules
-                                :rules="[val => val && val.length > 0 || 'Post Content is required']" />
+                            <q-input filled v-model.lazy.trim="content" type="textarea" required label="Post Content"
+                                lazy-rules :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                             <q-separator />
-                            <select v-model="tags" multiple>
+                            <label>Post Tags</label>
+                            <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
+                            <multiselect v-model="tag" :multiple="true"
+                                :custom-label="opt => tags.find(e => e.id === opt).name"
+                                deselect-label="You must select at least one tag" :options="tags.map(i => i.id)"
+                                :searchable="true" :allow-empty="false">
+                                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+                            </multiselect>
+                            <!-- <select v-model="tags" multiple>
                                 <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
-                            </select>
+                            </select> -->
                             <div class="q-pa-sm q-mt-md">
                                 <q-btn label="Add Post" type="submit" color="primary" />
                                 <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
