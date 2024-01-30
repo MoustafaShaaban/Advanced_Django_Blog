@@ -62,7 +62,6 @@ class Post(models.Model):
         related_name='favorite_posts'
     )
 
-
     class Meta:
         """Meta definition for Post."""
 

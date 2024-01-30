@@ -5,6 +5,14 @@
 {% block title %}{{ post.title }}{% endblock title %}
 
 {% block inner %}
+{% if messages %}
+    <div class="messages alert alert-success" role="alert">
+        {% for message in messages %}
+            {{ message }}
+            <button type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% endfor %}
+    </div>
+    {% endif %}
     <div class="row">
         <div class="container d-md-flex">
             <div class="col-md-12">
@@ -17,7 +25,7 @@
                         </div>
                         <p class="card-subtitle text-muted"> By <span>{{ post.author }}</span>,  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
                         <hr class="text-light">
-                        Tags: 
+                        Tags:
                         {% for tag in tags %}
                             <span class="badge rounded-pill bg-primary"><a href="{% url 'blog:tag-post-list' tag.slug %}" class="text-light">{{ tag.name }}</a></span>
                         {% endfor %}
@@ -38,8 +46,8 @@
                                 </button>
                         </div>
                         {% endif %}
-                        
-                        
+
+
                         <div class="card-footer">
                             <button class="btn btn-success mt-3">
                                 <a href="{% url 'blog:homepage' %}" class="card-link text-white pt-2">Return to blog</a>
@@ -62,12 +70,12 @@
                         <button type="button" class="btn btn-primary mx-2">
                             Comments <span class="badge text-bg-danger">{% num_comments post.slug %}</span>
                         </button>
-                        
+
                         {% if user.is_authenticated %}
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
                                 Add Comment
                             </button>
-                        
+
                             <!-- Modal -->
                             <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

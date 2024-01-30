@@ -80,7 +80,6 @@ class UpdatePostMutation(graphene.Mutation):
         return UpdatePostMutation(success=success, post=post_instance)
 
 
-
 class DeletePostMutation(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
@@ -110,7 +109,6 @@ class CreateCommentMutation(graphene.Mutation):
     post = graphene.Field(PostType)
     comment = graphene.Field(CommentType)
     success = graphene.Boolean()
-
 
     def mutate(self, info, inputs=None):
         user = info.context.user
