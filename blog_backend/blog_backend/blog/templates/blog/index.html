@@ -5,7 +5,7 @@
         <div class="container d-md-flex">
             <div class="col-md-6 mx-auto">
                 <!-- Strat Blog Post List -->
-                
+
                 {% for post in posts %}
                     <div class="card border-primary mb-3">
                         <div class="card-body">
@@ -13,12 +13,12 @@
                             <p class="card-subtitle text-muted"> By {{ post.author }},  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
                             <hr class="text-light">
                             <p class="card-text mt-3 m-1">{{ post.content|slice:':50' }}</p>
-                            
+
                             <a href="{% url 'blog:post-detail' post.slug %}" role="button" class="card-link btn btn-primary mt-3 pt-2">Read more</a>
                         </div>
                     </div>
                     <hr class="text-dark">
-                    
+
                     {% empty %}
                     <p>No Avaialble posts at this moment</p>
                 {% endfor %}

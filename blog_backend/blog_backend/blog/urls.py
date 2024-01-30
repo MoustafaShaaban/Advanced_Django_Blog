@@ -11,8 +11,8 @@ urlpatterns = [
     # URLs for Blog posts CRUD operations:
     path('', views.HomePage.as_view(), name='homepage'),
     path('create-post/', views.CreatePost.as_view(), name='create-post'),
-    path('update/post/<slug:slug>/', views.UpdatePost.as_view(), name='update-post'),
-    path('delete/post/<slug:slug>/', views.DeletePost.as_view(), name='delete-post'),
+    path('update-post/<slug:slug>/', views.UpdatePost.as_view(), name='update-post'),
+    path('delete-post/<slug:slug>/', views.DeletePost.as_view(), name='delete-post'),
 
     # URLs for post details and user posts and favorite posts:
     path('post/<slug:slug>/', views.post_detail, name='post-detail'),
@@ -23,6 +23,8 @@ urlpatterns = [
 
     # URL for adding comments to blog posts:
     path('<slug:slug>/create-comment/', views.create_comment, name='create-comment'),
+    path('update-comment/<int:pk>/', views.UpdateComment.as_view(), name='update-comment'),
+    path('delete-comment/<int:pk>/', views.DeleteComment.as_view(), name='delete-comment'),
 
     # URL for listing all tags:
     path('tags/', views.tag_list, name='tag-list'),

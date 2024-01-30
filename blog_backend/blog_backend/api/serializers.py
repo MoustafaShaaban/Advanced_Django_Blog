@@ -17,12 +17,11 @@ class TagSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
-    #author = UserSerializer(required=False)
+    # author = UserSerializer(required=False)
     # published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
-    #tag_name = serializers.SerializerMethodField(source='get_tag_name')
+    # tag_name = serializers.SerializerMethodField(source='get_tag_name')
 
     class Meta:
         model = Post
@@ -76,14 +75,12 @@ class PostSerializer(serializers.ModelSerializer):
     #     return instance.tag.name
 
 
-
-
 class CommentSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
         model = Comment
-        fields = ['id', 'email', 'comment', 'user', 'post', 'published_at']
+        fields = ['id', 'comment', 'user', 'post', 'published_at']
         extra_kwargs = {
             'user': {'read_only': True},
         }

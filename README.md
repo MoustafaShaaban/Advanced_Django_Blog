@@ -151,7 +151,6 @@ query ReturnAllPosts {
     comments {
       id
       comment
-      email
       user {
         username
       }
@@ -180,7 +179,6 @@ query ReturnAllPosts {
         comments {
           id
           comment
-          email
           user {
             username
           }
@@ -212,7 +210,6 @@ query ReturnMyPost {
         comments {
           id
           comment
-          email
           user {
             username
           }
@@ -325,11 +322,10 @@ mutation CreatePost {
 ```
 ------------------------------------------------------------------------------
 ```gql
-mutation {
+mutation CreateComment {
   createComment(inputs: {
     postSlug: "post-1", 
     comment: "Great post", 
-    email: "admin@admin.com"
   }) {
     post {
       title,

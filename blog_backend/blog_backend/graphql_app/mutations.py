@@ -122,7 +122,6 @@ class CreateCommentMutation(graphene.Mutation):
         comment = Comment.objects.create(
             user=user,
             post=post,
-            email=inputs.email,
             comment=inputs.comment,
         )
         success = True

@@ -98,7 +98,6 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    email = models.EmailField()
     comment = models.TextField()
     published_at = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(

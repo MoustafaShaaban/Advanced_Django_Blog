@@ -38,7 +38,7 @@
                         {% if post.author == user %}
                             <div class="form-inline my-2 my-lg-0">
                                 <button class="btn btn-info mx-2">
-                                    <a href="{% url 'blog:update-post' post.slug %}" class="text-white">Update</a>
+                                    <a href="{% url 'blog:update-post' post.slug %}?next={{ request.path|urlencode }}" class="text-white">Update</a>
                                 </button>
 
                                 <button class="btn btn-danger mx-2 my-4">
@@ -88,15 +88,12 @@
                                             <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
                                                 {% csrf_token %}
                                                 <div class="row my-2">
-                                                    {{ form.email|as_crispy_field }}
-                                                </div>
-                                                <div class="row my-2">
                                                     {{ form.comment|as_crispy_field }}
                                                 </div>
-												<div class="modal-footer">
-													<button class="btn btn-success" type="submit">Submit</button>
-													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-												</div>
+                                              <div class="modal-footer">
+                                                <button class="btn btn-success" type="submit">Submit</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                              </div>
                                             </form>
                                         </div>
                                     </div>
@@ -109,6 +106,17 @@
                 <hr class="text-light">
                 <div class="list-group">
                     {% for comment in comments %}
+                        {% if comment.user == user %}
+                              <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Manage
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><a class="dropdown-item" href="{% url 'blog:update-comment' comment.pk %}">Update</a></li>
+                                  <li><a class="dropdown-item" href="{% url 'blog:delete-comment' comment.pk %}">Delete</a></li>
+                                </ul>
+                              </div>
+                            {% endif %}
                         <a href="#" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
                                 <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>

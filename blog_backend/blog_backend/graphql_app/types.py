@@ -43,13 +43,13 @@ class PostType(DjangoObjectType):
 class CommentType(DjangoObjectType):
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'post', 'email', 'comment')
+        fields = ('id', 'user', 'post', 'comment')
 
 
 """class CommentNode(DjangoObjectType):
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'post', 'email', 'comment')
+        fields = ('id', 'user', 'post', 'comment')
         interfaces = (relay.Node,)"""
 
 

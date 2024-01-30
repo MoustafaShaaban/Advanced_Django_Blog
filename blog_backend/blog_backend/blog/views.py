@@ -93,23 +93,6 @@ class DeletePost(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
         return False
 
 
-class CreateComment(LoginRequiredMixin, generic.CreateView):
-    """ A view to add a new post. """
-    model = Comment
-    fields = "__all__"
-    template_name = 'blog/posts/create_comment.html'
-    success_url = reverse_lazy('blog:homepage')
-    object = None
-
-    def dispatch(self, request, slug):
-        self.object = get_object_or_404(Post, slug=slug)
-        return super().dispatch(request, slug)
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-
-
 def post_detail(request, slug):
     """Show a single post with all its tags and comments."""
     post = get_object_or_404(Post, slug=slug)
@@ -125,6 +108,7 @@ def post_detail(request, slug):
     }
 
     return render(request, 'blog/posts/post_detail.html', context)
+
 
 @login_required
 def create_comment(request, slug):
@@ -146,7 +130,34 @@ def create_comment(request, slug):
         'form': form,
         'post': post,
     }
-    return render(request, 'blog/posts/create_comment.html', context)
+    return render(request, 'blog/comments/create_comment.html', context)
+
+
+class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    """ A view to update a specific post. """
+    model = Comment
+    fields = ['comment']
+    template_name = 'blog/comments/update_comment.html'
+    success_url = reverse_lazy('blog:homepage')
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user == comment.user:
+            return True
+        return False
+
+
+class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    """ A view to delete a specific post. """
+    model = Comment
+    template_name = 'blog/comments/delete_comment.html'
+    success_url = reverse_lazy('blog:homepage')
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user == comment.user:
+            return True
+        return False
 
 
 @login_required
