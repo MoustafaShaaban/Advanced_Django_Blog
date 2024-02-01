@@ -23,7 +23,7 @@ class Query(graphene.ObjectType):
     all_posts_with_filters = DjangoFilterConnectionField(PostNode)
     my_posts_with_filters = DjangoFilterConnectionField(PostNode)
 
-    all_comments = graphene.List(CommentType)
+    all_comments = graphene.List(CommentType, approved=graphene.Boolean())
     approved_comments = graphene.List(CommentType)
     comments_by_post = graphene.List(CommentType, postTitle=graphene.String())
     all_tags = graphene.List(TagType)
@@ -44,7 +44,7 @@ class Query(graphene.ObjectType):
 
     @classmethod
     def resolve_all_comments(cls, root, info):
-        return Comment.objects.all()
+        return Comment.objects.filter(approved=True)
 
     @classmethod
     def resolve_approved_comments(cls, root, info):

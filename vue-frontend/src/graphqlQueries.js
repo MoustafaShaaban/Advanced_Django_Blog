@@ -15,7 +15,7 @@ export const getAllPosts = gql`
         comments {
           id
           comment
-          email
+          publishedAt
           user {
             username
           }

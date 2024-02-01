@@ -168,6 +168,17 @@ export default {
                     </router-link>
                     <q-btn color="info" flat @click="confirm(post.id)">Delete</q-btn>
                 </q-card-actions>
+
+                <q-separator />
+                <q-card-section horizontal v-if="post.comments.length > 0">
+                    <q-card-section v-for="comment in post.comments" key="comment.id">
+                        <span>By: {{ comment.user.username }} at {{ comment.publishedAt }}</span>
+                        <p>Comment: {{ comment.comment }}</p>
+                    </q-card-section>
+                </q-card-section>
+                <q-card-section horizontal v-else>
+                    <p>This post has no comments</p>
+                </q-card-section>
             </q-card>
 
             <q-dialog v-model="card">

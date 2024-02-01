@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar, date } from 'quasar';
 import Multiselect from 'vue-multiselect'
-import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI } from '@/api/axios';
+import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -36,6 +36,20 @@ const { isPending, isError, data, error } = useQuery({
 const { isFetching, data: tags, tagsError } = useQuery({
   queryKey: ['tags'],
   queryFn: getAllTags,
+  onError: async (error) => {
+    $q.notify({
+      message: error.message,
+      color: "negative",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  }
+})
+
+const { isPending: commentsIsPending, isError: commentsIsError, data: comments, error: commentsError } = useQuery({
+  queryKey: ['comments'],
+  queryFn: getAllComments,
   onError: async (error) => {
     $q.notify({
       message: error.message,

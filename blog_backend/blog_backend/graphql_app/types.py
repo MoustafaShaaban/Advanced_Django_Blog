@@ -43,7 +43,7 @@ class PostType(DjangoObjectType):
 class CommentType(DjangoObjectType):
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'post', 'comment')
+        fields = ('id', 'user', 'post', 'comment', 'published_at')
 
 
 """class CommentNode(DjangoObjectType):
