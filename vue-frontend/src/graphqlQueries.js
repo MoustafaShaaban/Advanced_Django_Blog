@@ -42,7 +42,6 @@ export const getPostBySlug = gql`
         comments {
           id
           comment
-          email
           user {
             username
           }

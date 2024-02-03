@@ -67,3 +67,13 @@ export const deletePost = async (slug) => {
         }
     })
 }
+
+
+export const createTag = async (tag) => {
+    const response = await axiosAPI.post("tags/", tag, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
+    return response.data
+}

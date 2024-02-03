@@ -9,7 +9,7 @@ class Tag(models.Model):
 
     # TODO: Define fields here
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, null=True)
 
     class Meta:
         """Meta definition for Tag."""

@@ -76,13 +76,13 @@ function onReset() {
 <template>
     <q-page class="flex flex-center">
         <div v-if="isPending" class="alert alert-primary" role="alert">
-            Adding note...
+            Adding post...
         </div>
         <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
             <q-card-section>
                 <div class="row items-center no-wrap">
                     <div class="col">
-                        <div class="text-h6">Add Note</div>
+                        <div class="text-h6">Add Post</div>
                     </div>
                 </div>
             </q-card-section>

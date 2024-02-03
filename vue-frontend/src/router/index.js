@@ -11,6 +11,7 @@ import GraphQLPostList  from "../components/graphql/PostList.vue"
 import GraphQLEditPost from "../components/graphql/EditPost.vue"
 import GraphQLAddPost from "../components/graphql/AddPost.vue"
 import GraphQLAddTag from "../components/graphql/AddTag.vue";
+import AddTagVue from '@/components/posts/AddTag.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +45,14 @@ const router = createRouter({
       path: '/edit-post/:slug',
       name: 'edit-post',
       component: EditBlogPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/add-tag',
+      name: 'add-tag',
+      component: AddTagVue,
       meta: {
         requireAuth: true
       }
