@@ -39,6 +39,21 @@ export const deletePostMutation = gql`
     }
 `
 
+export const createTagMutation = gql`
+    mutation createTag($name: String!) {
+        createTag(input: {name: $name}) {
+            errors {
+                messages
+                field
+            }
+            tag {
+                id
+                name
+            }
+        }
+    }
+`
+
 // export const createPostMutation = gql`
 //     mutation CreatePost($title:String!, $content: String!, $tags: Int!) {
 //         createPost(input: {

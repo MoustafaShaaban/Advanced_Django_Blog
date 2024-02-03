@@ -10,6 +10,7 @@ import EditBlogPost from '@/components/posts/EditPost.vue'
 import GraphQLPostList  from "../components/graphql/PostList.vue"
 import GraphQLEditPost from "../components/graphql/EditPost.vue"
 import GraphQLAddPost from "../components/graphql/AddPost.vue"
+import GraphQLAddTag from "../components/graphql/AddTag.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +69,14 @@ const router = createRouter({
       path: '/graphql/post-edit/:slug',
       name: 'graphql-post-edit',
       component: GraphQLEditPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/graphql/add-tag',
+      name: 'graphql-add-tag',
+      component: GraphQLAddTag,
       meta: {
         requireAuth: true
       }
