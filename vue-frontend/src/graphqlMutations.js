@@ -54,6 +54,41 @@ export const createTagMutation = gql`
     }
 `
 
+export const createCommentMutation = gql`
+    mutation CreateComment($slug: String!, $comment: String!) {
+        createComment(inputs: {
+            postSlug: $slug, 
+            comment: $comment, 
+        }) {
+            success
+        }
+    }
+`
+
+export const deleteCommentMutation = gql`
+    mutation deleteComment($id: Int!) {
+        deleteComment(id: $id) {
+            success
+        }
+    }
+`
+
+// export const createCommentMutation = gql`
+//     mutation createComment(inputs: {postSlug: String!, $name: String!}) {
+//         post {
+//             title,
+//             comments {
+//                 comment,
+//                 user {
+//                     username
+//                 }
+//             }
+//         }
+//     }
+// `
+
+
+
 // export const createPostMutation = gql`
 //     mutation CreatePost($title:String!, $content: String!, $tags: Int!) {
 //         createPost(input: {

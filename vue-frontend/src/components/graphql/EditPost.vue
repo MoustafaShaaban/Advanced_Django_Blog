@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/vue-query'
 
 import { getAllTags } from '../../api/axios';
 import { getPostBySlug } from '@/graphqlQueries';
-import { updatePostMutation } from "@/graphqlMutations"
+import { updatePostMutation, createCommentMutation } from "@/graphqlMutations"
 
 export default {
     name: "GraphQLPostEdit",
@@ -34,7 +34,9 @@ export default {
                 tag: [
                   { id: '',},
                 ]
-            }
+            },
+            comment: "",
+            commentCard: false,
         }
     },
     async mounted() {
@@ -78,6 +80,27 @@ export default {
                     { icon: 'close', color: 'white', round: true, },
                 ]
             })
+        },
+
+        async addComment(slug) {
+            await this.$apollo.mutate({
+                mutation: createCommentMutation,
+                variables: {
+                    // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
+                    slug: this.$route.params.slug,
+                    comment: this.comment
+                }
+            })
+            this.commentCard = false;
+            this.$router.push("/graphql/post-list")
+            Notify.create({
+                message: 'Comment Added Successfully',
+                type: 'positive',
+                actions: [
+                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                    { icon: 'close', color: 'white', round: true, },
+                ]
+            })
         }
     }
 }
@@ -115,6 +138,30 @@ export default {
                     </div>
                 </q-form>
             </q-card-section>
+
+            <q-btn color="info" flat @click="commentCard = true">Add Comment</q-btn>
+
+            <q-dialog v-model="commentCard">
+                <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                    <q-card-section class="row items-center q-pb-none">
+                        <div class="text-h6">Add Comment</div>
+                        <q-space />
+                        <q-btn icon="close" flat round dense v-close-popup />
+                    </q-card-section>
+
+
+                    <q-card-section>
+                        <q-form @submit.prevent="addComment(post.slug)" @reset="onReset">
+                            <q-input filled v-model.lazy.trim="comment" type="textarea" label="Comment" required lazy-rules
+                                :rules="[val => val && val.length > 0 || 'Comment is required']" />
+                            <div class="q-pa-sm q-mt-md">
+                                <q-btn label="Add Post" type="submit" color="primary" />
+                                <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
+                            </div>
+                        </q-form>
+                    </q-card-section>
+                </q-card>
+            </q-dialog>
         </q-card>
     </q-page>
 </template>

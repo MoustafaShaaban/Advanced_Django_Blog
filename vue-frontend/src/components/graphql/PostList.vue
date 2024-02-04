@@ -1,4 +1,5 @@
 <script>
+import { ref } from 'vue'
 import { Notify, Dialog, useQuasar, date } from 'quasar';
 import { useQuery } from "@tanstack/vue-query"
 import Multiselect from 'vue-multiselect'
@@ -6,7 +7,7 @@ import Multiselect from 'vue-multiselect'
 import { useAuthStore } from '@/stores/authStore';
 import { getAllPosts } from "../../graphqlQueries";
 import { getAllTags, axiosAPI } from '@/api/axios';
-import { createPostMutation, deletePostMutation } from '@/graphqlMutations';
+import { createPostMutation, deletePostMutation, deleteCommentMutation } from '@/graphqlMutations';
 
 export default {
     name: "GraphQLPostList",
@@ -26,11 +27,12 @@ export default {
     data() {
         return {
             allPosts: [],
-            card: false,
+            postCard: false,
+            commentsCard: false,
             title: "",
             content: "",
             tag: [],
-            tags: []
+            tags: [],
         }
     },
     methods: {
@@ -46,7 +48,7 @@ export default {
             this.allPosts = data.data.allPosts
         },
 
-        async handleSubmit() {
+        async addPost() {
             await this.$apollo.mutate({
                 mutation: createPostMutation,
                 variables: {
@@ -55,7 +57,7 @@ export default {
                     "tags": this.tag
                 }
             })
-            this.card = false,
+            this.postCard = false,
                 this.title = null
             this.content = null
             this.tags = null
@@ -78,7 +80,7 @@ export default {
             this.tags = null
         },
 
-        confirm(id) {
+        confirmDeletePost(id) {
             Dialog.create({
                 title: 'Confirm',
                 message: 'Are you sure you want to delete this post?',
@@ -86,6 +88,30 @@ export default {
                 persistent: true
             }).onOk(() => {
                 this.deletePost(id)
+                this.$router.push('/graphql/post-list')
+                Notify.create({
+                    message: 'Post Deleted Successfully',
+                    type: 'positive',
+                    actions: [
+                        { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                        { label: 'Dismiss', color: 'white' }
+                    ]
+                })
+            }).onCancel(() => {
+                return
+            }).onDismiss(() => {
+                return
+            })
+        },
+
+        confirmDeleteComment(id) {
+            Dialog.create({
+                title: 'Confirm',
+                message: 'Are you sure you want to delete this comment?',
+                cancel: true,
+                persistent: true
+            }).onOk(() => {
+                this.deleteComment(id)
                 this.$router.push('/graphql/post-list')
                 Notify.create({
                     message: 'Post Deleted Successfully',
@@ -110,7 +136,17 @@ export default {
                     id: parseInt(id),
                 }
             })
-        }
+        },
+
+        async deleteComment(id) {
+            await this.$apollo.mutate({
+                mutation: deleteCommentMutation,
+                variables: {
+                    // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
+                    id: parseInt(id),
+                }
+            })
+        },
     }
 }
 </script>
@@ -166,22 +202,33 @@ export default {
                             Detail
                         </q-btn>
                     </router-link>
-                    <q-btn color="info" flat @click="confirm(post.id)">Delete</q-btn>
+                    <q-btn color="info" flat @click="confirmDeletePost(post.id)">Delete</q-btn>
                 </q-card-actions>
 
                 <q-separator />
-                <q-card-section horizontal v-if="post.comments.length > 0">
-                    <q-card-section v-for="comment in post.comments" key="comment.id">
-                        <span>By: {{ comment.user.username }} at {{ comment.publishedAt }}</span>
-                        <p>Comment: {{ comment.comment }}</p>
-                    </q-card-section>
-                </q-card-section>
-                <q-card-section horizontal v-else>
-                    <p>This post has no comments</p>
-                </q-card-section>
+                    <q-card class="my-card">
+                        <q-toolbar>
+                            <q-toolbar-title><span class="text-weight-bold">Comments</span></q-toolbar-title>
+                        </q-toolbar>
+
+                        <q-card-section v-if="post.comments.length > 0">
+                            <q-card-section v-for="comment in post.comments" key="comment.id">
+                                <div class="text-h5">{{ comment.comment }}</div>
+                                <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                                    by: {{ comment.user.username }}
+                                </q-item-label>
+                                <q-card-actions v-if="authStore.$state.isAuthenticated">
+                                    <q-btn color="info" flat @click="confirmDeleteComment(comment.id)">Delete</q-btn>
+                                </q-card-actions>
+                            </q-card-section>
+                        </q-card-section>
+                        <q-card-section horizontal v-else>
+                            <p>This post has no comments</p>
+                        </q-card-section>
+                    </q-card>
             </q-card>
 
-            <q-dialog v-model="card">
+            <q-dialog v-model="postCard">
                 <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">Add Post</div>
@@ -191,7 +238,7 @@ export default {
 
 
                     <q-card-section>
-                        <q-form @submit.prevent="handleSubmit" @reset="onReset">
+                        <q-form @submit.prevent="addPost" @reset="onReset">
                             <q-input filled v-model.lazy.trim="title" label="Post Title" required lazy-rules
                                 :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
@@ -217,8 +264,9 @@ export default {
                     </q-card-section>
                 </q-card>
             </q-dialog>
+
             <q-page-sticky position="bottom-right" :offset="[18, 18]">
-                <q-btn fab icon="add" color="primary" @click="card = true">
+                <q-btn fab icon="add" color="primary" @click="postCard = true">
                 </q-btn>
             </q-page-sticky>
         </div>
@@ -228,5 +276,5 @@ export default {
 <style lang="sass" scoped>
 .my-card
   width: 100%
-  width: 500px
+  width: 600px
 </style>
