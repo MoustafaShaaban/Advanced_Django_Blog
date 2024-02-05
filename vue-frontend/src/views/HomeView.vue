@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
-import { Dialog, Notify, useQuasar, date } from 'quasar';
+import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
 import Multiselect from 'vue-multiselect'
-import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments } from '@/api/axios';
+import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments, deleteComment } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -70,6 +70,15 @@ const deletePostMutation = useMutation({
   }
 })
 
+const deleteCommentMutation = useMutation({
+  mutationFn: deleteComment,
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ["allBlogPosts"]
+    })
+  }
+})
+
 const { isPendingAddBlogPost, isErrorAddBlogPost, errorAddBlogPost, isSuccess, mutate, reset } = useMutation({
   mutationFn: createPost,
   onSuccess: async () => {
@@ -98,7 +107,7 @@ const deletePostFunction = (slug) => {
   deletePostMutation.mutate(slug)
 }
 
-function confirm(slug) {
+function confirmDeletePost(slug) {
   $q.dialog({
     title: 'Confirm',
     message: 'Are you sure you want to delete this post?',
@@ -121,7 +130,33 @@ function confirm(slug) {
   })
 }
 
-function handleSubmit() {
+const deleteCommentFunction = (id) => {
+  deleteCommentMutation.mutate(id)
+}
+
+function confirmDeleteComment(id) {
+  Dialog.create({
+    title: 'Confirm',
+    message: 'Are you sure you want to delete this comment?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    deleteCommentFunction(id)
+    Notify.create({
+      message: 'Comment Deleted Successfully',
+      type: "positive",
+      actions: [
+        { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  }).onCancel(() => {
+    return
+  }).onDismiss(() => {
+    return
+  })
+}
+
+function addPost() {
   mutate({
     title: title.value,
     content: content.value,
@@ -190,7 +225,29 @@ function onReset() {
             </q-btn>
           </router-link>
           <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
-            @click="confirm(post.slug)">Delete</q-btn>
+            @click="confirmDeletePost(post.slug)">Delete</q-btn>
+
+          <q-separator />
+          <q-card class="my-card">
+            <q-toolbar>
+              <q-toolbar-title><span class="text-weight-bold">Comments</span></q-toolbar-title>
+            </q-toolbar>
+
+            <q-card-section v-if="post.comments.length > 0">
+              <q-card-section v-for="comment in post.comments" key="comment.id">
+                <div class="text-h5">{{ comment.comment }}</div>
+                <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                  by: {{ comment.user }}
+                </q-item-label>
+                <q-card-actions v-if="authStore.$state.isAuthenticated">
+                  <q-btn color="info" flat @click="confirmDeleteComment(comment.id)">Delete</q-btn>
+                </q-card-actions>
+              </q-card-section>
+            </q-card-section>
+            <q-card-section horizontal v-else>
+              <p>This post has no comments</p>
+            </q-card-section>
+          </q-card>
         </q-card-actions>
       </q-card>
 
@@ -204,7 +261,7 @@ function onReset() {
 
 
           <q-card-section>
-            <q-form @submit.prevent="handleSubmit" @reset="onReset">
+            <q-form @submit.prevent="addPost" @reset="onReset">
               <q-input filled v-model="title" label="Post Title" required lazy-rules
                 :rules="[val => val && val.length > 0 || 'Post Title is required']" />
 
@@ -216,15 +273,10 @@ function onReset() {
               </select> -->
               <label>Post Tags</label>
               <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
-              <multiselect 
-                v-model="tag" 
-                :multiple="true" 
-                :custom-label="opt => tags.find(e => e.id === opt).name" 
-                deselect-label="You must select at least one tag" 
-                :options="tags.map(tag => tag.id)" 
-                :searchable="true" 
+              <multiselect v-model="tag" :multiple="true" :custom-label="opt => tags.find(e => e.id === opt).name"
+                deselect-label="You must select at least one tag" :options="tags.map(tag => tag.id)" :searchable="true"
                 :allow-empty="false">
-                  <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
               </multiselect>
               <div class="q-pa-sm q-mt-md">
                 <q-btn label="Add Post" type="submit" color="primary" />

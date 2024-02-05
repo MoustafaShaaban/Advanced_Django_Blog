@@ -16,8 +16,10 @@ export default {
         content: "",
         tag: [],
       },
-      tags: []
-      
+      tags: [],
+      comment: "",
+      commentCard: false,
+
     }
   },
   async mounted() {
@@ -59,6 +61,37 @@ export default {
         })
       }
     },
+
+    async addComment() {
+      try {
+        await axiosAPI.post('/comments/', {
+          comment: this.comment,
+          post: this.post.id
+        }, {
+          headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+          }
+        }).then(response => {
+          this.commentCard = false;
+          this.$router.push('/');
+          Notify.create({
+            message: 'Thank ypu for commenting, your comment is waiting admin approval',
+            type: "positive",
+            actions: [
+              { icon: 'close', color: 'white', round: true, }
+            ]
+          })
+        })
+      } catch (error) {
+        Notify.create({
+          message: error.message,
+          color: "negative",
+          actions: [
+            { icon: 'close', color: 'white', round: true, }
+          ]
+        })
+      }
+    }
   }
 }
 </script>
@@ -84,13 +117,13 @@ export default {
             :rules="[val => val && val.length > 0 || 'Post Content is required']" />
           <q-separator />
           <q-separator />
-            <label>Post Tags</label>
-            <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
-            <multiselect v-model="post.tag" :multiple="true" :custom-label="opt => tags.find(e => e.id === opt).name"
-                deselect-label="You must select at least one tag" :options="tags.map(i => i.id)" :searchable="true"
-                :allow-empty="false">
-                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
-            </multiselect>
+          <label>Post Tags</label>
+          <!-- https://github.com/shentao/vue-multiselect/issues/133#issuecomment-1652845391 -->
+          <multiselect v-model="post.tag" :multiple="true" :custom-label="opt => tags.find(e => e.id === opt).name"
+            deselect-label="You must select at least one tag" :options="tags.map(i => i.id)" :searchable="true"
+            :allow-empty="false">
+            <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+          </multiselect>
           <!-- <select v-model="post.tag" multiple>
             <option v-for="tag in tags" id="tag.id" :value="tag.id">{{ tag.name }}</option>
           </select> -->
@@ -101,6 +134,30 @@ export default {
           </div>
         </q-form>
       </q-card-section>
+
+      <q-btn color="info" flat @click="commentCard = true">Add Comment</q-btn>
+
+            <q-dialog v-model="commentCard">
+                <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                    <q-card-section class="row items-center q-pb-none">
+                        <div class="text-h6">Add Comment</div>
+                        <q-space />
+                        <q-btn icon="close" flat round dense v-close-popup />
+                    </q-card-section>
+
+
+                    <q-card-section>
+                        <q-form @submit.prevent="addComment(post.id)" @reset="onReset">
+                            <q-input filled v-model.lazy.trim="comment" type="textarea" label="Comment" required lazy-rules
+                                :rules="[val => val && val.length > 0 || 'Comment is required']" />
+                            <div class="q-pa-sm q-mt-md">
+                                <q-btn label="Add Post" type="submit" color="primary" />
+                                <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
+                            </div>
+                        </q-form>
+                    </q-card-section>
+                </q-card>
+            </q-dialog>
     </q-card>
   </q-page>
 </template>

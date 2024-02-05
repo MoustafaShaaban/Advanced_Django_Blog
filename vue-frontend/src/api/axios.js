@@ -68,6 +68,14 @@ export const deletePost = async (slug) => {
     })
 }
 
+export const deleteComment = async (id) => {
+    await axiosAPI.delete("/comments/" + id, {
+        headers: {
+          'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
+}
+
 
 export const createTag = async (tag) => {
     const response = await axiosAPI.post("tags/", tag, {

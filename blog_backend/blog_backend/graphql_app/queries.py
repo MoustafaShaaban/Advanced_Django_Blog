@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from graphql import GraphQLError
 
 import graphene
@@ -89,7 +90,8 @@ class Query(graphene.ObjectType):
 
     @classmethod
     def resolve_all_posts(cls, root, info):
-        return Post.objects.all()
+        # Source: https://stackoverflow.com/a/56869088
+        return Post.objects.prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True)))
 
     @classmethod
     def resolve_my_posts(cls, root, info):
