@@ -90,3 +90,44 @@ export const getAllTags = gql`
         }
     }
 `
+
+export const getCommentById = gql`
+  query getCommentById($id: Int!) {
+    commentById(id: $id) {
+      id
+      user {
+        username
+      }
+      comment
+    }
+  }
+`
+
+export const filterPostsByTitle = gql`
+  query postFilters($title: String!, $limit: Int) {
+    allPostsWithFilters(title_Icontains: $title, first: $limit) {
+      edges {
+        node {
+          title
+          slug
+          author {
+            username
+          }
+          updatedAt
+          content
+          comments {
+            id
+            user {
+              username
+            }
+            comment
+          }
+          tag {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`

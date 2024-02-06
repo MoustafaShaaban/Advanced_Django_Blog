@@ -206,26 +206,31 @@ export default {
                 </q-card-actions>
 
                 <q-separator />
-                    <q-card class="my-card">
-                        <q-toolbar>
-                            <q-toolbar-title><span class="text-weight-bold">Comments</span></q-toolbar-title>
-                        </q-toolbar>
+                <q-card class="my-card">
+                    <q-toolbar>
+                        <q-toolbar-title><span class="text-weight-bold">Comments</span></q-toolbar-title>
+                    </q-toolbar>
 
-                        <q-card-section v-if="post.comments.length > 0">
-                            <q-card-section v-for="comment in post.comments" key="comment.id">
-                                <div class="text-h5">{{ comment.comment }}</div>
-                                <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
-                                    by: {{ comment.user.username }}
-                                </q-item-label>
-                                <q-card-actions v-if="authStore.$state.isAuthenticated">
-                                    <q-btn color="info" flat @click="confirmDeleteComment(comment.id)">Delete</q-btn>
-                                </q-card-actions>
-                            </q-card-section>
+                    <q-card-section v-if="post.comments.length > 0">
+                        <q-card-section v-for="comment in post.comments" key="comment.id">
+                            <div class="text-h5">{{ comment.comment }}</div>
+                            <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                                by: {{ comment.user.username }}
+                            </q-item-label>
+                            <q-card-actions v-if="authStore.$state.isAuthenticated">
+                                <router-link :to="{ name: 'graphql-edit-comment', params: { id: comment.id } }">
+                                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                                        Edit
+                                    </q-btn>
+                                </router-link>
+                                <q-btn color="info" flat @click="confirmDeleteComment(comment.id)">Delete</q-btn>
+                            </q-card-actions>
                         </q-card-section>
-                        <q-card-section horizontal v-else>
-                            <p>This post has no comments</p>
-                        </q-card-section>
-                    </q-card>
+                    </q-card-section>
+                    <q-card-section horizontal v-else>
+                        <p>This post has no comments</p>
+                    </q-card-section>
+                </q-card>
             </q-card>
 
             <q-dialog v-model="postCard">

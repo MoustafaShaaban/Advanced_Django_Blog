@@ -32,7 +32,7 @@ export default {
                 title: "",
                 content: "",
                 tag: [
-                  { id: '',},
+                    { id: '', },
                 ]
             },
             comment: "",
@@ -128,12 +128,12 @@ export default {
                     <q-input filled v-model="post.content" type="textarea" required label="Post Content" lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Content is required']" />
                     <q-separator />
-                   <select v-model="post.tag" multiple>
+                    <select v-model="post.tag" multiple>
                         <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>
                     </select>
                     <div class="q-pa-sm q-mt-md">
                         <q-btn label="Edit" type="submit" color="primary" />
-                        <q-btn label="Cancel" type="button" @click="() => { this.$router.push('/') }"
+                        <q-btn label="Cancel" type="button" @click="() => { this.$router.push('/graphql/post-list') }"
                             class="bg-grey-8 text-white q-ml-sm" />
                     </div>
                 </q-form>

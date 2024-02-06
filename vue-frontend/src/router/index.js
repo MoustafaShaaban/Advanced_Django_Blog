@@ -10,8 +10,12 @@ import EditBlogPost from '@/components/posts/EditPost.vue'
 import GraphQLPostList  from "../components/graphql/PostList.vue"
 import GraphQLEditPost from "../components/graphql/EditPost.vue"
 import GraphQLAddPost from "../components/graphql/AddPost.vue"
-import GraphQLAddTag from "../components/graphql/AddTag.vue";
+import GraphQLAddTag from "../components/graphql/EditComment.vue";
+import GraphQLEditComment from "../components/graphql/EditComment.vue";
 import AddTagVue from '@/components/posts/AddTag.vue'
+import EditComment from '@/components/posts/EditComment.vue'
+
+import GraphQLPostSearch from "@/components/graphql/PostSearch.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +49,14 @@ const router = createRouter({
       path: '/edit-post/:slug',
       name: 'edit-post',
       component: EditBlogPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/edit-comment/:id',
+      name: 'edit-comment',
+      component: EditComment,
       meta: {
         requireAuth: true
       }
@@ -86,6 +98,22 @@ const router = createRouter({
       path: '/graphql/add-tag',
       name: 'graphql-add-tag',
       component: GraphQLAddTag,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/graphql/edit-comment/:id',
+      name: 'graphql-edit-comment',
+      component: GraphQLEditComment,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/search',
+      name: 'post-search',
+      component: GraphQLPostSearch,
       meta: {
         requireAuth: true
       }

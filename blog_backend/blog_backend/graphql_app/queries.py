@@ -27,6 +27,7 @@ class Query(graphene.ObjectType):
     all_comments = graphene.List(CommentType, approved=graphene.Boolean())
     approved_comments = graphene.List(CommentType)
     comments_by_post = graphene.List(CommentType, postTitle=graphene.String())
+    comment_by_id = graphene.Field(CommentType, id=graphene.Int(required=True))
     all_tags = graphene.List(TagType)
 
     @classmethod
@@ -34,7 +35,7 @@ class Query(graphene.ObjectType):
         try:
             return Post.objects.get(pk=id)
         except Post.DoesNotExist:
-            return GraphQLError('No note found with the provided id')
+            return GraphQLError('No post found with the provided id')
 
     @classmethod
     def resolve_post_by_slug(cls, root, info, slug):
@@ -50,6 +51,13 @@ class Query(graphene.ObjectType):
     @classmethod
     def resolve_approved_comments(cls, root, info):
         return Comment.objects.filter(approved=True).all()
+
+    @classmethod
+    def resolve_comment_by_id(cls, root, info, id):
+        try:
+            return Comment.objects.get(pk=id)
+        except Comment.DoesNotExist:
+            return GraphQLError('No comment found with the provided id')
 
     @classmethod
     def resolve_all_tags(cls, root, info):

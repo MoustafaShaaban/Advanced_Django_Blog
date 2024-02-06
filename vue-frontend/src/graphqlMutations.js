@@ -73,36 +73,10 @@ export const deleteCommentMutation = gql`
     }
 `
 
-// export const createCommentMutation = gql`
-//     mutation createComment(inputs: {postSlug: String!, $name: String!}) {
-//         post {
-//             title,
-//             comments {
-//                 comment,
-//                 user {
-//                     username
-//                 }
-//             }
-//         }
-//     }
-// `
-
-
-
-// export const createPostMutation = gql`
-//     mutation CreatePost($title:String!, $content: String!, $tags: Int!) {
-//         createPost(input: {
-//             title: $title,
-//             content: $content
-//             tags: $tags
-            
-//         }) {
-//             success
-//             post {
-//                 id
-//                 title
-//                 content
-//             }
-//         }
-//     }
-// `
+export const updateCommentMutation = gql`
+    mutation updateComment($id: Int!, $comment: String!) {
+        updateComment(id: $id, comment: $comment) {
+        success
+        }
+    }
+`

@@ -240,6 +240,11 @@ function onReset() {
                   by: {{ comment.user }}
                 </q-item-label>
                 <q-card-actions v-if="authStore.$state.isAuthenticated">
+                  <router-link :to="{ name: 'edit-comment', params: { id: comment.id } }">
+                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                      Edit
+                    </q-btn>
+                  </router-link>
                   <q-btn color="info" flat @click="confirmDeleteComment(comment.id)">Delete</q-btn>
                 </q-card-actions>
               </q-card-section>
