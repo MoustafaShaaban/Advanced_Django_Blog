@@ -1,12 +1,23 @@
 from django.db.models import Prefetch
 
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, generics
+from rest_framework import filters as rest_filters
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters
+from django_filters import rest_framework as filters
 
 from blog_backend.blog.models import Post, Comment, Tag
 from blog_backend.api.serializers import PostSerializer, CommentSerializer, TagSerializer
 from blog_backend.api.permissions import PostPermissions, CommentPermissions
+
+
+class PostFilters(filters.FilterSet):
+    title = filters.CharFilter(field_name="title", lookup_expr="icontains")
+    content = filters.CharFilter(field_name="content", lookup_expr="icontains")
+    slug = filters.CharFilter(field_name="slug", lookup_expr="icontains")
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'slug']
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -14,8 +25,10 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True)))
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, PostPermissions]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'content']
+    #filter_backends = [filters.SearchFilter]
+    #search_fields = ['title', 'content']
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class= PostFilters
     lookup_field = 'slug'
 
     def perform_create(self, serializer):
@@ -25,8 +38,8 @@ class PostViewSet(viewsets.ModelViewSet):
 class UserPostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, PostPermissions]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title', 'content']
+    #filter_backends = [filters.SearchFilter]
+    #search_fields = ['title', 'content']
     lookup_field = 'slug'
 
     def get_queryset(self):

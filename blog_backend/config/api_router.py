@@ -1,6 +1,5 @@
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
-
 from blog_backend.api.views import PostViewSet, UserPostViewSet, CommentViewSet, TagViewSet
 
 if settings.DEBUG:
@@ -16,4 +15,7 @@ router.register("tags", TagViewSet, basename="tags")
 
 
 app_name = "api"
+
 urlpatterns = router.urls
+
+

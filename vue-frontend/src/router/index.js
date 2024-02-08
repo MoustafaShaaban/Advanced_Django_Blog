@@ -6,6 +6,7 @@ import LoginPageVue from '@/components/auth/LoginPage.vue'
 
 import AddBlogPost from '@/components/posts/CreateBlogPost.vue'
 import EditBlogPost from '@/components/posts/EditPost.vue'
+import SearchPost from '@/components/posts/SearchPost.vue'
 
 import GraphQLPostList  from "../components/graphql/PostList.vue"
 import GraphQLEditPost from "../components/graphql/EditPost.vue"
@@ -35,6 +36,14 @@ const router = createRouter({
       component: LoginPageVue,
       meta: {
         requireAuth: false
+      }
+    },
+    {
+      path: '/post-search',
+      name: 'post-search',
+      component: SearchPost,
+      meta: {
+        requireAuth: true
       }
     },
     {

@@ -85,3 +85,8 @@ export const createTag = async (tag) => {
     })
     return response.data
 }
+
+export const searchPost = async (title) => {
+    const response = await axiosAPI.get("/posts/?title=" + title)
+    return response.data
+}
