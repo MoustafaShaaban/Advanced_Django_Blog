@@ -23,6 +23,7 @@ export default {
             postCard: false,
             commentsCard: false,
             search: "",
+            limit: "",
             content: "",
             tag: [],
             tags: [],
@@ -38,18 +39,21 @@ export default {
             let data = await this.$apollo.query({
                 query: filterPostsByTitle,
                 variables: {
-                    "title": this.search
+                    "title": this.search,
+                    "limit": parseInt(this.limit)
                 }
 
             })
 
             this.allPosts = data.data.allPostsWithFilters
             this.search = null
+            this.limit = null
             this.searchForm = false
         },
 
         onReset() {
             this.search = null
+            this.limit = null
         },
     }
 }
@@ -57,8 +61,8 @@ export default {
 
 <template>
     <q-page class="flex flex-center">
-        <q-btn v-if="!this.searchForm" @click="this.searchForm = true">Open Search Form</q-btn>
-        <q-card v-if="this.searchForm" flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-btn v-if="!this.searchForm" @click="this.searchForm = true" class="q-mr-md">Open Search Form</q-btn>
+        <q-card v-if="this.searchForm" flat bordered class="form-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">Search for post by title</div>
                 <q-space />
@@ -67,8 +71,9 @@ export default {
 
             <q-card-section>
                 <q-form @submit.prevent="getPosts" @reset="onReset">
-                    <q-input filled v-model="search" label="Search for Post by  Title" required lazy-rules
+                    <q-input filled v-model="search" label="Search for Post by Title" required lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Title is required']" />
+                    <q-input filled v-model="limit" label="Limit number of search result (not required)" type="number" />
 
                     <div class="q-pa-sm q-mt-md">
                         <q-btn label="Search" type="submit" color="primary" />
@@ -81,7 +86,7 @@ export default {
         <span v-if="$apollo.loading">Loading...</span>
         <div v-else class="q-mt-lg">
             <q-card v-for="post in allPosts.edges" :key="post.id" class="my-card q-mt-md" flat bordered>
-                <q-btn @click="this.allPosts = []">Clear Search Result</q-btn>
+                <q-btn @click="this.allPosts = []" class="q-my-md">Clear Search Result</q-btn>
                 <q-item>
                     <!-- <q-item-section avatar>
                         <q-avatar>
@@ -155,6 +160,10 @@ export default {
 </template>
 
 <style lang="sass" scoped>
+.form-card
+  width: 100%
+  width: 450px
+
 .my-card
   width: 100%
   width: 600px

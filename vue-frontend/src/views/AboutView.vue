@@ -38,6 +38,9 @@
           <q-item clickable v-ripple>
             <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://apollo.vuejs.org/" target="_blank">Vue Apollo</a>
           </q-item>
+          <q-item clickable v-ripple>
+            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://vue-multiselect.js.org/" target="_blank">Vue-Multiselect</a>
+          </q-item>
         </q-list>
       </q-card-section>
     </q-card>

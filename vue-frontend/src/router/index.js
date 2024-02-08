@@ -111,8 +111,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/search',
-      name: 'post-search',
+      path: '/graphql-search',
+      name: 'graphql-search',
       component: GraphQLPostSearch,
       meta: {
         requireAuth: true
