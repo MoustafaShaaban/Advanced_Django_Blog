@@ -59,3 +59,15 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     #permission_classes = [permissions.IsAuthenticated]
+
+
+class SearchForPosts(generics.ListAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated, PostPermissions]
+
+    def get_queryset(self):
+        title = self.request.query_params.get('title', None)
+        limit = self.request.query_params.get('limit', 5)
+
+        return Post.objects.filter(title__icontains=title)[:int(limit)]
+

@@ -33,16 +33,18 @@ export default {
         },
 
         async getPosts() {
-            await axiosAPI.get("/posts/?title=" + this.title).then((response) => {
+            await axiosAPI.get(`/search/?title=${this.title}&limit=${this.limit ? this.limit : 5}`).then((response) => {
                 this.allPosts = response.data
             })
 
             this.title = null
+            this.limit = null
             this.searchForm = false
         },
 
         onReset() {
             this.title = null
+            this.limit = null
         },
     }
 }
@@ -62,7 +64,7 @@ export default {
                 <q-form @submit.prevent="getPosts" @reset="onReset">
                     <q-input filled v-model="title" label="Search for Post by Title" required lazy-rules
                         :rules="[val => val && val.length > 0 || 'Post Title is required']" />
-
+                    <q-input filled v-model="limit" type="number" label="Limit Results (if not provided default is 5)" />
                     <div class="q-pa-sm q-mt-md">
                         <q-btn label="Search" type="submit" color="primary" />
                         <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
