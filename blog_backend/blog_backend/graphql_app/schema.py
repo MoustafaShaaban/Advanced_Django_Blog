@@ -6,6 +6,7 @@ from blog_backend.graphql_app.mutations import (
     CreatePostMutation,
     UpdatePostMutation,
     DeletePostMutation,
+    AddPostToUserFavoritesMutation,
 
     CreateCommentMutation,
     UpdateCommentMutation,
@@ -36,6 +37,8 @@ class Mutations(graphene.ObjectType):
 
     delete_post = DeletePostMutation.Field()
     delete_post_relay = DeletePostRelayMutation.Field()
+
+    add_post_to_user_favorites = AddPostToUserFavoritesMutation.Field()
 
     create_comment = CreateCommentMutation.Field()
     create_comment_relay = CreateCommentRelayMutation.Field()

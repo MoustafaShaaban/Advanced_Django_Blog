@@ -94,11 +94,10 @@ export default {
             this.commentCard = false;
             this.$router.push("/graphql/post-list")
             Notify.create({
-                message: 'Comment Added Successfully',
-                type: 'positive',
+                message: 'Thank ypu for commenting, your comment is waiting admin approval',
+                type: "positive",
                 actions: [
-                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
-                    { icon: 'close', color: 'white', round: true, },
+                    { icon: 'close', color: 'white', round: true, }
                 ]
             })
         }

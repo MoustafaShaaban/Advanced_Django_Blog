@@ -37,7 +37,7 @@ class TagNode(DjangoObjectType):
 class PostType(DjangoObjectType):
     class Meta:
         model = Post
-        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'comments', 'tag')
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag', 'favorites',)
 
 
 class CommentType(DjangoObjectType):

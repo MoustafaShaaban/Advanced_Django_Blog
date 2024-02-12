@@ -102,6 +102,31 @@ class DeletePostMutation(graphene.Mutation):
         return DeletePostMutation(success=success)
 
 
+class AddPostToUserFavoritesMutation(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int(required=True)
+
+    success = graphene.Boolean()
+
+    @staticmethod
+    def mutate(root, info, id):
+        user = info.context.user
+        post_instance = Post.objects.get(pk=id)
+
+        if not post_instance:
+            raise GraphQLError("No post found with the provided id")
+
+        if not post_instance.favorites.filter(id=user.id).exists():
+            post_instance.favorites.add(user)
+            post_instance.save()
+            success = True
+        else:
+            post_instance.favorites.remove(user)
+            post_instance.save()
+            success = True
+        return AddPostToUserFavoritesMutation(success=success)
+
+
 class CreateCommentMutation(graphene.Mutation):
     class Arguments:
         inputs = CommentInput(required=True)

@@ -25,10 +25,10 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True)))
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, PostPermissions]
-    #filter_backends = [filters.SearchFilter]
-    #search_fields = ['title', 'content']
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['title', 'content']
     filter_backends = (DjangoFilterBackend,)
-    filterset_class= PostFilters
+    filterset_class = PostFilters
     lookup_field = 'slug'
 
     def perform_create(self, serializer):
@@ -38,8 +38,8 @@ class PostViewSet(viewsets.ModelViewSet):
 class UserPostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated, PostPermissions]
-    #filter_backends = [filters.SearchFilter]
-    #search_fields = ['title', 'content']
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['title', 'content']
     lookup_field = 'slug'
 
     def get_queryset(self):
@@ -58,7 +58,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    #permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class SearchForPosts(generics.ListAPIView):
@@ -73,5 +73,3 @@ class SearchForPosts(generics.ListAPIView):
             return Post.objects.filter(title__icontains=title)[:int(limit)]
         except Post.DoesNotExist:
             return APIException('No post found with the provided title')
-
-

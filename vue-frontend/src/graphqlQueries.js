@@ -10,8 +10,12 @@ export const getAllPosts = gql`
           username
           avatar
         }
+        favorites {
+          username
+        }
         content
         updatedAt
+        publishedAt
         comments {
           id
           comment

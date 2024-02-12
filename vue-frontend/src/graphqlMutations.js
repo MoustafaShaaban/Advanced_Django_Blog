@@ -39,6 +39,14 @@ export const deletePostMutation = gql`
     }
 `
 
+export const addPostToUserFavoritesMutation = gql`
+    mutation addPostToUserFavorites($id: Int!) {
+        addPostToUserFavorites(id: $id) {
+            success
+        }
+    }
+`
+
 export const createTagMutation = gql`
     mutation createTag($name: String!) {
         createTag(input: {name: $name}) {

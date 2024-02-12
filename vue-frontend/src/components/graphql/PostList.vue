@@ -3,11 +3,12 @@ import { ref } from 'vue'
 import { Notify, Dialog, useQuasar, date } from 'quasar';
 import { useQuery } from "@tanstack/vue-query"
 import Multiselect from 'vue-multiselect'
+import moment from 'moment';
 
 import { useAuthStore } from '@/stores/authStore';
 import { getAllPosts } from "../../graphqlQueries";
 import { getAllTags, axiosAPI } from '@/api/axios';
-import { createPostMutation, deletePostMutation, deleteCommentMutation } from '@/graphqlMutations';
+import { createPostMutation, deletePostMutation, deleteCommentMutation, addPostToUserFavoritesMutation } from '@/graphqlMutations';
 
 export default {
     name: "GraphQLPostList",
@@ -38,6 +39,12 @@ export default {
     methods: {
         refreshPage() {
             window.location.reload();
+        },
+        // https://stackoverflow.com/a/54662898
+        format_date(value) {
+            if (value) {
+                return moment(String(value)).format('DD MMMM YYYY')
+            }
         },
 
         async getPosts() {
@@ -128,6 +135,30 @@ export default {
             })
         },
 
+        confirmRemovePostFromFavorites(id) {
+            Dialog.create({
+                title: 'Confirm',
+                message: 'Are you sure you want to remove this post from your favorites list?',
+                cancel: true,
+                persistent: true
+            }).onOk(() => {
+                this.removePostFromFavorites(id)
+                this.$router.push('/graphql/post-list')
+                Notify.create({
+                    message: 'Post Deleted Successfully',
+                    type: 'positive',
+                    actions: [
+                        { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                        { label: 'Dismiss', color: 'white' }
+                    ]
+                })
+            }).onCancel(() => {
+                return
+            }).onDismiss(() => {
+                return
+            })
+        },
+
         async deletePost(id) {
             await this.$apollo.mutate({
                 mutation: deletePostMutation,
@@ -138,9 +169,37 @@ export default {
             })
         },
 
+        async addPostToUserFavorites(id) {
+            await this.$apollo.mutate({
+                mutation: addPostToUserFavoritesMutation,
+                variables: {
+                    // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
+                    id: parseInt(id),
+                }
+            })
+            Notify.create({
+                message: 'Added Post to your Favorites Successfully',
+                type: 'positive',
+                actions: [
+                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                    { label: 'Dismiss', color: 'white' }
+                ]
+            })
+        },
+
         async deleteComment(id) {
             await this.$apollo.mutate({
                 mutation: deleteCommentMutation,
+                variables: {
+                    // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
+                    id: parseInt(id),
+                }
+            })
+        },
+
+        async removePostFromFavorites(id) {
+            await this.$apollo.mutate({
+                mutation: addPostToUserFavoritesMutation,
                 variables: {
                     // https://stackoverflow.com/questions/73172384/variable-id-got-invalid-value-1-int-cannot-represent-non-integer-value-1
                     id: parseInt(id),
@@ -192,17 +251,25 @@ export default {
 
                 <q-separator />
 
-                <q-card-actions v-if="authStore.$state.isAuthenticated">
-                    <q-btn flat round icon="event" />
-                    <q-btn flat>
-                        {{ post.updatedAt }}
+                <q-card-actions v-if="authStore.$state.isAuthenticated" vertical>
+                    <q-btn size="sm" flat icon="event">
+                        Published At: {{ format_date(post.publishedAt) }}
                     </q-btn>
+                    <q-btn size="sm" flat icon="event">
+                        Last Updated: {{ format_date(post.updatedAt) }}
+                    </q-btn>
+                </q-card-actions>
+
+                <q-card-actions v-if="authStore.$state.isAuthenticated">
                     <router-link :to="{ name: 'graphql-edit-post', params: { slug: post.slug } }">
                         <q-btn flat color="primary">
                             Detail
                         </q-btn>
                     </router-link>
                     <q-btn color="info" flat @click="confirmDeletePost(post.id)">Delete</q-btn>
+                    <q-btn v-if="post.favorites.length > 0" color="info" flat
+                        @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
+                    <q-btn v-else color="info" flat @click="addPostToUserFavorites(post.id)">Add to favorites</q-btn>
                 </q-card-actions>
 
                 <q-separator />
