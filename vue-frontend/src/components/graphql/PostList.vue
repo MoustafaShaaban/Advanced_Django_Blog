@@ -197,7 +197,7 @@ export default {
                     <q-btn flat>
                         {{ post.updatedAt }}
                     </q-btn>
-                    <router-link :to="{ name: 'graphql-post-edit', params: { slug: post.slug } }">
+                    <router-link :to="{ name: 'graphql-edit-post', params: { slug: post.slug } }">
                         <q-btn flat color="primary">
                             Detail
                         </q-btn>

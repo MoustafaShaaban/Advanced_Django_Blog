@@ -33,13 +33,23 @@ export default {
         },
 
         async getPosts() {
-            await axiosAPI.get(`/search/?title=${this.title}&limit=${this.limit ? this.limit : 5}`).then((response) => {
-                this.allPosts = response.data
-            })
+            try {
+                await axiosAPI.get(`/search/?title=${this.title}&limit=${this.limit ? this.limit : 5}`).then((response) => {
+                    this.allPosts = response.data
+                })
 
-            this.title = null
-            this.limit = null
-            this.searchForm = false
+                this.title = null
+                this.limit = null
+                this.searchForm = false
+            } catch (error) {
+                Notify.create({
+                    message: error.message,
+                    type: "negative",
+                    actions: [
+                        { icon: 'close', color: 'white', round: true, }
+                    ]
+                })
+            }
         },
 
         onReset() {
@@ -53,7 +63,8 @@ export default {
 <template>
     <q-page class="flex flex-center">
         <q-btn v-if="!this.searchForm" @click="this.searchForm = true" class="q-mr-md">Open Search Form</q-btn>
-        <q-card v-if="this.searchForm" flat bordered class="form-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card v-if="this.searchForm" flat bordered class="form-card"
+            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">Search for post by title</div>
                 <q-space />

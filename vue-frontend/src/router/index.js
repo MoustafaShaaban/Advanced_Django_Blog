@@ -9,8 +9,8 @@ import EditBlogPost from '@/components/posts/EditPost.vue'
 import SearchPost from '@/components/posts/SearchPost.vue'
 
 import GraphQLPostList  from "../components/graphql/PostList.vue"
-import GraphQLEditPost from "../components/graphql/EditPost.vue"
 import GraphQLAddPost from "../components/graphql/AddPost.vue"
+import GraphQLEditPost from "../components/graphql/EditPost.vue"
 import GraphQLAddTag from "../components/graphql/EditComment.vue";
 import GraphQLEditComment from "../components/graphql/EditComment.vue";
 import AddTagVue from '@/components/posts/AddTag.vue'
@@ -96,8 +96,8 @@ const router = createRouter({
       }
     },
     {
-      path: '/graphql/post-edit/:slug',
-      name: 'graphql-post-edit',
+      path: '/graphql/edit-post/:slug',
+      name: 'graphql-edit-post',
       component: GraphQLEditPost,
       meta: {
         requireAuth: true

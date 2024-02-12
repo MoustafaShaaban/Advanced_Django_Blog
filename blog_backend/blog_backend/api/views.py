@@ -1,7 +1,7 @@
 from django.db.models import Prefetch
 
 from rest_framework import permissions, viewsets, generics
-from rest_framework import filters as rest_filters
+from rest_framework.exceptions import APIException
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 
@@ -27,7 +27,7 @@ class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, PostPermissions]
     #filter_backends = [filters.SearchFilter]
     #search_fields = ['title', 'content']
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend,)
     filterset_class= PostFilters
     lookup_field = 'slug'
 
@@ -69,5 +69,9 @@ class SearchForPosts(generics.ListAPIView):
         title = self.request.query_params.get('title', None)
         limit = self.request.query_params.get('limit', 5)
 
-        return Post.objects.filter(title__icontains=title)[:int(limit)]
+        try:
+            return Post.objects.filter(title__icontains=title)[:int(limit)]
+        except Post.DoesNotExist:
+            return APIException('No post found with the provided title')
+
 
