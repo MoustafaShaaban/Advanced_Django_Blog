@@ -26,7 +26,7 @@
       <q-drawer v-model="drawerLeft" :width="200" :breakpoint="700" side="left" bordered>
         <q-scroll-area class="fit">
           <q-list padding class="menu-list">
-            <q-item clickable v-ripple to="/">
+            <q-item exact clickable v-ripple to="/">
               <q-item-section avatar>
                 <q-icon name="home" />
               </q-item-section>
@@ -36,9 +36,9 @@
               </q-item-section>
             </q-item>
 
-            <q-item active clickable v-ripple to="/about">
+            <q-item exact clickable v-ripple to="/about">
               <q-item-section avatar>
-                <q-icon :class="$q.dark.isActive ? 'text-white' : 'text-dark'" name="info" />
+                <q-icon name="info" />
               </q-item-section>
 
               <q-item-section :class="$q.dark.isActive ? 'text-white' : 'text-dark'">

@@ -1,6 +1,9 @@
 from django.db.models import Prefetch
+from django.contrib.auth.decorators import login_required
 
-from rest_framework import permissions, viewsets, generics
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import permissions, viewsets, generics, views
 from rest_framework.exceptions import APIException
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
@@ -46,6 +49,15 @@ class UserPostViewSet(viewsets.ModelViewSet):
         return Post.objects.filter(author=self.request.user)
 
 
+class UserFavoritePostListView(generics.ListAPIView):
+    """ A view to show a list of the user's favorite posts """
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated, PostPermissions]
+
+    def get_queryset(self):
+        return Post.objects.filter(favorites=self.request.user).order_by('-published_at')
+
+
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.filter(approved=True)
@@ -73,3 +85,39 @@ class SearchForPosts(generics.ListAPIView):
             return Post.objects.filter(title__icontains=title)[:int(limit)]
         except Post.DoesNotExist:
             return APIException('No post found with the provided title')
+
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def favorite_post(request):
+    """ A view to add a post to the user's favorites """
+    if request.method == 'POST':
+        post = Post.objects.get(pk=request.data['id'])
+        if not post.favorites.filter(pk=request.user.id).exists():
+            post.favorites.add(request.user)
+            post.save()
+
+            return Response({"message": "Added Post to your Favorites Successfully!"})
+        else:
+            post.favorites.remove(request.user)
+            post.save()
+
+            return Response({"message": "Removed Post from your Favorites Successfully!"})
+
+
+class AddPostToUserFavorites(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            post = Post.objects.get(pk=request.data['id'])
+            if not post.favorites.filter(pk=request.user.id).exists():
+                post.favorites.add(request.user)
+                post.save()
+
+                return Response({"message": "Added Post to your Favorites Successfully!"})
+            else:
+                post.favorites.remove(request.user)
+                post.save()
+
+                return Response({"message": "Removed Post from your Favorites Successfully!"})

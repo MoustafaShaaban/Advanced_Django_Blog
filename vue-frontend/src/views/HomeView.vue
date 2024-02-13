@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
 import Multiselect from 'vue-multiselect'
-import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments, deleteComment } from '@/api/axios';
+import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments, deleteComment, addPostToFavorites } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -79,6 +79,15 @@ const deleteCommentMutation = useMutation({
   }
 })
 
+const addPostToFavoritesMutation = useMutation({
+  mutationFn: addPostToFavorites,
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ["allBlogPosts"]
+    })
+  }
+})
+
 const { isPendingAddBlogPost, isErrorAddBlogPost, errorAddBlogPost, isSuccess, mutate, reset } = useMutation({
   mutationFn: createPost,
   onSuccess: async () => {
@@ -121,6 +130,37 @@ function confirmDeletePost(slug) {
       type: "positive",
       actions: [
         { icon: 'close', color: 'white', round: true, }
+      ]
+    })
+  }).onCancel(() => {
+    return
+  }).onDismiss(() => {
+    return
+  })
+}
+
+const removePostFromFavorites = (id) => {
+  addPostToFavoritesMutation.mutate(id)
+}
+
+const addPostToUserFavorites = (id) => {
+  addPostToFavoritesMutation.mutate(id)
+}
+
+function confirmRemovePostFromFavorites(id) {
+  Dialog.create({
+    title: 'Confirm',
+    message: 'Are you sure you want to remove this post from your favorites list?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    removePostFromFavorites(id)
+    router.push('/')
+    Notify.create({
+      message: 'Removed Post from Favorites Successfully',
+      type: 'positive',
+      actions: [
+        { label: 'Dismiss', color: 'white' }
       ]
     })
   }).onCancel(() => {
@@ -226,7 +266,9 @@ function onReset() {
           </router-link>
           <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
             @click="confirmDeletePost(post.slug)">Delete</q-btn>
-
+          <q-btn v-if="post.favorites.length > 0" color="info" flat
+            @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
+          <q-btn v-else color="info" flat @click="addPostToUserFavorites(post.id)">Add to favorites</q-btn>
           <q-separator />
           <q-card class="my-card">
             <q-toolbar>

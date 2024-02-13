@@ -43,7 +43,7 @@ class UserPostView(LoginRequiredMixin, generic.ListView):
         return Post.objects.filter(author=self.request.user).order_by('-published_at')
 
 
-class UserfavoritePostListView(LoginRequiredMixin, generic.ListView):
+class UserFavoritePostListView(LoginRequiredMixin, generic.ListView):
     """ A view to show a list of the user's favorite posts """
     model = Post
     template_name = 'blog/posts/user_favorite_post_list.html'
@@ -189,7 +189,7 @@ def favorite_post(request, slug):
 
 @login_required
 def tag_list(request):
-    """ A view to show a list of the avaliable tags in the blog. """
+    """ A view to show a list of the available tags in the blog. """
     tag_list = Tag.objects.all()
     context = {'tag_list': tag_list}
     return render(request, 'blog/tags.html', context)
