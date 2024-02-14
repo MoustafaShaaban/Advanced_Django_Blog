@@ -15,7 +15,7 @@ class UserType(DjangoObjectType):
 class PostNode(DjangoObjectType):
     class Meta:
         model = Post
-        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'comments', 'tag')
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag')
 
         filter_fields = {
             'id': ['exact'],

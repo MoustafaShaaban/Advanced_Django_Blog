@@ -21,6 +21,8 @@ class Query(graphene.ObjectType):
     posts_by_author = graphene.List(PostType, author=graphene.String())
     posts_by_tag = graphene.List(PostType, tag=graphene.String())
 
+    user_favorite_posts = graphene.List(PostType)
+
     all_posts_with_filters = DjangoFilterConnectionField(PostNode)
     my_posts_with_filters = DjangoFilterConnectionField(PostNode)
 
@@ -88,10 +90,10 @@ class Query(graphene.ObjectType):
             return GraphQLError('No post found with the provided tag')
 
     @classmethod
-    def resolve_comments_by_post(cls, root, info, postTitle):
+    def resolve_comments_by_post(cls, root, info, post_title):
         try:
             return (
-                Comment.objects.filter(post__title__icontains=postTitle)
+                Comment.objects.filter(post__title__icontains=post_title)
             )
         except Comment.DoesNotExist:
             return GraphQLError('No comments found in this post')
@@ -108,3 +110,14 @@ class Query(graphene.ObjectType):
             return Post.objects.none()
         else:
             return Post.objects.filter(author=info.context.user)
+
+    @classmethod
+    def resolve_user_favorite_posts(cls, root, info):
+        # context will reference to the Django request
+        try:
+            if not info.context.user.is_authenticated:
+                return GraphQLError('You must be logged in to retrieve your favorite posts list')
+            else:
+                return Post.objects.filter(favorites=info.context.user).order_by('-published_at')
+        except Post.objects.none():
+            return GraphQLError('You do not have any favorite post yet')

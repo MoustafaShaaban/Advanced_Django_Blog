@@ -3,7 +3,8 @@ import { ref } from 'vue';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
 import Multiselect from 'vue-multiselect'
-import { getBlogPosts, deletePost, getAllTags, createPost, axiosAPI, getAllComments, deleteComment, addPostToFavorites } from '@/api/axios';
+
+import { getBlogPosts, deletePost, getAllTags, createPost, deleteComment, addPostToFavorites } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -33,7 +34,7 @@ const { isPending, isError, data, error } = useQuery({
   }
 })
 
-const { isFetching, data: tags, tagsError } = useQuery({
+const { data: tags } = useQuery({
   queryKey: ['tags'],
   queryFn: getAllTags,
   onError: async (error) => {
@@ -47,19 +48,6 @@ const { isFetching, data: tags, tagsError } = useQuery({
   }
 })
 
-const { isPending: commentsIsPending, isError: commentsIsError, data: comments, error: commentsError } = useQuery({
-  queryKey: ['comments'],
-  queryFn: getAllComments,
-  onError: async (error) => {
-    $q.notify({
-      message: error.message,
-      color: "negative",
-      actions: [
-        { icon: 'close', color: 'white', round: true, }
-      ]
-    })
-  }
-})
 
 const deletePostMutation = useMutation({
   mutationFn: deletePost,
@@ -88,7 +76,7 @@ const addPostToFavoritesMutation = useMutation({
   }
 })
 
-const { isPendingAddBlogPost, isErrorAddBlogPost, errorAddBlogPost, isSuccess, mutate, reset } = useMutation({
+const { mutate } = useMutation({
   mutationFn: createPost,
   onSuccess: async () => {
     queryClient.invalidateQueries("allBlogPosts")

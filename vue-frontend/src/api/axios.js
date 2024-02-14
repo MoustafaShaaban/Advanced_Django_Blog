@@ -11,9 +11,27 @@ export const axiosAPI = axios.create({
     }
 })
 
+export const axiosGraphQL = axios.create({
+    baseURL: import.meta.env.VITE_BASE_URL,
+    withCredentials: true,
+    timeout: 4000,
+    headers: {
+        'X-CSRFToken': Cookies.get('csrftoken')
+    }
+})
+
 
 export const getBlogPosts = async () => {
     const response = await axiosAPI.get("posts/", {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
+    return response.data
+}
+
+export const getUserFavoritePosts = async () => {
+    const response = await axiosAPI.get("favorite-posts/", {
         headers: {
             'X-CSRFToken': Cookies.get('csrftoken')
         }
@@ -93,5 +111,44 @@ export const searchPost = async (title) => {
 
 export const addPostToFavorites = async (id) => {
     const response = await axiosAPI.post("/favorite-post/", {id})
+    return response.data
+}
+
+export const getUserFavoritePostList = async () => {
+    const response = await axiosGraphQL("/graphql/",{}, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        data: {
+            query: `
+                query {
+                    userFavoritePosts {
+                    title
+                    slug
+                    author {
+                        username
+                    }
+                    content
+                    tag {
+                        id
+                        name
+                    }
+                    publishedAt
+                    updatedAt
+                    slug
+                    favorites {
+                        username
+                    }
+                    comments {
+                        user {
+                        username
+                        }
+                        comment
+                    }
+                    }
+                }
+            `
+        }
+    })
     return response.data
 }

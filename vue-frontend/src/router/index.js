@@ -1,22 +1,24 @@
-import { createRouter, createWebHistory, useRouter } from 'vue-router'
+import { createRouter, createWebHistory, useRouter } from 'vue-router';
 
-import { useAuthStore } from '@/stores/authStore'
-import HomeView from '../views/HomeView.vue'
-import LoginPageVue from '@/components/auth/LoginPage.vue'
+import { useAuthStore } from '@/stores/authStore';
+import HomeView from '../views/HomeView.vue';
+import LoginPageVue from '@/components/auth/LoginPage.vue';
 
-import AddBlogPost from '@/components/posts/CreateBlogPost.vue'
-import EditBlogPost from '@/components/posts/EditPost.vue'
-import SearchPost from '@/components/posts/SearchPost.vue'
+import AddBlogPost from '@/components/posts/CreateBlogPost.vue';
+import EditBlogPost from '@/components/posts/EditPost.vue';
+import SearchPosts from '@/components/posts/SearchPosts.vue';
+import UserFavoritePostList from '@/components/posts/FavoritePostList.vue';
 
-import GraphQLPostList  from "../components/graphql/PostList.vue"
-import GraphQLAddPost from "../components/graphql/AddPost.vue"
-import GraphQLEditPost from "../components/graphql/EditPost.vue"
-import GraphQLAddTag from "../components/graphql/EditComment.vue";
+import GraphQLPostList  from "../components/graphql/PostList.vue";
+import GraphQLAddPost from "../components/graphql/AddPost.vue";
+import GraphQLEditPost from "../components/graphql/EditPost.vue";
+import GraphQLUserFavoritePostList from '@/components/graphql/FavoritePostList.vue';
+import GraphQLAddTag from "../components/graphql/AddTag.vue";
 import GraphQLEditComment from "../components/graphql/EditComment.vue";
-import AddTagVue from '@/components/posts/AddTag.vue'
-import EditComment from '@/components/posts/EditComment.vue'
+import AddTagVue from '@/components/posts/AddTag.vue';
+import EditComment from '@/components/posts/EditComment.vue';
 
-import GraphQLPostSearch from "@/components/graphql/PostSearch.vue"
+import GraphQLSearchPosts from "@/components/graphql/SearchPosts.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +43,7 @@ const router = createRouter({
     {
       path: '/post-search',
       name: 'post-search',
-      component: SearchPost,
+      component: SearchPosts,
       meta: {
         requireAuth: true
       }
@@ -58,6 +60,14 @@ const router = createRouter({
       path: '/edit-post/:slug',
       name: 'edit-post',
       component: EditBlogPost,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/user-favorite-post-list',
+      name: 'user-favorite-post-list',
+      component: UserFavoritePostList,
       meta: {
         requireAuth: true
       }
@@ -104,6 +114,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/graphql-user-favorite-post-list',
+      name: 'graphql-user-favorite-post-list',
+      component: GraphQLUserFavoritePostList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/graphql/add-tag',
       name: 'graphql-add-tag',
       component: GraphQLAddTag,
@@ -122,7 +140,7 @@ const router = createRouter({
     {
       path: '/graphql-search',
       name: 'graphql-search',
-      component: GraphQLPostSearch,
+      component: GraphQLSearchPosts,
       meta: {
         requireAuth: true
       }
