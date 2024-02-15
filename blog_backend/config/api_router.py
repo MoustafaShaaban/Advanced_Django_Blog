@@ -24,4 +24,5 @@ urlpatterns += [
     path("favorite-post/", views.favorite_post, name="favorite-post"),
     # path("favorite-post/", views.AddPostToUserFavorites.as_view(), name="favorite-post"),
     path("favorite-posts/", views.UserFavoritePostListView.as_view(), name="favorite-posts-list"),
+    path("user-posts/", views.UserPostsListView.as_view(), name="user-posts-list"),
 ]

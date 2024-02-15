@@ -138,30 +138,61 @@ export const filterPostsByTitle = gql`
 `
 
 export const userFavoritePostsList = gql`
-    query {
-      userFavoritePosts {
-        title
-        slug
-        author {
+  query {
+    userFavoritePosts {
+      title
+      slug
+      author {
+        username
+      }
+      content
+      tag {
+        id
+        name
+      }
+      publishedAt
+      updatedAt
+      slug
+      favorites {
+        username
+      }
+      comments {
+        id
+        user {
           username
         }
-        content
-        tag {
-          id
-          name
-        }
-        publishedAt
-        updatedAt
-        slug
-        favorites {
-          username
-        }
-        comments {
-          user {
-            username
-          }
-          comment
-        }
+        comment
       }
     }
+  }
+`
+
+export const userPostsList = gql`
+  query {
+    userPosts {
+      title
+      slug
+      author {
+        username
+      }
+      content
+      tag {
+        id
+        name
+      }
+      publishedAt
+      updatedAt
+      slug
+      favorites {
+        username
+      }
+      comments {
+        id
+        user {
+          username
+        }
+        comment
+      }
+    }
+  }
 `

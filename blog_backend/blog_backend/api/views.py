@@ -58,6 +58,15 @@ class UserFavoritePostListView(generics.ListAPIView):
         return Post.objects.filter(favorites=self.request.user).order_by('-published_at')
 
 
+class UserPostsListView(generics.ListAPIView):
+    """ A view to show a list of the user's favorite posts """
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated, PostPermissions]
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user).order_by('-published_at')
+
+
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.filter(approved=True)

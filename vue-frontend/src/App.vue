@@ -119,6 +119,30 @@
               </q-item-section>
 
               <q-item-section>
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'user-post-list' }">
+                  RESTAPI User Post List
+                </router-link>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="send" />
+              </q-item-section>
+
+              <q-item-section>
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-user-post-list' }">
+                  GraphQL User Post List
+                </router-link>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="send" />
+              </q-item-section>
+
+              <q-item-section>
                 <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'user-favorite-post-list' }">
                   RESTAPI User Favorite Post List
                 </router-link>

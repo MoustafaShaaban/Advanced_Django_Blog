@@ -39,8 +39,12 @@ export const getUserFavoritePosts = async () => {
     return response.data
 }
 
-export const getUserBlogPosts = async () => {
-    const response = await axiosAPI.get("user_posts/")
+export const getUserPosts = async () => {
+    const response = await axiosAPI.get("user-posts/", {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
     return response.data
 }
 

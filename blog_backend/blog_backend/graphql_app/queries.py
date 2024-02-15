@@ -21,6 +21,7 @@ class Query(graphene.ObjectType):
     posts_by_author = graphene.List(PostType, author=graphene.String())
     posts_by_tag = graphene.List(PostType, tag=graphene.String())
 
+    user_posts = graphene.List(PostType)
     user_favorite_posts = graphene.List(PostType)
 
     all_posts_with_filters = DjangoFilterConnectionField(PostNode)
@@ -121,3 +122,14 @@ class Query(graphene.ObjectType):
                 return Post.objects.filter(favorites=info.context.user).order_by('-published_at')
         except Post.objects.none():
             return GraphQLError('You do not have any favorite post yet')
+
+    @classmethod
+    def resolve_user_posts(cls, root, info):
+        # context will reference to the Django request
+        try:
+            if not info.context.user.is_authenticated:
+                return GraphQLError('You must be logged in to retrieve your posts list')
+            else:
+                return Post.objects.filter(author=info.context.user).order_by('-published_at')
+        except Post.objects.none():
+            return GraphQLError('You do not have any posts yet')

@@ -8,11 +8,13 @@ import AddBlogPost from '@/components/posts/CreateBlogPost.vue';
 import EditBlogPost from '@/components/posts/EditPost.vue';
 import SearchPosts from '@/components/posts/SearchPosts.vue';
 import UserFavoritePostList from '@/components/posts/FavoritePostList.vue';
+import UserPostList from '@/components/posts/UserPostList.vue';
 
 import GraphQLPostList  from "../components/graphql/PostList.vue";
 import GraphQLAddPost from "../components/graphql/AddPost.vue";
 import GraphQLEditPost from "../components/graphql/EditPost.vue";
 import GraphQLUserFavoritePostList from '@/components/graphql/FavoritePostList.vue';
+import GraphQLUserPostList from '@/components/graphql/UserPostList.vue';
 import GraphQLAddTag from "../components/graphql/AddTag.vue";
 import GraphQLEditComment from "../components/graphql/EditComment.vue";
 import AddTagVue from '@/components/posts/AddTag.vue';
@@ -73,6 +75,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/user-post-list',
+      name: 'user-post-list',
+      component: UserPostList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/edit-comment/:id',
       name: 'edit-comment',
       component: EditComment,
@@ -117,6 +127,14 @@ const router = createRouter({
       path: '/graphql-user-favorite-post-list',
       name: 'graphql-user-favorite-post-list',
       component: GraphQLUserFavoritePostList,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/graphql-user-post-list',
+      name: 'graphql-user-post-list',
+      component: GraphQLUserPostList,
       meta: {
         requireAuth: true
       }
