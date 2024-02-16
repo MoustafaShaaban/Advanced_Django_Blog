@@ -15,6 +15,7 @@
               <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="GraphQL Search" icon="search" to="/graphql-search" />
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
               <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
+              <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Register" icon="login" to="/register" />
               <q-breadcrumbs-el v-else label="Logout" icon="logout" @click="logout" to="/" />
             </q-breadcrumbs>
           </q-toolbar-title>
@@ -231,6 +232,15 @@
 
               <q-item-section>
                 Login
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/register">
+              <q-item-section avatar>
+                <q-icon name="login" />
+              </q-item-section>
+
+              <q-item-section>
+                Register
               </q-item-section>
             </q-item>
           </q-list>

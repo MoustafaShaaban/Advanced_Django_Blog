@@ -21,6 +21,7 @@ import AddTagVue from '@/components/posts/AddTag.vue';
 import EditComment from '@/components/posts/EditComment.vue';
 
 import GraphQLSearchPosts from "@/components/graphql/SearchPosts.vue";
+import RegisterPageVue from '@/components/auth/RegisterPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,14 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPageVue,
+      meta: {
+        requireAuth: false
+      }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterPageVue,
       meta: {
         requireAuth: false
       }

@@ -29,6 +29,11 @@ export const useAuthStore = defineStore('auth', {
             this.isAuthenticated = true;
         },
 
+        async register(name, email, username, password, password_confirm, birthday) {
+            await axiosAPI.post('accounts/register/', {name, email, username, password, password_confirm, birthday}, {
+            })
+        },
+
         async logout() {
             await axiosAPI.post('accounts/logout/', {}, {
                 headers: {
@@ -37,10 +42,6 @@ export const useAuthStore = defineStore('auth', {
             })
             this.isAuthenticated = null;
             localStorage.removeItem('Authenticated')
-        },
-
-        async register(username, password) {
-            await axiosAPI.post('/register/', {username, password})
         },
     }
 })
