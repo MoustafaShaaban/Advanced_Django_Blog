@@ -12,8 +12,8 @@
   
         <q-card-section>
           <q-form @submit.prevent="login" @reset="onReset">
-            <q-input filled v-model.lazy.trim="username" label="Username" required lazy-rules
-              :rules="[val => val && val.length > 0 || 'Username is required']" />
+            <q-input filled type="email" v-model.lazy.trim="email" label="Email" required lazy-rules
+              :rules="[val => val && val.length > 0 || 'Email is required']" />
   
             <q-input filled v-model.lazy.trim="password" type="password" required label="Password" lazy-rules
               :rules="[val => val && val.length > 0 || 'Password is required']" />
@@ -43,14 +43,14 @@
     },
     data() {
       return {
-        username: '',
+        email: '',
         password: '',
       }
     },
     methods: {
       async login() {
         try {
-          await this.authStore.login(this.username, this.password)
+          await this.authStore.login(this.email, this.password)
           this.router.push('/')
           Notify.create({
             message: 'Logged in Successfully',
@@ -70,7 +70,7 @@
         }
       },
       onReset() {
-        this.username = null
+        this.email = null
         this.password = null
       }
     },
