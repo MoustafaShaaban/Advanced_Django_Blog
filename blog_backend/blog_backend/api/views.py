@@ -46,7 +46,9 @@ class UserPostViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
+        return Post.objects.filter(
+            author=self.request.user
+        ).prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True)))
 
 
 class UserFavoritePostListView(generics.ListAPIView):
@@ -64,7 +66,9 @@ class UserPostsListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated, PostPermissions]
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user).order_by('-published_at')
+        return Post.objects.filter(
+            author=self.request.user
+        ).prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True)))
 
 
 class CommentViewSet(viewsets.ModelViewSet):

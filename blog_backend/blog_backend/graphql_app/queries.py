@@ -130,6 +130,9 @@ class Query(graphene.ObjectType):
             if not info.context.user.is_authenticated:
                 return GraphQLError('You must be logged in to retrieve your posts list')
             else:
-                return Post.objects.filter(author=info.context.user).order_by('-published_at')
+                return Post.objects.filter(
+                    author=info.context.user
+                ).prefetch_related(Prefetch('comments', Comment.objects.filter(approved=True))).order_by('-published_at')
+
         except Post.objects.none():
             return GraphQLError('You do not have any posts yet')
