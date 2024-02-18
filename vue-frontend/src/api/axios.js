@@ -114,7 +114,11 @@ export const searchPost = async (title) => {
 }
 
 export const addPostToFavorites = async (id) => {
-    const response = await axiosAPI.post("/favorite-post/", {id})
+    const response = await axiosAPI.post("/favorite-post/", {id}, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
     return response.data
 }
 

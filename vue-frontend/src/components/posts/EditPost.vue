@@ -151,7 +151,7 @@ export default {
                             <q-input filled v-model.lazy.trim="comment" type="textarea" label="Comment" required lazy-rules
                                 :rules="[val => val && val.length > 0 || 'Comment is required']" />
                             <div class="q-pa-sm q-mt-md">
-                                <q-btn label="Add Post" type="submit" color="primary" />
+                                <q-btn label="Add Comment" type="submit" color="primary" />
                                 <q-btn label="Reset" type="reset" class="bg-grey-8 text-white q-ml-sm" />
                             </div>
                         </q-form>
