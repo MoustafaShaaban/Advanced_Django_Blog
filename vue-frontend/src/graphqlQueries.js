@@ -86,13 +86,13 @@ query ReturnMyPost {
 `
 
 export const getAllTags = gql`
-    query AllTags {
-        allTags {
-            id
-            name
-            slug
-        }
+  query allTags {
+    allTags {
+      id
+      name
+      slug
     }
+  }
 `
 
 export const getCommentById = gql`

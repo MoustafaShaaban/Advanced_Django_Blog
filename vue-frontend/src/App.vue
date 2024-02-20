@@ -7,16 +7,22 @@
           <q-btn flat icon="menu" @click="drawerLeft = !drawerLeft" />
 
           <q-toolbar-title>
-            <q-breadcrumbs active-color="white" style="font-size: 16px">
+            <q-breadcrumbs v-if="authStore.$state.isAuthenticated" active-color="white" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="Rest API Post List" icon="notes" to="/"  />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="GraphQL Post List" icon="notes" to="/graphql/post-list"  />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="RESTAPI Search" icon="search" to="/post-search" />
-              <q-breadcrumbs-el v-if="authStore.$state.isAuthenticated" label="GraphQL Search" icon="search" to="/graphql-search" />
+              <q-breadcrumbs-el label="Tags List" icon="notes" to="/tags"  />
+              <q-breadcrumbs-el label="Rest API Post List" icon="notes" to="/"  />
+              <q-breadcrumbs-el label="GraphQL Post List" icon="notes" to="/graphql/post-list"  />
+              <q-breadcrumbs-el label="RESTAPI Search" icon="search" to="/post-search" />
+              <q-breadcrumbs-el label="GraphQL Search" icon="search" to="/graphql-search" />
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
-              <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Login" icon="login" to="/login" />
-              <q-breadcrumbs-el v-if="!authStore.$state.isAuthenticated" label="Register" icon="login" to="/register" />
-              <q-breadcrumbs-el v-else label="Logout" icon="logout" @click="logout" to="/" />
+              <q-breadcrumbs-el label="Logout" icon="logout" @click="logout" to="/" />
+            </q-breadcrumbs>
+
+            <q-breadcrumbs v-else active-color="white" style="font-size: 16px">
+              <q-breadcrumbs-el label="Home" icon="home" to="/" />
+              <q-breadcrumbs-el label="About" icon="info" to="/about" />
+              <q-breadcrumbs-el label="Login" icon="login" to="/login" />
+              <q-breadcrumbs-el label="Register" icon="login" to="/register" />
             </q-breadcrumbs>
           </q-toolbar-title>
 
@@ -54,6 +60,18 @@
         <!-- drawer content -->
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
           <q-list padding>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-icon name="inbox" />
+              </q-item-section>
+
+              <q-item-section>
+                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'tags' }">
+                  Tags List
+                </router-link>
+              </q-item-section>
+            </q-item>
+
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="inbox" />

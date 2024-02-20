@@ -15,21 +15,31 @@ export default {
             window.location.reload();
         },
         addTag() {
-            this.$apollo.mutate({
-                mutation: createTagMutation,
-                variables: {
-                    "name": this.name,
-                }
-            })
-            this.$router.push("/graphql/post-list")
-            Notify.create({
-                message: 'Tag Created Successfully',
-                type: 'positive',
-                actions: [
-                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
-                    { icon: 'close', color: 'white', round: true, },
-                ]
-            })
+            try {
+                this.$apollo.mutate({
+                    mutation: createTagMutation,
+                    variables: {
+                        "name": this.name,
+                    }
+                })
+                this.$router.push("/graphql/post-list")
+                Notify.create({
+                    message: 'Tag Created Successfully',
+                    type: 'positive',
+                    actions: [
+                        { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                        { icon: 'close', color: 'white', round: true, },
+                    ]
+                })
+            } catch (error) {
+                Notify.create({
+                    message: error.message,
+                    type: 'negative',
+                    actions: [
+                        { icon: 'close', color: 'white', round: true, },
+                    ]
+                })
+            }
         },
         onReset() {
             this.name = null

@@ -9,6 +9,7 @@ import EditBlogPost from '@/components/posts/EditPost.vue';
 import SearchPosts from '@/components/posts/SearchPosts.vue';
 import UserFavoritePostList from '@/components/posts/FavoritePostList.vue';
 import UserPostList from '@/components/posts/UserPostList.vue';
+import TagList from '@/components/posts/TagList.vue';
 
 import GraphQLPostList  from "../components/graphql/PostList.vue";
 import GraphQLAddPost from "../components/graphql/AddPost.vue";
@@ -95,6 +96,14 @@ const router = createRouter({
       path: '/edit-comment/:id',
       name: 'edit-comment',
       component: EditComment,
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
+      path: '/tags',
+      name: 'tags',
+      component: TagList,
       meta: {
         requireAuth: true
       }
