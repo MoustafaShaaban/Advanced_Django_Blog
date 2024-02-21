@@ -20,6 +20,7 @@ import GraphQLAddTag from "../components/graphql/AddTag.vue";
 import GraphQLEditComment from "../components/graphql/EditComment.vue";
 import AddTagVue from '@/components/posts/AddTag.vue';
 import EditComment from '@/components/posts/EditComment.vue';
+import GraphQLTagList from '@/components/graphql/TagList.vue';
 
 import GraphQLSearchPosts from "@/components/graphql/SearchPosts.vue";
 import RegisterPageVue from '@/components/auth/RegisterPage.vue';
@@ -117,6 +118,14 @@ const router = createRouter({
       }
     },
     // GraphQL Routes
+    {
+      path: '/graphql/tags',
+      name: 'graphql-tags',
+      component: GraphQLTagList,
+      meta: {
+        requireAuth: true
+      }
+    },
     {
       path: '/graphql/post-list',
       name: 'graphql-post-list',

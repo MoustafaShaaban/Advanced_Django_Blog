@@ -65,7 +65,7 @@ export default {
                 }
             })
             this.postCard = false,
-                this.title = null
+            this.title = null
             this.content = null
             this.tags = null
 

@@ -21,8 +21,8 @@ const { data: tagsData, error, isError, isPending } = useQuery({
 const { mutate } = useMutation({
     mutationFn: createTag,
     onSuccess: async () => {
-        queryClient.invalidateQueries("tags")
-        await router.push('/')
+        queryClient.invalidateQueries("allTagsQuery")
+        await router.push('/tags')
         Notify.create({
             message: 'Tag Added Successfully',
             type: "positive",
