@@ -31,7 +31,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     # Set the user field explicitly to prevent the serializer from returning all the User Model fields
-    # author = UserSerializer(required=False)
+    author = UserSerializer(required=False, read_only=True)
     # published_at = serializers.DateTimeField(required=False, format='%Y/%m/%d %H:%M')
     # tag_name = serializers.SerializerMethodField(source='get_tag_name')
     comments = CommentSerializer(many=True, read_only=True)

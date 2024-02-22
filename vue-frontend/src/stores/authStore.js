@@ -7,6 +7,7 @@ import { axiosAPI } from "../api/axios";
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isAuthenticated: useLocalStorage('Authenticated', null),
+        username: useLocalStorage("Username", null),
     }),
     actions: {
         async getCSRFToken() {
@@ -23,9 +24,9 @@ export const useAuthStore = defineStore('auth', {
         },
 
         async login(login, password) {
-            await axiosAPI.post('accounts/login/', {login, password}, {
-
-            })
+            await axiosAPI.post('accounts/login/', {login, password}, {})
+            const response = await axiosAPI.get('username/',)
+            this.username = response.data.username
             this.isAuthenticated = true;
         },
 
@@ -42,6 +43,9 @@ export const useAuthStore = defineStore('auth', {
             })
             this.isAuthenticated = null;
             localStorage.removeItem('Authenticated')
+
+            this.username = null;
+            localStorage.removeItem('Username')
         },
     }
 })

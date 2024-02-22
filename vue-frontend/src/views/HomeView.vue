@@ -211,14 +211,17 @@ function onReset() {
     <div v-else class="q-mt-lg">
       <q-card v-for="post in data" :key="post.id" class="my-card q-mt-md" flat bordered>
         <q-item>
-          <!-- <q-item-section avatar>
+          <q-item-section avatar>
             <q-avatar>
               <img :src="post.author.avatar">
             </q-avatar>
-          </q-item-section> -->
+          </q-item-section>
 
           <q-item-section>
             <div class="text-h5">{{ post.title }}</div>
+            <q-item-label caption>
+              by: {{ post.author.username }}
+            </q-item-label>
             <!-- <div class="q-gutter-sm q-mt-xs">
               <q-badge v-for="tag in post.tag" :key="tag.id" caption outline color="primary" :label="tag.id" />
             </div> -->
@@ -246,7 +249,7 @@ function onReset() {
 
         <q-separator />
 
-        <q-card-actions v-if="authStore.$state.isAuthenticated">
+        <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === post.author.username">
           <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
             <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
               Detail
@@ -258,6 +261,7 @@ function onReset() {
             @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
           <q-btn v-else color="info" flat @click="addPostToUserFavorites(post.id)">Add to favorites</q-btn>
           <q-separator />
+        </q-card-actions>
           <q-card class="my-card">
             <q-toolbar>
               <q-toolbar-title><span class="text-weight-bold">Comments</span></q-toolbar-title>
@@ -269,7 +273,8 @@ function onReset() {
                 <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
                   by: {{ comment.user }}
                 </q-item-label>
-                <q-card-actions v-if="authStore.$state.isAuthenticated">
+                <q-card-actions
+                  v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user">
                   <router-link :to="{ name: 'edit-comment', params: { id: comment.id } }">
                     <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
                       Edit
@@ -283,7 +288,6 @@ function onReset() {
               <p>This post has no comments</p>
             </q-card-section>
           </q-card>
-        </q-card-actions>
       </q-card>
 
       <q-dialog v-model="card">

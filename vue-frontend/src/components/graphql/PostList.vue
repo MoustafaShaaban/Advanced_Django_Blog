@@ -260,7 +260,7 @@ export default {
                     </q-btn>
                 </q-card-actions>
 
-                <q-card-actions v-if="authStore.$state.isAuthenticated">
+                <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === post.author.username">
                     <router-link :to="{ name: 'graphql-edit-post', params: { slug: post.slug } }">
                         <q-btn flat color="primary">
                             Detail
@@ -284,7 +284,7 @@ export default {
                             <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
                                 by: {{ comment.user.username }}
                             </q-item-label>
-                            <q-card-actions v-if="authStore.$state.isAuthenticated">
+                            <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user.username">
                                 <router-link :to="{ name: 'graphql-edit-comment', params: { id: comment.id } }">
                                     <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
                                         Edit

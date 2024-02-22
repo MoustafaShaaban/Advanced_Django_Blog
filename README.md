@@ -139,6 +139,8 @@ For more information about the available commands in this project check the Cook
 
 * [How To Use the GitHub GraphQL API in Vue.js with Vue apollo](https://medium.com/@anoob.bava/how-to-use-the-github-graphql-api-in-vue-js-with-vue-apollo-24304b6731cf)
 
+* [Django Session-based Auth for Single Page Apps](https://testdriven.io/blog/django-spa-auth/#setting-up-session-based-auth)
+
 
 ### GraphQL Queries and Mutations Examples:
 
