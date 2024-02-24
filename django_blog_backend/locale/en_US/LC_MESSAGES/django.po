@@ -1,0 +1,12 @@
+# Translations for the Django Blog Backend project
+# Copyright (C) 2024 Moustafa Shaaban
+# Moustafa Shaaban <Moustafa_Shaaban@zohomail.com>, 2024.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Language: en-US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
