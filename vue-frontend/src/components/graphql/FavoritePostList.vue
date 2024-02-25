@@ -67,7 +67,7 @@ const { data, error, isPending, isLoading, isError } = useQuery({
         <span v-if="isPending">Loading...</span>
     <span v-else-if="isError">Error: {{ error.message }}</span>
     <!-- We can assume by this point that `isSuccess === true` -->
-    <span v-else-if="data.length == 0">No posts found</span>
+    <span v-else-if="data.data.userFavoritePosts.length == 0">You did not add any post to your favorites list</span>
     <div v-else class="q-mt-lg">
         <q-card v-for="post in data.data.userFavoritePosts" :key="post.id" class="my-card q-mt-md" flat bordered>
             <q-item>

@@ -79,8 +79,44 @@ This project is a Django project called `blog_backend` and it has four registere
 * And many more.
 
 
-### To get started with this project
+### To get started with this project without Docker:
 
+* Make sure that both [PostgreSQL](https://www.postgresql.org/) database and [Mailpit](https://mailpit.axllent.org/) Email client are installed and running in your system.
+
+* Create a PostgreSQL database, This project uses PostgreSQL version 14.
+
+* Export database default url using the following terminal command:
+
+```bash
+export DATABASE_URL=postgres://<username>:<password>@127.0.0.1:5432/<DB name given to createdb>
+```
+
+* Open the terminal or CMD to create a virtual environment like Python virtual environment (venv) or pipenv and activate it.
+
+    * ``` python -m venv venv ```           *Create the venv*
+
+    * ``` source venv/bin/activate ```      *On Linux*
+
+    * ``` venv/Scripts/activate ```         *On Windows*
+
+    * ``` source venv/Scripts/activate ```  *Git Bash on Windows*
+
+* Change directory to django_blog_backend ``` cd django_blog_backend ```
+
+* Install local.txt requirements file: ``` python -m pip install -r requirements/local.txt ```
+
+* Create the database by running the following commands:
+``` python manage.py makemigrations ```
+``` python manage.py migrate ```
+
+* Create a super user: ``` python manage.py createsuperuser ```
+
+* Run the project: ``` python manage.py runserver ```
+
+* Before logging in to the Django website make sure that Mailpit email client is running in your system to 
+recieve an email activation link.
+
+### To get started with this project with Docker:
 * Make sure that Docker and docker-compose are installed in your system.
 
 * Clone the repository: git clone https://github.com/MoustafaShaaban/Advanced_Django_Blog.git
