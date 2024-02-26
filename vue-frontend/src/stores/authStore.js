@@ -23,8 +23,12 @@ export const useAuthStore = defineStore('auth', {
             await axiosAPI.get('/session/')
         },
 
-        async login(login, password) {
-            await axiosAPI.post('accounts/login/', {login, password}, {})
+        async login(email, password) {
+            await axiosAPI.post('/login/', {email, password}, {
+                headers: {
+                    'X-CSRFToken': Cookies.get("csrftoken")
+                }
+            })
             const response = await axiosAPI.get('username/',)
             this.username = response.data.username
             this.isAuthenticated = true;

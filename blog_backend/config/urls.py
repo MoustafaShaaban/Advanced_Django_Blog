@@ -31,7 +31,7 @@ urlpatterns += [
         SpectacularSwaggerView.as_view(url_name="api-schema"),
         name="api-docs",
     ),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/accounts/', include('rest_registration.api.urls')),
 ]
 

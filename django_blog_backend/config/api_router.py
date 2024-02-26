@@ -24,4 +24,6 @@ urlpatterns += [
     path("favorite-posts/", views.UserFavoritePostListView.as_view(), name="favorite-posts-list"),
     path("user-posts/", views.UserPostsListView.as_view(), name="user-posts-list"),
     path("username/", views.username_view, name="username"),
+    path('csrf/', views.get_csrf, name='csrf'),
+    path('login/', views.login_view, name='login'),
 ]

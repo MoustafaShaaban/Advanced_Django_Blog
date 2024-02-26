@@ -38,3 +38,6 @@ coreapi==2.3.3
 
 django-rest-registration==0.8.3
 
+# --------------------------------------------------------------------------------
+# Django Axes
+django-axes[ipware]==6.3.0     # https://github.com/jazzband/django-axes

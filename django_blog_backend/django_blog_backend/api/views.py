@@ -1,3 +1,7 @@
+import json
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -7,10 +11,12 @@ from rest_framework import permissions, viewsets, generics, views
 from rest_framework.exceptions import APIException
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
-
+from django.middleware.csrf import get_token
 from django_blog_backend.blog.models import Post, Comment, Tag
 from django_blog_backend.api.serializers import PostSerializer, CommentSerializer, TagSerializer
 from django_blog_backend.api.permissions import PostPermissions, CommentPermissions
+from django.views.decorators.http import require_POST
+
 
 
 class PostFilters(filters.FilterSet):
@@ -139,3 +145,27 @@ class AddPostToUserFavorites(generics.CreateAPIView):
 @login_required
 def username_view(request):
     return JsonResponse({'username': request.user.username})
+
+
+def get_csrf(request):
+    response = JsonResponse({'detail': 'CSRF cookie set'})
+    response['X-CSRFToken'] = get_token(request)
+    return response
+
+
+@require_POST
+def login_view(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
+
+    if email is None or password is None:
+        return JsonResponse({'detail': 'Please provide email and password.'}, status=400)
+
+    user = authenticate(request=request, email=email, password=password)
+
+    if user is None:
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+
+    login(request, user)
+    return JsonResponse({'detail': 'Successfully logged in.'})
