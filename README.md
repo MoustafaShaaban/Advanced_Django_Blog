@@ -49,6 +49,7 @@ Currently in Vue frontend users can:
 
 * Access pages that show their added blog posts and their favorite posts.
 
+* Search for blog posts by title and limiting the results using both REST API and GraphQL
 
 ### Project preview
 
