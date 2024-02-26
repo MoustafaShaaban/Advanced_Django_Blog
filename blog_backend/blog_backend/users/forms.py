@@ -36,6 +36,7 @@ class UserSignupForm(SignupForm):
     Default fields will be added automatically.
     Check UserSocialSignupForm for accounts created from social.
     """
+    name = forms.CharField(max_length=255)
     date_of_birth = forms.DateField(widget=DateInput)
     avatar = forms.ImageField()
 
