@@ -35,6 +35,20 @@ A blog project built using
 
 * The frontend vue.js app also allows users to perform CRUD operations through connecting to a REST API and a GraphQL endpoints.
 
+Currently in Vue frontend users can:
+
+* Register for an account and log in to their account (users will be authenticated using Django Rest Framework Session Authentication).
+
+* Add tags to blog using a Rest API endpoint and GraphQL endpoint.
+
+* Perform CRUD operations to blog posts using both REST API and GraphQL.
+
+* Perform CRUD operations to add comments to blog posts using both REST API and GraphQL.
+
+* Add and remove posts to and form their favorite posts list.
+
+* Access pages that show their added blog posts and their favorite posts.
+
 
 ### Project preview
 
