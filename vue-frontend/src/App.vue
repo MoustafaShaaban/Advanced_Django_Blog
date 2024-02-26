@@ -228,15 +228,11 @@
           </q-list>
         </q-scroll-area>
 
-        <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-          <div class="absolute-bottom bg-transparent">
-            <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-            </q-avatar>
-            <div class="text-weight-bold">Razvan Stoenescu</div>
-            <div>@rstoenescu</div>
+        <div class="absolute-top" style="height: 150px">
+          <div class="absolute-center bg-transparent">
+            <div class="text-weight-bold">Welcome, {{ username }}</div>
           </div>
-        </q-img>
+        </div>
       </q-drawer>
 
       <q-drawer v-if="!authStore.$state.isAuthenticated" v-model="drawerRight" :width="250" :breakpoint="700" side="right" bordered>
@@ -284,7 +280,6 @@
 <script>
 import { ref } from 'vue'
 import { Dark, Notify } from 'quasar'
-import { OnClickOutside } from '@vueuse/components'
 
 import { useAuthStore } from './stores/authStore';
 
@@ -296,6 +291,7 @@ export default {
       authStore,
       drawerLeft: ref(false),
       drawerRight: ref(false),
+      username: ref(authStore.$state.username),
       toggleDarkMode() {
         Dark.toggle()
       },
