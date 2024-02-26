@@ -1,6 +1,6 @@
 import { createApp, provide, h } from 'vue'
 import { createPinia } from 'pinia'
-import { Quasar, Notify, Dialog, Dark, Cookies } from 'quasar'
+import { Quasar, Notify, Dialog, Dark, Cookies, Loading } from 'quasar'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { ApolloClient, InMemoryCache } from '@apollo/client/core'
 import { createApolloProvider } from '@vue/apollo-option'
@@ -46,6 +46,7 @@ app.use(Quasar, {
         Dialog,
         Dark,
         Cookies,
+        Loading,
     }
 })
 

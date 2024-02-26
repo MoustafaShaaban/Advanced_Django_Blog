@@ -280,6 +280,8 @@
 <script>
 import { ref } from 'vue'
 import { Dark, Notify } from 'quasar'
+import { useQuasar } from 'quasar';
+//import { useQueryProvider } from 'vue-query';
 
 import { useAuthStore } from './stores/authStore';
 
@@ -287,6 +289,13 @@ export default {
   setup() {
     const authStore = useAuthStore();
 
+const $q = useQuasar();
+const darkQuery = '(prefers-color-scheme: dark)';
+const queryList = window.matchMedia(darkQuery);
+$q.dark.set(queryList.matches);
+queryList.addEventListener('change', (event) => {
+  $q.dark.set(event.matches);
+});
     return {
       authStore,
       drawerLeft: ref(false),
@@ -295,7 +304,8 @@ export default {
       toggleDarkMode() {
         Dark.toggle()
       },
-
+      
+      queryList
     }
   },
   methods: {

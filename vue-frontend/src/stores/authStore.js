@@ -11,11 +11,11 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async getCSRFToken() {
-            const res = await fetch("http://localhost:8000/api/csrf/", {
+            const response = await axiosAPI.get("csrf/", {
                 credentials: "include",
             });
 
-            let token = res.headers.get("X-CSRFToken");
+            let token = response.headers.get("X-CSRFToken");
             return token
         },
 

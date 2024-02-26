@@ -85,10 +85,10 @@ This project is a Django project called `blog_backend` and it has four registere
 
 * Create a PostgreSQL database, This project uses PostgreSQL version 14.
 
-* Export database default url using the following terminal command:
+* Export database default url using the following terminal command, In this example PostgreSQL is installed locally, database name is django-blog-backend, and database admin credentials are => username: admin / password: 1234:
 
 ```bash
-export DATABASE_URL=postgres://<username>:<password>@127.0.0.1:5432/<DB name given to createdb>
+export DATABASE_URL=postgres://admin:1234@127.0.0.1:5432/django-blog-backend
 ```
 
 * Open the terminal or CMD to create a virtual environment like Python virtual environment (venv) or pipenv and activate it.
@@ -176,6 +176,8 @@ For more information about the available commands in this project check the Cook
 * [How To Use the GitHub GraphQL API in Vue.js with Vue apollo](https://medium.com/@anoob.bava/how-to-use-the-github-graphql-api-in-vue-js-with-vue-apollo-24304b6731cf)
 
 * [Django Session-based Auth for Single Page Apps](https://testdriven.io/blog/django-spa-auth/#setting-up-session-based-auth)
+
+* [Building a CRUD client with Vue, TypeScript, vue-query](https://www.youtube.com/watch?v=JwS9nxwC1Vw)
 
 
 ### GraphQL Queries and Mutations Examples:
