@@ -62,6 +62,12 @@ class Post(models.Model):
         related_name='favorite_posts'
     )
 
+    likes = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        blank=True,
+        related_name='post_likes'
+    )
+
     class Meta:
         """Meta definition for Post."""
 

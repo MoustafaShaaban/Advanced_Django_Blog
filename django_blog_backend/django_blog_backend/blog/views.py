@@ -188,6 +188,33 @@ def favorite_post(request, slug):
 
 
 @login_required
+def like_post(request, slug):
+    """ A view to add a post to the user's favorites """
+    if request.method == 'POST':
+        post = Post.objects.get(slug=slug)
+        if not post.likes.filter(id=request.user.id).exists():
+            post.likes.add(request.user)
+            post.save()
+
+            context = {'post': post}
+            return render(
+                request,
+                'blog/posts/partials/like_post.html',
+                context
+            )
+        else:
+            post.likes.remove(request.user)
+            post.save()
+
+            context = {'post': post}
+            return render(
+                request,
+                'blog/posts/partials/like_post.html',
+                context
+            )
+
+
+@login_required
 def tag_list(request):
     """ A view to show a list of the available tags in the blog. """
     tag_list = Tag.objects.all()

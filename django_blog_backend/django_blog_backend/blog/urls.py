@@ -17,6 +17,7 @@ urlpatterns = [
     # URLs for post details and user posts and favorite posts:
     path('post/<slug:slug>/', views.post_detail, name='post-detail'),
     path('favorite-post/<slug:slug>/', views.favorite_post, name='favorite_post'),
+    path('likee-post/<slug:slug>/', views.like_post, name='like_post'),
 
     path('user-post-list/', views.UserPostView.as_view(), name='user-post-list'),
     path('profile/favorites/', views.UserFavoritePostListView.as_view(), name='favorite-post-list'),
