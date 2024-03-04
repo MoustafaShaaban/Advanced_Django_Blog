@@ -124,6 +124,24 @@ def favorite_post(request):
             return Response({"message": "Removed Post from your Favorites Successfully!"})
 
 
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def like_post(request):
+    """ A view to add a post to the user's favorites """
+    if request.method == 'POST':
+        post = Post.objects.get(pk=request.data['id'])
+        if not post.likes.filter(pk=request.user.id).exists():
+            post.likes.add(request.user)
+            post.save()
+
+            return Response({"message": "Post Liked Successfully!"})
+        else:
+            post.likes.remove(request.user)
+            post.save()
+
+            return Response({"message": "Unliked Post Successfully!"})
+
+
 class AddPostToUserFavorites(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 

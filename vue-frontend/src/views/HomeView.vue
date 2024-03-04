@@ -4,7 +4,7 @@ import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
 import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
 import Multiselect from 'vue-multiselect'
 
-import { getBlogPosts, deletePost, getAllTags, createPost, deleteComment, addPostToFavorites } from '@/api/axios';
+import { getBlogPosts, deletePost, getAllTags, createPost, deleteComment, addPostToFavorites, likePost } from '@/api/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -74,7 +74,18 @@ const addPostToFavoritesMutation = useMutation({
       queryKey: ["allBlogPosts"]
     })
   }
-})
+});
+
+
+const likePostMutation = useMutation({
+  mutationFn: likePost,
+  onSuccess: () => {
+    queryClient.invalidateQueries({
+      queryKey: ["allBlogPosts"]
+    })
+  }
+});
+
 
 const { mutate } = useMutation({
   mutationFn: createPost,
@@ -133,6 +144,14 @@ const removePostFromFavorites = (id) => {
 
 const addPostToUserFavorites = (id) => {
   addPostToFavoritesMutation.mutate(id)
+}
+
+const HandleLikePost = (id) => {
+  likePostMutation.mutate(id)
+}
+
+const unlikePost = (id) => {
+  likePostMutation.mutate(id)
 }
 
 function confirmRemovePostFromFavorites(id) {
@@ -260,6 +279,9 @@ function onReset() {
           <q-btn v-if="post.favorites.length > 0" color="info" flat
             @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
           <q-btn v-else color="info" flat @click="addPostToUserFavorites(post.id)">Add to favorites</q-btn>
+          <q-btn v-if="post.likes.length > 0" color="info" flat
+            @click="unlikePost(post.id)">Unlike</q-btn>
+          <q-btn v-else color="info" flat @click="HandleLikePost(post.id)">Like</q-btn>
           <q-separator />
         </q-card-actions>
           <q-card class="my-card">

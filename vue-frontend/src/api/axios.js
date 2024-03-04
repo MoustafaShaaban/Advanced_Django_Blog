@@ -120,6 +120,15 @@ export const addPostToFavorites = async (id) => {
         }
     })
     return response.data
+};
+
+export const likePost = async (id) => {
+    const response = await axiosAPI.post("/like-post/", {id}, {
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    })
+    return response.data
 }
 
 export const getUserFavoritePostList = async () => {
