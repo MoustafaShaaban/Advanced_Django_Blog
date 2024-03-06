@@ -8,7 +8,7 @@ import moment from 'moment';
 import { useAuthStore } from '@/stores/authStore';
 import { getAllPosts } from "../../graphqlQueries";
 import { getAllTags, axiosAPI } from '@/api/axios';
-import { createPostMutation, deletePostMutation, deleteCommentMutation, addPostToUserFavoritesMutation } from '@/graphqlMutations';
+import { createPostMutation, deletePostMutation, deleteCommentMutation, addPostToUserFavoritesMutation, likePostMutation } from '@/graphqlMutations';
 
 export default {
     name: "GraphQLPostList",
@@ -65,7 +65,7 @@ export default {
                 }
             })
             this.postCard = false,
-            this.title = null
+                this.title = null
             this.content = null
             this.tags = null
 
@@ -206,6 +206,39 @@ export default {
                 }
             })
         },
+
+        async handleLikePost(id) {
+            await this.$apollo.mutate({
+                mutation: likePostMutation,
+                variables: {
+                    id: parseInt(id),
+                }
+            })
+            Notify.create({
+                message: 'Liked Post',
+                type: 'positive',
+                actions: [
+                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                    { label: 'Dismiss', color: 'white' }
+                ]
+            })
+        },
+        async unlikePost(id) {
+            await this.$apollo.mutate({
+                mutation: likePostMutation,
+                variables: {
+                    id: parseInt(id),
+                }
+            })
+            Notify.create({
+                message: 'unliked Post',
+                type: 'positive',
+                actions: [
+                    { label: 'Refresh', color: 'white', handler: () => { this.refreshPage() } },
+                    { label: 'Dismiss', color: 'white' }
+                ]
+            })
+        },
     }
 }
 </script>
@@ -217,7 +250,8 @@ export default {
                 @click="refreshPage">
                 Reloading</q-btn> the page</span>
         <!-- We can assume by this point that `isSuccess === true` -->
-        <span v-else-if="allPosts.length == 0">No Posts available Try <q-btn size="sm" color="primary" @click="refreshPage">
+        <span v-else-if="allPosts.length == 0">No Posts available Try <q-btn size="sm" color="primary"
+                @click="refreshPage">
                 Reloading</q-btn> the page
             or click on the plus sign to add a new note</span>
         <div v-else class="q-mt-lg">
@@ -260,7 +294,8 @@ export default {
                     </q-btn>
                 </q-card-actions>
 
-                <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === post.author.username">
+                <q-card-actions
+                    v-if="authStore.$state.isAuthenticated && authStore.$state.username === post.author.username">
                     <router-link :to="{ name: 'graphql-edit-post', params: { slug: post.slug } }">
                         <q-btn flat color="primary">
                             Detail
@@ -270,6 +305,8 @@ export default {
                     <q-btn v-if="post.favorites.length > 0" color="info" flat
                         @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
                     <q-btn v-else color="info" flat @click="addPostToUserFavorites(post.id)">Add to favorites</q-btn>
+                    <q-btn v-if="post.likes.length > 0" color="info" flat @click="unlikePost(post.id)">Unlike</q-btn>
+                    <q-btn v-else color="info" flat @click="handleLikePost(post.id)">Like</q-btn>
                 </q-card-actions>
 
                 <q-separator />
@@ -284,7 +321,8 @@ export default {
                             <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
                                 by: {{ comment.user.username }}
                             </q-item-label>
-                            <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user.username">
+                            <q-card-actions
+                                v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user.username">
                                 <router-link :to="{ name: 'graphql-edit-comment', params: { id: comment.id } }">
                                     <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
                                         Edit
@@ -323,7 +361,8 @@ export default {
                                 :custom-label="opt => tags.find(e => e.id === opt).name"
                                 deselect-label="You must select at least one tag" :options="tags.map(i => i.id)"
                                 :searchable="true" :allow-empty="false">
-                                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name }}</strong></template>
+                                <template slot="singleLabel" slot-scope="{ tag }"><strong>{{ tag.name
+                                        }}</strong></template>
                             </multiselect>
                             <!-- <select v-model="tags" multiple>
                                 <option v-for="tag in data" id="tag.id" :value="tag.id">{{ tag.name }}</option>

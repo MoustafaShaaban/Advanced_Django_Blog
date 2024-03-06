@@ -15,7 +15,7 @@ class UserType(DjangoObjectType):
 class PostNode(DjangoObjectType):
     class Meta:
         model = Post
-        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag')
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag', 'favorites', 'likes',)
 
         filter_fields = {
             'id': ['exact'],
@@ -37,7 +37,7 @@ class TagNode(DjangoObjectType):
 class PostType(DjangoObjectType):
     class Meta:
         model = Post
-        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag', 'favorites',)
+        fields = ('id', 'title', 'slug', 'author', 'content', 'updated_at', 'published_at', 'comments', 'tag', 'favorites', 'likes')
 
 
 class CommentType(DjangoObjectType):

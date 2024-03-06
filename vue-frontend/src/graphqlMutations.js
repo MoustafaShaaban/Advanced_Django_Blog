@@ -47,6 +47,14 @@ export const addPostToUserFavoritesMutation = gql`
     }
 `
 
+export const likePostMutation = gql`
+    mutation likePost($id: Int!) {
+        likePost(id: $id) {
+            success
+        }
+    }
+`
+
 export const createTagMutation = gql`
     mutation createTag($name: String!) {
         createTag(input: {name: $name}) {

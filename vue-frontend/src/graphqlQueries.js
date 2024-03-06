@@ -13,6 +13,9 @@ export const getAllPosts = gql`
         favorites {
           username
         }
+        likes {
+          username
+        }
         content
         updatedAt
         publishedAt

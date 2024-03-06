@@ -7,6 +7,7 @@ from django_blog_backend.graphql_app.mutations import (
     UpdatePostMutation,
     DeletePostMutation,
     AddPostToUserFavoritesMutation,
+    LikePostMutation,
 
     CreateCommentMutation,
     UpdateCommentMutation,
@@ -39,6 +40,7 @@ class Mutations(graphene.ObjectType):
     delete_post_relay = DeletePostRelayMutation.Field()
 
     add_post_to_user_favorites = AddPostToUserFavoritesMutation.Field()
+    like_post = LikePostMutation.Field()
 
     create_comment = CreateCommentMutation.Field()
     create_comment_relay = CreateCommentRelayMutation.Field()
