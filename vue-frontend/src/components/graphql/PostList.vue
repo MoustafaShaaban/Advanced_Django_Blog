@@ -1,6 +1,6 @@
 <script>
-import { ref } from 'vue'
-import { Notify, Dialog, useQuasar, date } from 'quasar';
+import axios from 'axios';
+import { Notify, Dialog, useQuasar, date, Cookies } from 'quasar';
 import { useQuery } from "@tanstack/vue-query"
 import Multiselect from 'vue-multiselect'
 import moment from 'moment';
@@ -48,11 +48,54 @@ export default {
         },
 
         async getPosts() {
-            let data = await this.$apollo.query({
-                query: getAllPosts,
+            const response = await axios({
+                url: import.meta.env.VITE_GraphQL_URL,
+                method: 'post',
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': Cookies.get('csrftoken')
+                },
+                data: {
+                    query: `
+                query ReturnAllPosts {
+                allPosts {
+                    id
+                    slug
+                    title
+                    author {
+                    username
+                    avatar
+                    }
+                    favorites {
+                    username
+                    }
+                    likes {
+                    username
+                    }
+                    content
+                    updatedAt
+                    publishedAt
+                    comments {
+                    id
+                    comment
+                    publishedAt
+                    user {
+                        username
+                    }
+                    }
+                    tag {
+                    id
+                    name
+                    }
+                }
+                }
+            `
+                }
             })
 
-            this.allPosts = data.data.allPosts
+
+            this.allPosts = response.data
         },
 
         async addPost() {
@@ -255,7 +298,7 @@ export default {
                 Reloading</q-btn> the page
             or click on the plus sign to add a new note</span>
         <div v-else class="q-mt-lg">
-            <q-card v-for="post in allPosts" :key="post.id" class="my-card q-mt-md" flat bordered>
+            <q-card v-for="post in allPosts.data.allPosts" :key="post.id" class="my-card q-mt-md" flat bordered>
                 <q-item>
                     <!-- <q-item-section avatar>
                         <q-avatar>
