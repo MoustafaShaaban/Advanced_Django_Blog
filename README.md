@@ -6,11 +6,12 @@ A blog project built using
   [Django REST Framework](https://www.django-rest-framework.org), 
   [Graphene Django](https://docs.graphene-python.org/projects/django/en/latest/), 
   [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django),
+  [HTMX](https://htmx.org/),
   [Vue.js 3](https://vuejs.org/),
   [Quasar Framework](https://quasar.dev/),
   [Tanstack Vue Query](https://tanstack.com/query/latest/docs/vue/overview),
-  [Vue Apollo](https://apollo.vuejs.org/)
-  [Vue-multiselect](https://vue-multiselect.js.org/)
+  [Vue Apollo](https://apollo.vuejs.org/),
+  [Vue-multiselect](https://vue-multiselect.js.org/),
 
 
 [Full Review](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
@@ -27,7 +28,10 @@ A blog project built using
 
   * Add comments on blog posts, but the comments will not be visiable until the website admin approves it.
 
+  * Like Blog posts and Add them to their favorite list (using HTMX).
+
   * Access their profile which lists all their blog posts and their favorite posts.
+
 
 * All users can read or search for the posts on the blog.
 
