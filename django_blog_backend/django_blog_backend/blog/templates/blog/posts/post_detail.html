@@ -5,14 +5,14 @@
 {% block title %}{{ post.title }}{% endblock title %}
 
 {% block inner %}
-{% if messages %}
+  {% if messages %}
     <div class="messages alert alert-success" role="alert">
         {% for message in messages %}
             {{ message }}
             <button type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
         {% endfor %}
     </div>
-    {% endif %}
+  {% endif %}
     <div class="row">
         <div class="container d-md-flex">
             <div class="col-md-12">

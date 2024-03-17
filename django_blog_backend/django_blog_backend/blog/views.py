@@ -5,6 +5,8 @@ from django.db.models import Q
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 from .models import Post, Tag, Comment
 from .forms import CommentForm
@@ -54,24 +56,26 @@ class UserFavoritePostListView(LoginRequiredMixin, generic.ListView):
         return Post.objects.filter(favorites=self.request.user).order_by('-published_at')
 
 
-class CreatePost(LoginRequiredMixin, generic.CreateView):
+class CreatePost(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     """ A view to add a new post. """
     model = Post
     fields = ['title', 'content', 'tag']
     template_name = 'blog/posts/create_post.html'
     success_url = reverse_lazy('blog:homepage')
+    success_message = "Post Added Successfully"
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
-class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
     """ A view to update a specific post. """
     model = Post
     fields = ['title', 'content', 'tag']
     template_name = 'blog/posts/update_post.html'
     success_url = reverse_lazy('blog:homepage')
+    success_message = "Post Updated Successfully"
 
     def test_func(self):
         post = self.get_object()
@@ -80,11 +84,12 @@ class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
         return False
 
 
-class DeletePost(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+class DeletePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
     """ A view to delete a specific post. """
     model = Post
     template_name = 'blog/posts/delete_post.html'
     success_url = reverse_lazy('blog:homepage')
+    success_message = "Post Deleted Successfully"
 
     def test_func(self):
         post = self.get_object()
@@ -133,12 +138,13 @@ def create_comment(request, slug):
     return render(request, 'blog/comments/create_comment.html', context)
 
 
-class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
     """ A view to update a specific post. """
     model = Comment
     fields = ['comment']
     template_name = 'blog/comments/update_comment.html'
     success_url = reverse_lazy('blog:homepage')
+    success_message = "Comment Updated Successfully"
 
     def test_func(self):
         comment = self.get_object()
@@ -147,11 +153,12 @@ class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView)
         return False
 
 
-class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
     """ A view to delete a specific post. """
     model = Comment
     template_name = 'blog/comments/delete_comment.html'
     success_url = reverse_lazy('blog:homepage')
+    success_message = "Comment Deleted Successfully"
 
     def test_func(self):
         comment = self.get_object()
