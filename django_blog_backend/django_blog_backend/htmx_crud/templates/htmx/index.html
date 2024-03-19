@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% startpartial post-item %}
+    <li class="list-group-item">
+        {{ post.title }} - by {{ post.content }}
+    </li>
+{% endpartial %}
+
+
+{% block inner %}
+
+  {% block add-post-form %}
+    <div id="add-form-container">
+        <h1>Add Post</h1>
+        <form hx-post="{% url 'htmx_crud:index' %}" hx-target="#add-form-container" hx-swap="outerHTML">
+            {{ form.as_p }}
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+  {% endblock add-post-form %}
+
+  {% block post-list %}
+        {% for book in books %}
+          {% partial post-item %}
+        {% endfor %}
+  {% endblock %}
+{% endblock inner %}

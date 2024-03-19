@@ -13,6 +13,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     #path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path("", include("django_blog_backend.blog.urls", namespace="blog")),
+    path("htmx_crud/", include("django_blog_backend.htmx_crud.urls", namespace="htmx_crud")),
     path(
         "about/",
         TemplateView.as_view(template_name="pages/about.html"),

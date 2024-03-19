@@ -90,6 +90,9 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'rest_registration',
     'axes',
+    'template_partials',
+    'django_htmx',
+
 ]
 
 LOCAL_APPS = [
@@ -158,6 +161,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    'django_htmx.middleware.HtmxMiddleware',
     # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
     # It only formats user lockout messages and renders Axes lockout responses
     # on failed user authentication attempts from login views.
@@ -190,16 +194,20 @@ MEDIA_URL = "/media/"
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
+# Install app and configure loader.
+default_loaders = [
+    "django.template.loaders.filesystem.Loader",
+    "django.template.loaders.app_directories.Loader",
+]
+cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
+partial_loaders = [("template_partials.loader.Loader", cached_loaders)]
 TEMPLATES = [
     {
-        # https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES-BACKEND
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        # https://docs.djangoproject.com/en/dev/ref/settings/#dirs
-        "DIRS": [str(APPS_DIR / "templates")],
-        # https://docs.djangoproject.com/en/dev/ref/settings/#app-dirs
-        "APP_DIRS": True,
+        "DIRS": [BASE_DIR / "django_blog_backend/templates"],
+        # Comment this out when manually defining loaders.
+        # "APP_DIRS": True,
         "OPTIONS": {
-            # https://docs.djangoproject.com/en/dev/ref/settings/#template-context-processors
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -211,9 +219,13 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django_blog_backend.users.context_processors.allauth_settings",
             ],
+            "debug": True,
+            # TODO: Add wrap_loaded function to the called from an AppConfig.ready().
+            "loaders": partial_loaders,
         },
     },
 ]
+
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"

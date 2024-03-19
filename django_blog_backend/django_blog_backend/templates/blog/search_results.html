@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block inner %}
+    
+    <div class="list-group">
+        {% for post in object_list %}
+            <a href="{% url 'blog:post-detail' post.slug %}" class="list-group-item list-group-item-action active" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    
+                    <h5 class="mb-1">{{ post.title }}</h5>
+                    <small>{{ post.updated_at|date:'d-m-Y' }}</small>
+                </div>
+                <p class="mb-1">{{ post.content|slice:':50' }} ...</p>
+                <small>Author: {{ post.author }}</small>
+            </a>
+            <br>
+            {% empty %}
+            <p>No posts found with your search query. Please search again.</p>
+        {% endfor %}
+    </div>
+
+{% endblock inner %}

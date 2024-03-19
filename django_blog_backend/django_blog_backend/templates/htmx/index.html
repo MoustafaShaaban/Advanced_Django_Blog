@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load partials %}
+
+{% block inner %}
+
+{% startpartial post-item %}
+<div class="card border-primary mb-3">
+  <div class="card-body">
+    <h5 class="card-title mb-3">
+      <a href="{% url 'blog:post-detail' post.slug %}">{{ post.title }}</a>
+    </h5>
+    <p class="card-subtitle text-muted">
+      By {{ post.author }}, In <time>{{ post.updated_at|date:'d-m-Y' }}</time>
+    </p>
+    <hr class="text-light" />
+    <p class="card-text mt-3 m-1">{{ post.content|slice:':50' }}</p>
+
+    <a href="{% url 'blog:post-detail' post.slug %}" role="button" class="card-link btn btn-primary mt-3 pt-2">Read
+      more</a>
+  </div>
+</div>
+<hr class="text-dark" />
+{% endpartial post-item %}
+
+{% if messages %}
+<div class="messages alert alert-success" role="alert">
+  {% for message in messages %} {{ message }}
+  <button type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="container d-flex">
+  {% block add-post-form %}
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary mx-auto mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Add Post
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Post</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="post-form" hx-post="{% url 'htmx_crud:index' %}" hx-target="#post-list" hx-swap="afterbegin">
+            <div class="col-6">
+              <div class="row my-2">
+                {{ form.title|as_crispy_field }}
+              </div>
+              <div class="row my-2">
+                {{ form.content|as_crispy_field }}
+              </div>
+              <div class="row my-2">
+                {{ form.tag|as_crispy_field }}
+              </div>
+            </div>
+
+
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+              Add Post
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  {% endblock add-post-form %}
+
+  {% block post-list %}
+
+  <div class="row">
+    <div class="container d-md-flex">
+      <div class="col-md-6 mx-auto" id="post-list">
+        {% for post in posts %}
+        {% partial post-item %}
+        <hr class="text-dark" />
+        {% empty %}
+        <p>No Avaialble posts at this moment</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock post-list %}
+
+<script>
+  let form = document.querySelector("#post-form");
+
+  form.addEventListener("htmx:afterRequest", () => {
+    form.reset();
+  });
+
+</script>
+</div>
+{% endblock inner %}

@@ -18,6 +18,11 @@
       {% if user.is_authenticated %}
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'htmx_crud:index' %}">
+            HTMX CRUD
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="{% url 'blog:graphql' %}" class="nav-link">GraphQL</a>
         </li>
         <li class="nav-item dropdown">
@@ -106,7 +111,7 @@
             height="30"
             alt=""
             loading="lazy"
-          />     
+          />
             {% endif %}
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
