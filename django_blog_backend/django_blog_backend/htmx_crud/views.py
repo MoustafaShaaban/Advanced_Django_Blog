@@ -22,3 +22,18 @@ def index(request):
 
     context = { 'form': PostForm(), 'posts': Post.objects.all() }
     return render(request, 'htmx/index.html', context)
+
+
+
+@login_required
+@require_http_methods(['DELETE'])
+def delete_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.author == request.user:
+        post.delete()
+    else:
+        raise Exception('You do not have permission to delete this post')
+
+    posts = Post.objects.all()
+
+    return render(request, 'htmx/index.html', { 'form': PostForm(), 'posts': posts})
