@@ -16,44 +16,8 @@
     <hr class="text-light" />
     <p class="card-text mt-3 m-1">{{ post.content|slice:':50' }}</p>
 
-    <a href="{% url 'blog:post-detail' post.slug %}" role="button" class="card-link btn btn-primary mt-3 pt-2">Read
+    <a href="{% url 'htmx_crud:htmx-post-detail' post.id %}" role="button" class="card-link btn btn-primary mt-3 pt-2">Read
       more</a>
-
-
-
-    {% if post.author == request.user %}
-
-      <!-- Button trigger modal -->
-      <button type="button" class="card-link btn btn-danger mt-3 pt-2" data-bs-toggle="modal" data-bs-target="#deletePostModal">
-        Delete
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to delete {{ post.title }} ?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                hx-delete="{% url 'htmx_crud:htmx-delete-post' post.id %}"
-                class="card-link btn btn-primary mt-3 pt-2"
-                hx-target="closest body"
-                data-bs-dismiss="modal"
-              >Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endif %}
   </div>
 </div>
 <hr class="text-dark" />

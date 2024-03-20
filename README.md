@@ -188,6 +188,8 @@ For more information about the available commands in this project check the Cook
 
 ### References:
 
+* [htmx in Django by examples](https://www.valentinog.com/blog/htmx-django-examples/)
+
 * [Testing](https://www.valentinog.com/blog/testing-django/)
 
 * [Date Field in Forms](https://mrasimzahid.medium.com/how-to-implement-django-datepicker-calender-in-forms-date-field-9e23479b5db)
