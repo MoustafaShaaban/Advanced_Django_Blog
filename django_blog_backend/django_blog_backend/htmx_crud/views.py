@@ -50,16 +50,31 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, id=pk)
     tags = post.tag.all()
     comments = post.comments.filter(approved=True).order_by('-published_at')
-    form = CommentForm()
+    comment_form = CommentForm()
 
     context = {
         'post': post,
         'tags': tags,
         'comments': comments,
-        'form': form,
+        'comment_form': comment_form,
     }
 
     return render(request, 'htmx/post_detail.html', context)
+
+
+class HTMXUpdatePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
+    """ A view to update a specific post. """
+    model = Post
+    fields = ['title', 'content', 'tag']
+    template_name = 'htmx/update_post.html'
+    success_url = reverse_lazy('htmx_crud:index')
+    success_message = "Post Updated Successfully"
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 class DeletePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):

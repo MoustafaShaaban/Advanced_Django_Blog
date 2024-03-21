@@ -49,6 +49,13 @@
     </div>
   {% endpartial delete-post %}
 
+  {% startpartial update-post %}
+     <!-- Button trigger modal -->
+    <button type="button" class="btn btn-info mx-2" data-bs-toggle="modal" data-bs-target="#updatePostModal">
+      Update
+    </button>
+  {% endpartial update-post %}
+
     <div class="row">
         <div class="container d-md-flex">
             <div class="col-md-12">
@@ -72,20 +79,19 @@
                         <p class="card-text pt-3 m-1">{{ post.content }}</p>
 
 
-                        {% if post.author == user %}
-                            <div class="form-inline my-2 my-lg-0">
-                                <button class="btn btn-info mx-2">
-                                    <a href="{% url 'blog:update-post' post.slug %}?next={{ request.path|urlencode }}" class="text-white">Update</a>
-                                </button>
+                        {% if post.author == request.user %}
 
-                                {% partial delete-post %}
+                        <button class="btn btn-info mx-2">
+                          <a href="{% url 'htmx_crud:htmx-update-post' post.id %}" class="text-white">Update</a>
+                        </button>
+                          {% partial delete-post %}
                         </div>
                         {% endif %}
 
 
                         <div class="card-footer">
                             <button class="btn btn-success mt-3">
-                                <a href="{% url 'blog:homepage' %}" class="card-link text-white pt-2">Return to blog</a>
+                                <a href="{% url 'htmx_crud:index' %}" class="card-link text-white pt-2">Return to blog</a>
                             </button>
                         </div>
                     </div>
@@ -123,7 +129,7 @@
                                             <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
                                                 {% csrf_token %}
                                                 <div class="row my-2">
-                                                    {{ form.comment|as_crispy_field }}
+                                                    {{ comment_form.comment|as_crispy_field }}
                                                 </div>
                                               <div class="modal-footer">
                                                 <button class="btn btn-success" type="submit">Submit</button>
