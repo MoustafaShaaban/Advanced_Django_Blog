@@ -188,6 +188,10 @@ For more information about the available commands in this project check the Cook
 
 ### References:
 
+* [Django HTMX Modal Forms](https://blog.benoitblanchon.fr/django-htmx-modal-form/)
+
+* [Django HTMX Toasts](https://blog.benoitblanchon.fr/django-htmx-toasts/)
+
 * [htmx in Django by examples](https://www.valentinog.com/blog/htmx-django-examples/)
 
 * [Testing](https://www.valentinog.com/blog/testing-django/)

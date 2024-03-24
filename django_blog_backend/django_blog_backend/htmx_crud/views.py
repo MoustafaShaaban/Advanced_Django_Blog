@@ -1,11 +1,15 @@
+import json
+
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
+
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django_htmx.http import HttpResponseClientRedirect
@@ -14,20 +18,105 @@ from django_blog_backend.blog.models import Post, Comment, Tag
 from .forms import PostForm
 from django_blog_backend.blog.forms import CommentForm
 
-@login_required
+
 def index(request):
-    if request.method == 'POST':
+    return render(request, 'htmx/index.html')
+
+
+def post_list(request):
+    return render(request, 'htmx/post_list.html', { 'posts': Post.objects.all() })
+
+def add_post(request):
+    user = request.user
+
+    if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            post.author = user
             post = form.save()
-            messages.success(request, 'Post Added Successfully.')
-            context = { 'post': post }
-            return render(request, 'htmx/index.html#post-item', context)
 
-    context = { 'form': PostForm(), 'posts': Post.objects.all() }
-    return render(request, 'htmx/index.html', context)
+            return HttpResponse(
+                status=204,
+                headers= {
+                    'HX-Trigger': json.dumps({
+                        "postListChanged": None,
+                        "showMessage": f"{ post.title } added."
+                    })
+                }
+            )
+
+    else:
+        form = PostForm()
+
+    return render(request, "htmx/post_form.html", {
+        "form": form,
+    })
+
+
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    if post.author != user:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        form = PostForm(request.POST, instance=post)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        "postListChanged": None,
+                        "showMessage": f"{ post.title } updated."
+                    })
+                }
+            )
+
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, 'htmx/post_form.html', {
+        'form': form,
+        'post': post
+    })
+
+
+@ require_http_methods(['DELETE'])
+def remove_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    user = request.user
+
+    if post.author != user:
+        raise PermissionDenied
+
+    post.delete()
+    return HttpResponse(
+        status=204,
+        headers={
+            'HX-Trigger': json.dumps({
+                "postListChanged": None,
+                "showMessage": f"{post.title} deleted."
+            })
+        })
+
+# @login_required
+# def index(request):
+#     if request.method == 'POST':
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post = form.save()
+#             messages.success(request, 'Post Added Successfully.')
+#             context = { 'post': post }
+#             return render(request, 'htmx/index.html#post-item', context)
+
+#     context = { 'form': PostForm(), 'posts': Post.objects.all() }
+#     return render(request, 'htmx/index.html', context)
 
 
 
@@ -45,21 +134,21 @@ def index(request):
 #     return render(request, 'htmx/index.html', { 'form': PostForm(), 'posts': posts})
 
 
-def post_detail(request, pk):
-    """Show a single post with all its tags and comments."""
-    post = get_object_or_404(Post, id=pk)
-    tags = post.tag.all()
-    comments = post.comments.filter(approved=True).order_by('-published_at')
-    comment_form = CommentForm()
+# def post_detail(request, pk):
+#     """Show a single post with all its tags and comments."""
+#     post = get_object_or_404(Post, id=pk)
+#     tags = post.tag.all()
+#     comments = post.comments.filter(approved=True).order_by('-published_at')
+#     comment_form = CommentForm()
 
-    context = {
-        'post': post,
-        'tags': tags,
-        'comments': comments,
-        'comment_form': comment_form,
-    }
+#     context = {
+#         'post': post,
+#         'tags': tags,
+#         'comments': comments,
+#         'comment_form': comment_form,
+#     }
 
-    return render(request, 'htmx/post_detail.html', context)
+#     return render(request, 'htmx/post_detail.html', context)
 
 
 class HTMXUpdatePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
