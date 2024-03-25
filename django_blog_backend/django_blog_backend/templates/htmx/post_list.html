@@ -24,38 +24,13 @@
 
 
           {% if post.author == user %}
-              <div class="form-inline my-2 my-lg-0">
-                <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:edit_post' pk=post.pk %}" hx-target="#dialog">Edit</button>
-                <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#deletePostModal">
-                  Delete
-                </button>
+            <div class="form-inline my-2 my-lg-0">
+              <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:edit_post' pk=post.pk %}" hx-target="#dialog">Edit</button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        Are you sure you want to delete {{ post.title }} ?
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button
-                          type="button"
-                          class="btn btn-primary"
-                          hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}"
-                          hx-target="closest body"
-                          class="card-link btn btn-primary mt-3 pt-2"
-                          data-bs-dismiss="modal"
-                        >Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-          </div>
+              {% comment %}
+              <button class="btn btn-danger btn-sm" hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}" hx-confirm="Are you sure you want to delete {{post.title}} ?">Delete</button>
+              {% endcomment %}
+            </div>
           {% endif %}
       </div>
   </div>

@@ -1,6 +1,6 @@
 {% if user.is_authenticated %}
 <div id="favorites">
-    <button 
+    <button
         class="{% if request.user in post.favorites.all %}btn btn-outline-danger{% else %}btn btn-outline-primary{% endif %}"
         hx-post="{% url 'blog:favorite_post' post.slug %}"
         hx-target="#favorites"
