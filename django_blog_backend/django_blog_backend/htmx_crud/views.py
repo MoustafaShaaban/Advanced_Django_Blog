@@ -1,7 +1,7 @@
 import json
 
 from django.views.decorators.http import require_POST
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 
@@ -24,8 +24,17 @@ def index(request):
 
 
 def post_list(request):
-    return render(request, 'htmx/post_list.html', { 'posts': Post.objects.all() })
+    posts = Post.objects.all()
+    form = CommentForm()
 
+    context = {
+        'posts': posts,
+        'form': form
+    }
+    return render(request, 'htmx/post_list.html', context)
+
+
+@login_required
 def add_post(request):
     user = request.user
 
@@ -53,7 +62,7 @@ def add_post(request):
         "form": form,
     })
 
-
+@login_required
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     user = request.user
@@ -102,6 +111,38 @@ def remove_post(request, pk):
                 "showMessage": f"{post.title} deleted."
             })
         })
+
+@login_required
+def create_comment(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    if request.method == 'POST':
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            comment_instance = form.save(commit=False)
+            comment_instance.post = post
+            comment_instance.user = request.user
+            comment_instance.save()
+            # messages.success(request, 'Thank you for commenting, Your comment is pending admin approval.')
+            return HttpResponse(
+                status=204,
+                headers= {
+                    'HX-Trigger': json.dumps({
+                        "postListChanged": None,
+                        "showMessage": f"Thank you for commenting, Your comment is pending admin approval."
+                    })
+                }
+            )
+    else:
+        form = CommentForm()
+
+    context = {
+        'form': form,
+        'post': post
+    }
+
+    return render(request, 'htmx/comment_form.html', context)
+
+
 
 # @login_required
 # def index(request):

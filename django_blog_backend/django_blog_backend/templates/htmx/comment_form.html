@@ -1,0 +1,21 @@
+{% load crispy_forms_tags %}
+
+<form action="{% url 'htmx_crud:create-comment' post.pk %}" method="POST">
+  {% csrf_token %}
+  <div class="modal-header">
+    <h5 class="modal-title">Add Comment</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="col-6">
+      <div class="row my-2">
+        {{ form.comment|as_crispy_field }}
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" type="submit">Submit</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </div>
+</form>

@@ -47,37 +47,9 @@
                   </button>
 
                   {% if user.is_authenticated %}
-                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
+                      <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' pk=post.pk %}" hx-target="#dialog">
                           Add Comment
                       </button>
-
-                      <!-- Modal -->
-                      <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-
-                                      {% comment %}
-                                      <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
-                                        {% csrf_token %}
-                                        <div class="row my-2">
-                                            {{ form.comment|as_crispy_field }}
-                                        </div>
-                                      <div class="modal-footer">
-                                        <button class="btn btn-success" type="submit">Submit</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                      </div>
-                                    </form>
-                                      {% endcomment %}
-
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
                   {% endif %}
               </div>
           </div>
@@ -107,6 +79,21 @@
                           <p class="lead text-light">This post has no comments yet.</p>
               {% endfor %}
       </div>
+  </div>
+  <!-- Placeholder for the modal -->
+  <div id="modal" class="modal fade">
+    <div id="dialog" class="modal-dialog" hx-target="this"></div>
+  </div>
+
+  <!-- Empty toast to show the message -->
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div id="toast-body" class="toast-body"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
   </div>
 </section>
 {% empty %}
