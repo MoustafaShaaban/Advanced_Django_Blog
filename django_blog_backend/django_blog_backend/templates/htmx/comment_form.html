@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 
-<form action="{% url 'htmx_crud:create-comment' post.pk %}" method="POST">
+<form hx-post="{% url 'htmx_crud:create-comment' post.pk %}" method="POST" class="modal-content">
   {% csrf_token %}
   <div class="modal-header">
     <h5 class="modal-title">Add Comment</h5>

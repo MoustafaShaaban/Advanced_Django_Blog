@@ -115,6 +115,7 @@ def remove_post(request, pk):
 @login_required
 def create_comment(request, pk):
     post = get_object_or_404(Post, id=pk)
+
     if request.method == 'POST':
         form = CommentForm(data=request.POST)
         if form.is_valid():
