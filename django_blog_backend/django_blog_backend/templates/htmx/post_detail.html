@@ -1,19 +1,11 @@
 {% extends 'base.html' %}
 {% load blog_tags %}
 {% load crispy_forms_tags %}
-
+{% load static %}
 {% block title %}{{ post.title }}{% endblock title %}
 
 {% block inner %}
-  {% if messages %}
-    <div class="messages alert alert-success" role="alert">
-        {% for message in messages %}
-            {{ message }}
-            <button type="button" class="btn-close text-light" data-bs-dismiss="alert" aria-label="Close"></button>
-        {% endfor %}
-    </div>
-  {% endif %}
-    <div class="row">
+    <div class="row" hx-trigger="postListChanged from:body" hx-get="{% url 'htmx_crud:post-detail' post.pk %}" hx-target="this">
         <div class="container d-md-flex">
             <div class="col-md-12">
                 <!-- Strat Blog Post List -->
@@ -37,17 +29,30 @@
 
 
                         {% if post.author == user %}
-                            <div class="form-inline my-2 my-lg-0">
-                                <button class="btn btn-info btn-sm mx-2">
-                                    <a href="{% url 'blog:update-post' post.slug %}?next={{ request.path|urlencode }}" class="text-white">Update</a>
-                                </button>
-
-                                <button class="btn btn-danger btn-sm mx-2 my-4">
-                                    <a href="{% url 'blog:delete-post' post.slug %}" class="text-white">Delete</a>
-                                </button>
-                        </div>
+                          <div class="form-inline my-2 my-lg-0">
+                            <button class="btn btn-primary btn-sm my-3" hx-get="{% url 'htmx_crud:edit_post' pk=post.pk %}" hx-target="#dialog">Edit</button>
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal">Delete</button>
+                          </div>
                         {% endif %}
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deletePostModalLabel">Modal title</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                Are you sure you want to delete this post?
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger" hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}" hx-target="closest body" data-bs-dismiss="modal">Delete</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                         <div class="card-footer">
                             <button class="btn btn-success btn-md mt-3">
@@ -56,79 +61,90 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Blog Post List -->
             </div>
         </div>
     </div>
-
-    <hr class="text-light">
-
     <section>
-        <div class="container d-md-flex">
-            <div class="col-md-12">
-                <div class="col-md-4 px-4">
-                    <div class="d-flex">
-                        <button type="button" class="btn btn-primary mx-2">
-                            Comments <span class="badge text-bg-danger">{% num_comments post.slug %}</span>
+      <div class="container d-md-flex">
+          <div class="col-md-12">
+              <div class="col-md-4 px-4">
+                  <div class="d-flex">
+                      <button type="button" class="btn btn-primary mx-2">
+                          Comments <span class="badge text-bg-danger">{% num_comments post.slug %}</span>
+                      </button>
+
+                      {% if user.is_authenticated %}
+                        <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' pk=post.pk %}" hx-target="#dialog">
+                          Add Comment
                         </button>
 
-                        {% if user.is_authenticated %}
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
-                                Add Comment
-                            </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{% url 'blog:create-comment' post.slug %}" method="POST">
-                                                {% csrf_token %}
-                                                <div class="row my-2">
-                                                    {{ form.comment|as_crispy_field }}
-                                                </div>
-                                              <div class="modal-footer">
-                                                <button class="btn btn-success" type="submit">Submit</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <!-- Modal -->
+                          <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                          <form action="{% url 'htmx_crud:create-comment' post.pk %}" method="POST">
+                                              {% csrf_token %}
+                                              <div class="row my-2">
+                                                  {{ form.comment|as_crispy_field }}
                                               </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <hr class="text-light">
-                <div class="list-group">
-                    {% for comment in comments %}
-                        {% if comment.user == user %}
-                              <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Manage
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="{% url 'blog:update-comment' comment.pk %}">Update</a></li>
-                                  <li><a class="dropdown-item" href="{% url 'blog:delete-comment' comment.pk %}">Delete</a></li>
-                                </ul>
+                                            <div class="modal-footer">
+                                              <button class="btn btn-success" type="submit">Submit</button>
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                          </form>
+                                      </div>
+                                  </div>
                               </div>
-                            {% endif %}
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>
-                                <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>
+                          </div>
+                      {% endif %}
+                  </div>
+              </div>
+
+              <hr class="text-light">
+              <div class="list-group">
+                  {% for comment in comments %}
+                      {% if comment.user == user %}
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Manage
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'blog:update-comment' comment.pk %}">Update</a></li>
+                                <li><a class="dropdown-item" href="{% url 'blog:delete-comment' comment.pk %}">Delete</a></li>
+                              </ul>
                             </div>
-                            <p class="mb-1">{{ comment.comment }}</p>
-                        </a>
-                        {% empty %}
-                                <p class="lead text-light">This post has no comments yet.</p>
-                    {% endfor %}
-            </div>
-        </div>
-    </section>
+                          {% endif %}
+                      <a href="#" class="list-group-item list-group-item-action">
+                          <div class="d-flex w-100 justify-content-between">
+                              <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>
+                              <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>
+                          </div>
+                          <p class="mb-1">{{ comment.comment }}</p>
+                      </a>
+                      {% empty %}
+                              <p class="lead text-light">This post has no comments yet.</p>
+                  {% endfor %}
+          </div>
+      </div>
+  </section>
+
+  <!-- Placeholder for the modal -->
+  <div id="modal" class="modal fade">
+    <div id="dialog" class="modal-dialog"></div>
+  </div>
+  <!-- Empty toast to show the message -->
+  <div class="toast-container bottom-0 start-50 translate-middle-x py-2">
+    <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div id="toast-body" class="toast-body"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+    <hr class="text-light">
 {% endblock inner %}

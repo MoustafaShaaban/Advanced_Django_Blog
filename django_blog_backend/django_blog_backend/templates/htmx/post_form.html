@@ -25,10 +25,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    {% if post %}
-    <button type="button" class="btn btn-danger" hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}">Remove</button>
-    <span class="flex-grow-1"></span>
-    {% endif %}
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
       Close
     </button>

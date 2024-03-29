@@ -2,12 +2,11 @@ import json
 
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import PermissionDenied
-
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.views.decorators.http import require_http_methods
@@ -32,6 +31,22 @@ def post_list(request):
         'form': form
     }
     return render(request, 'htmx/post_list.html', context)
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    tags = post.tag.all()
+    comments = post.comments.filter(approved=True).order_by('-published_at')
+    form = CommentForm()
+
+    context = {
+        'post': post,
+        'tags': tags,
+        'comments': comments,
+        'form': form,
+    }
+
+    return render(request, 'htmx/post_detail.html', context)
 
 
 @login_required
@@ -103,14 +118,8 @@ def remove_post(request, pk):
         raise PermissionDenied
 
     post.delete()
-    return HttpResponse(
-        status=204,
-        headers={
-            'HX-Trigger': json.dumps({
-                "postListChanged": None,
-                "showMessage": f"{post.title} deleted."
-            })
-        })
+    messages.success(request, 'Post Added Successfully.')
+    return redirect(reverse('htmx_crud:index'))
 
 @login_required
 def create_comment(request, pk):

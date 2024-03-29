@@ -175,6 +175,7 @@ def favorite_post(request, slug):
         if not post.favorites.filter(id=request.user.id).exists():
             post.favorites.add(request.user)
             post.save()
+            messages.success(request, 'Added post to your favorites.')
 
             context = {'post': post}
             return render(
@@ -185,6 +186,7 @@ def favorite_post(request, slug):
         else:
             post.favorites.remove(request.user)
             post.save()
+            messages.success(request, 'Removed post from your favorites.')
 
             context = {'post': post}
             return render(
@@ -202,6 +204,7 @@ def like_post(request, slug):
         if not post.likes.filter(id=request.user.id).exists():
             post.likes.add(request.user)
             post.save()
+            messages.success(request, 'Liked post.')
 
             context = {'post': post}
             return render(
@@ -212,6 +215,7 @@ def like_post(request, slug):
         else:
             post.likes.remove(request.user)
             post.save()
+            messages.success(request, 'Unliked post.')
 
             context = {'post': post}
             return render(

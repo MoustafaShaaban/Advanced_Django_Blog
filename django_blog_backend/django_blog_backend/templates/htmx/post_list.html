@@ -8,8 +8,6 @@
       <div class="card-body">
           <div class="d-flex px-2">
               <h5 class="flex-grow-1 card-title pb-3 m-1">{{ post.title }}</h5>
-              {% include 'blog/posts/partials/favorite_post.html' %}
-              {% include 'blog/posts/partials/like_post.html' %}
           </div>
           <p class="card-subtitle text-muted"> By <span>{{ post.author }}</span>,  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
           <hr class="text-light">
@@ -22,66 +20,12 @@
           <hr class="text-light">
           <p class="card-text pt-3 m-1">{{ post.content }}</p>
 
+          <a href="{% url 'htmx_crud:post-detail' pk=post.id %}" role="button" class="card-link btn btn-primary my-3 pt-2">Read more</a>
 
-          {% if post.author == user %}
-            <div class="form-inline my-2 my-lg-0">
-              <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:edit_post' pk=post.pk %}" hx-target="#dialog">Edit</button>
-
-              {% comment %}
-              <button class="btn btn-danger btn-sm" hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}" hx-confirm="Are you sure you want to delete {{post.title}} ?">Delete</button>
-              {% endcomment %}
-            </div>
-          {% endif %}
       </div>
   </div>
   <!-- End Blog Post List -->
 </div>
-
-<section>
-  <div class="container d-md-flex">
-      <div class="col-md-12">
-          <div class="col-md-4 px-4">
-              <div class="d-flex">
-                  <button type="button" class="btn btn-primary mx-2">
-                      Comments <span class="badge text-bg-danger">{% num_comments post.slug %}</span>
-                  </button>
-
-                  {% if user.is_authenticated %}
-                    <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' pk=post.pk %}" hx-target="#dialog">
-                        Add Comment
-                    </button>
-                  {% endif %}
-              </div>
-          </div>
-
-          <hr class="text-light">
-          <div class="list-group">
-              {% for comment in comments %}
-                  {% if comment.user == user %}
-                        <div class="dropdown">
-                          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Manage
-                          </button>
-                          <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'blog:update-comment' comment.pk %}">Update</a></li>
-                            <li><a class="dropdown-item" href="{% url 'blog:delete-comment' comment.pk %}">Delete</a></li>
-                          </ul>
-                        </div>
-                      {% endif %}
-                  <a href="#" class="list-group-item list-group-item-action">
-                      <div class="d-flex w-100 justify-content-between">
-                          <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>
-                          <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>
-                      </div>
-                      <p class="mb-1">{{ comment.comment }}</p>
-                  </a>
-                  {% empty %}
-                          <p class="lead text-light">This post has no comments yet.</p>
-              {% endfor %}
-      </div>
-    </div>
-  </div>
-</section>
 {% empty %}
   <p>No Avaialble posts at this moment</p>
 {% endfor %}

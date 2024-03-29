@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('posts', views.post_list, name='post_list'),
     path('posts/add', views.add_post, name='add_post'),
+    path('post/<int:pk>/', views.post_detail, name='post-detail'),
     path('posts/<int:pk>/edit', views.edit_post, name='edit_post'),
     path('htmx/delete-post/<int:pk>/', views.remove_post, name='delete-post'),
     path('htmx/update-post/<int:pk>/', views.HTMXUpdatePostView.as_view(), name='htmx-update-post'),

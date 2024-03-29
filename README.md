@@ -192,6 +192,8 @@ For more information about the available commands in this project check the Cook
 
 * [Django HTMX Toasts](https://blog.benoitblanchon.fr/django-htmx-toasts/)
 
+* [Toast Up Your Django Messages with ToastifyJs](https://afeez1131.hashnode.dev/say-goodbye-to-dull-toast-up-your-django-messages-with-toastifyjs)
+
 * [htmx in Django by examples](https://www.valentinog.com/blog/htmx-django-examples/)
 
 * [Testing](https://www.valentinog.com/blog/testing-django/)
