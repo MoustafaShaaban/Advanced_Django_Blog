@@ -1,35 +1,40 @@
 {% load crispy_forms_tags %}
 
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        {% if post %}
+          <h5 class="modal-title">Edit: {{ post.title }}</h5>
+        {% else %}
+          <h5 class="modal-title">Add Post</h5>
+        {% endif %}
 
-<form id="post-form" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
-  <div class="modal-header">
-    {% if post %}
-      <h5 class="modal-title">Edit Post: {{ post.title }}</h5>
-    {% else %}
-      <h5 class="modal-title">Add Post</h5>
-    {% endif %}
-
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-  </div>
-  <div class="modal-body">
-    <div class="col-6">
-      <div class="row my-2">
-        {{ form.title|as_crispy_field }}
-      </div>
-      <div class="row my-2">
-        {{ form.content|as_crispy_field }}
-      </div>
-      <div class="row my-2">
-        {{ form.tag|as_crispy_field }}
-      </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </h5>
     </div>
+    <form id="post-form" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+      <div class="modal-body">
+        <div class="col-6">
+          <div class="row my-2">
+            {{ form.title|as_crispy_field }}
+          </div>
+          <div class="row my-2">
+            {{ form.content|as_crispy_field }}
+          </div>
+          <div class="row my-2">
+            {{ form.tag|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="submit" class="btn btn-primary">
+          Save
+        </button>
+      </div>
+    </form>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-      Close
-    </button>
-    <button type="submit" class="btn btn-primary">
-      Save
-    </button>
-  </div>
-</form>
+</div>

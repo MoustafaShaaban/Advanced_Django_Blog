@@ -112,13 +112,13 @@ export DATABASE_URL=postgres://admin:1234@127.0.0.1:5432/django-blog-backend
 
 * Open the terminal or CMD to create a virtual environment like Python virtual environment (venv) or pipenv and activate it.
 
-    * ``` python -m venv venv ```           *Create the venv*
+  * ``` python -m venv venv ```           *Create the venv*
 
-    * ``` source venv/bin/activate ```      *On Linux*
+  * ``` source venv/bin/activate ```      *On Linux*
 
-    * ``` venv/Scripts/activate ```         *On Windows*
+  * ``` venv/Scripts/activate ```         *On Windows*
 
-    * ``` source venv/Scripts/activate ```  *Git Bash on Windows*
+  * ``` source venv/Scripts/activate ```  *Git Bash on Windows*
 
 * Change directory to django_blog_backend ``` cd django_blog_backend ```
 

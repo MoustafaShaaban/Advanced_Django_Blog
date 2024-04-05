@@ -150,8 +150,36 @@ def create_comment(request, pk):
         'post': post
     }
 
-    return render(request, 'htmx/comment_form.html', context)
+    return render(request, 'htmx/comments/comment_form.html', context)
 
+
+class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
+    """ A view to update a specific post. """
+    model = Comment
+    fields = ['comment']
+    template_name = 'htmx/comments/update_comment.html'
+    success_url = reverse_lazy('htmx_crud:index')
+    success_message = "Comment Updated Successfully"
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user == comment.user:
+            return True
+        return False
+
+
+class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
+    """ A view to delete a specific post. """
+    model = Comment
+    template_name = 'htmx/comments/delete_comment.html'
+    success_url = reverse_lazy('htmx_crud:index')
+    success_message = "Comment Deleted Successfully"
+
+    def test_func(self):
+        comment = self.get_object()
+        if self.request.user == comment.user:
+            return True
+        return False
 
 
 # @login_required
