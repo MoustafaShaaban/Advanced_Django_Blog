@@ -1,6 +1,6 @@
 {% load crispy_forms_tags %}
 
-<div class="modal-dialog modal-dialog-centered" id="post-form-modal">
+<div class="modal-dialog modal-dialog-centered">
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title">
@@ -13,10 +13,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </h5>
     </div>
-    <form
-      id="post-form"
-      hx-post="{{ request.path }}"
-      hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+    <form id="post-form" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
       <div class="modal-body">
         <div class="col-6">
           <div class="row my-2">
@@ -34,7 +31,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+        <button type="submit" class="btn btn-primary">
           Save
         </button>
       </div>

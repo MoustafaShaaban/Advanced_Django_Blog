@@ -59,7 +59,7 @@ def add_post(request):
             post = form.save(commit=False)
             post.author = user
             post = form.save()
-
+            messages.success(request, 'Post Added Successfully.')
             return HttpResponse(
                 status=204,
                 headers= {
@@ -89,6 +89,7 @@ def edit_post(request, pk):
         form = PostForm(request.POST, instance=post)
 
         if form.is_valid():
+
             form.save()
             return HttpResponse(
                 status=204,

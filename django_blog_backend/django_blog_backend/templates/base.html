@@ -58,56 +58,58 @@
     <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-    <script src="{% static 'js/dialog.js' %}"></script>
-    <script src="{% static 'js/toast.js' %}"></script>
-    <script>
-      // Function to display Toastify notifications
-      function showCToast(type, message) {
-      /*
-          type: info, success, error, default;
-          message: message to be displayed.
-          */
-          const colorMap = {
-              "info": '#63B3ED',
-              "success": '#2dce89',
-              "error": '#f5365c',
-              "default": "#20c997"
-          };
 
-          const color = colorMap[type] || colorMap["default"];
 
-          // Configure and display the toast notification
-          Toastify({
-              text: message,
-              duration: 3000,
-              className: type,
-              close: true,
-              gravity: "bottom",       // `top` or `bottom`
-              position: "center",   // `left`, `center` or `right`
-              stopOnFocus: true,    // Prevent dismissing of toast on hover
-              style: {
-                  background: color,
-              },
-              escapeMarkup: false,   // Render HTML tags in the notification
-          }).showToast();
-      }
-
-      // Extract Django messages and display them using Toastify
-      const customMessages = [
-          {% for message in messages %}
-              {
-                  "tags": "{{ message.tags|default:'' }}",
-                  "message": '{{ message.message|default:'' }}'
-              }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-      ];
-
-      // Display each custom message using Toastify
-      customMessages.forEach(message => {
-          showCToast(message.tags, message.message);
-      });
-      </script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    // Function to display Toastify notifications
+    function showCToast(type, message) {
+    /*
+        type: info, success, error, default;
+        message: message to be displayed.
+        */
+        const colorMap = {
+            "info": '#63B3ED',
+            "success": '#2dce89',
+            "error": '#f5365c',
+            "default": "#20c997"
+        };
+
+        const color = colorMap[type] || colorMap["default"];
+
+        // Configure and display the toast notification
+        Toastify({
+            text: message,
+            duration: 5000,
+            className: type,
+            close: true,
+            gravity: "bottom",       // `top` or `bottom`
+            position: "center",   // `left`, `center` or `right`
+            stopOnFocus: true,    // Prevent dismissing of toast on hover
+            style: {
+                background: color,
+            },
+            escapeMarkup: false,   // Render HTML tags in the notification
+        }).showToast();
+    }
+
+    // Extract Django messages and display them using Toastify
+    const customMessages = [
+        {% for message in messages %}
+            {
+                "tags": '{{ message.tags|default:"" }}',
+                "message": '{{ message.message|default:"" }}'
+            }
+        {% endfor %}
+    ];
+
+    // Display each custom message using Toastify
+    customMessages.forEach(message => {
+        showCToast(message.tags, message.message);
+    });
+    </script>
+
 </body>
 
 </html>
