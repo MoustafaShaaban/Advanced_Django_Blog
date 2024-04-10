@@ -10,10 +10,10 @@ urlpatterns = [
     path('posts/add', views.add_post, name='add_post'),
     path('post/<int:pk>/', views.post_detail, name='post-detail'),
     path('posts/<int:pk>/edit', views.edit_post, name='edit_post'),
-    path('htmx/delete-post/<int:pk>/', views.remove_post, name='delete-post'),
+    path('htmx/delete-post/<int:pk>/', views.HTMXDeletePostView.as_view(), name='delete-post'),
     path('htmx/update-post/<int:pk>/', views.HTMXUpdatePostView.as_view(), name='htmx-update-post'),
     path('<int:pk>/create-comment/', views.create_comment, name='create-comment'),
-    path('update-comment/<int:pk>/', views.UpdateComment.as_view(), name='update-comment'),
-    path('delete-comment/<int:pk>/', views.DeleteComment.as_view(), name='delete-comment'),
+    path('update-comment/<int:pk>/', views.HTMXUpdateCommentView.as_view(), name='update-comment'),
+    path('delete-comment/<int:pk>/', views.HTMXDeleteCommentView.as_view(), name='delete-comment'),
     #path('htmx/post-detail/<int:pk>/', views.post_detail, name='htmx-post-detail'),
 ]

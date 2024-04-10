@@ -13,7 +13,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </h5>
     </div>
-    <form id="post-form" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+    <form id="post-form" hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' hx-target="closest body">
       <div class="modal-body">
         <div class="col-6">
           <div class="row my-2">

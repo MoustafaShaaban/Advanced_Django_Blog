@@ -116,27 +116,27 @@
               <hr class="text-light">
               <div class="list-group">
                   {% for comment in comments %}
-                      {% if comment.user == user %}
-                            <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Manage
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <a
-                                    class="dropdown-item"
-                                    hx-get="{% url 'htmx_crud:update-comment' comment.pk %}"
-                                    hx-target="#edit-comment-modal"
-                                    hx-trigger="click"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#edit-comment-modal"
-                                  >Update</a>
-                                </li>
-                                <li>
-                                  <a class="dropdown-item" hx-delete="{% url 'htmx_crud:delete-comment' pk=comment.pk %}" hx-target="closest body" hx-confirm=" {{ comment.comment }} ?">Delete</a></li>
-                              </ul>
-                            </div>
-                          {% endif %}
+                    {% if comment.user == user %}
+                          <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Manage
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  hx-get="{% url 'htmx_crud:update-comment' comment.pk %}"
+                                  hx-target="#edit-comment-modal"
+                                  hx-trigger="click"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#edit-comment-modal"
+                                >Update</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" hx-delete="{% url 'htmx_crud:delete-comment' pk=comment.pk %}" hx-target="closest body" hx-confirm="{{ comment.comment }} ?">Delete</a></li>
+                            </ul>
+                          </div>
+                        {% endif %}
                       <a href="#" class="list-group-item list-group-item-action">
                           <div class="d-flex w-100 justify-content-between">
                               <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>
