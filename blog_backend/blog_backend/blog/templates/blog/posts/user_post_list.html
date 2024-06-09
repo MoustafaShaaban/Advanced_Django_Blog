@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block inner %}
+{% block content %}
     <div class="row">
         <div class="container d-md-flex">
             <div class="col-md-12 mx-4">
@@ -20,7 +20,7 @@
               </div>
 
                 <hr class="text-light">
-                       
+
                 {% for post in posts %}
                     <div class="cardmb-3 border-primary" style="width: 100%;">
                         <div class="card-body">
@@ -28,8 +28,8 @@
                             <p class="card-subtitle text-muted"> By {{ post.author }},  In <time>{{ post.updated_at }}</time></p>
                             <hr class="text-light">
                             <p class="card-text pt-3 m-1">{{ post.content }}</p>
-                            
-                            
+
+
                             <button class="btn btn-primary mt-3">
                                 <a href="{% url 'blog:post-detail' post.slug %}" class="card-link pt-2 text-light">Read more</a>
                             </button>
@@ -43,4 +43,4 @@
             </div>
         </div>
     </div>
-{% endblock inner %}
+{% endblock content %}

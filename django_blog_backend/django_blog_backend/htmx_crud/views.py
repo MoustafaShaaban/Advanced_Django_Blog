@@ -235,6 +235,21 @@ class HTMXDeleteCommentView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
 #     return render(request, 'htmx/post_detail.html', context)
 
 
+class HTMXCreateCommentView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+    """ A view to add a new post. """
+    model = Comment
+    fields = ['comment']
+    template_name = 'htmx/comments/comment_form.html'
+    success_url = reverse_lazy('htmx_crud:index')
+    success_message = "Comment Added Successfully"
+
+    def form_valid(self, form):
+        # post = get_object_or_404(Post, id=pk)
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
 class HTMXUpdatePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
     """ A view to update a specific post. """
     model = Post

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block inner %}
+{% block content %}
     <h2>Update post</h2>
-        
+
     <hr>
 
     <form method="post" action="{% url 'blog:update-post' post.slug %}">
@@ -27,4 +27,4 @@
         <button class="btn btn-info" type="submit">Update</button>
     </div>
     </form>
-{% endblock inner %}
+{% endblock content %}

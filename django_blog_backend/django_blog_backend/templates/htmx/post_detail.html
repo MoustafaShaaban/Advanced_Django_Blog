@@ -4,7 +4,7 @@
 {% load static %}
 {% block title %}{{ post.title }}{% endblock title %}
 
-{% block inner %}
+{% block content %}
     <div class="row" hx-trigger="postListChanged from:body" hx-get="{% url 'htmx_crud:post-detail' post.pk %}" hx-target="this">
         <div class="container d-md-flex">
             <div class="col-md-12">
@@ -192,4 +192,4 @@
         })
       })
     </script>
-{% endblock inner %}
+{% endblock content %}

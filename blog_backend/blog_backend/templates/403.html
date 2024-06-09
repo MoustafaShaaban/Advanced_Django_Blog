@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Forbidden (403){% endblock title %}
-{% block inner %}
+{% block content %}
   <h1>Forbidden (403)</h1>
   <p>
     {% if exception %}
@@ -10,4 +10,4 @@
       You're not allowed to access this page.
     {% endif %}
   </p>
-{% endblock inner %}
+{% endblock content %}

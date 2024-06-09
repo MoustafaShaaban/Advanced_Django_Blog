@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block inner %}
+{% block content %}
 <h2>Delete Post</h2>
-    
+
 <hr>
 
 <form method="post" action="{% url 'blog:delete-post' post.slug %}">
@@ -21,7 +21,7 @@
         </button>
         <button class="btn btn-danger" type="submit">Delete</button>
     </div>
-    
+
 </form>
-{% endblock inner %}
+{% endblock content %}
 

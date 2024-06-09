@@ -82,6 +82,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.mfa",
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
@@ -119,6 +120,22 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+MFA_FORMS = {
+    'authenticate': 'allauth.mfa.forms.AuthenticateForm',
+    'reauthenticate': 'allauth.mfa.forms.AuthenticateForm',
+    'activate_totp': 'allauth.mfa.forms.ActivateTOTPForm',
+    'deactivate_totp': 'allauth.mfa.forms.DeactivateTOTPForm',
+}
+
+MFA_RECOVERY_CODE_COUNT = 10
+# The number of recovery codes.
+
+MFA_TOTP_PERIOD = 30
+# The period that a TOTP code will be valid for, in seconds.
+
+MFA_TOTP_DIGITS = 6
+# The number of digits for TOTP codes.
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url

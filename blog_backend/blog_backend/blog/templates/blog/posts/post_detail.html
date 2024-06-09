@@ -4,7 +4,7 @@
 
 {% block title %}{{ post.title }}{% endblock title %}
 
-{% block inner %}
+{% block content %}
 {% if messages %}
     <div class="messages alert alert-success" role="alert">
         {% for message in messages %}
@@ -131,4 +131,4 @@
             </div>
         </div>
     </section>
-{% endblock inner %}
+{% endblock content %}

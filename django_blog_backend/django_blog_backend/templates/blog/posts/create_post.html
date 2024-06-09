@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block inner %}
+{% block content %}
     {% if user.is_authenticated %}
     <h2>Create Post</h2>
 
@@ -27,4 +27,4 @@
     {% else %}
         <p>You are not logged in, Please click <a href="{% url 'login' %}" class="text-white">here</a> to login and add a todo!</p>
     {% endif %}
-{% endblock inner %}
+{% endblock content %}

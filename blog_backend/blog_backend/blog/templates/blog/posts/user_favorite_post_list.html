@@ -11,9 +11,9 @@
         </div>
     </div>
 {% endblock hero %}
-    
 
-{% block inner %}
+
+{% block content %}
     <div class="row">
         <div class="text-secondary px-4 py-5 text-center">
             <div class="py-5">
@@ -37,8 +37,8 @@
                             <p class="card-subtitle text-muted"> By {{ post.author }},  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
                             <hr class="text-light">
                             <p class="card-text pt-3 m-1">{{ post.content }}</p>
-                            
-                            
+
+
                             <button class="btn btn-primary mt-3">
                                 <a href="{% url 'blog:post-detail' post.slug %}" class="card-link pt-2 text-light">Read more</a>
                             </button>
@@ -52,4 +52,4 @@
             </div>
         </div>
     </div>
-{% endblock inner %}
+{% endblock content %}

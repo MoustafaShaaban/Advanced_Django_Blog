@@ -5,7 +5,7 @@
 {% block head_title %}
   {% translate "Verify Your E-mail Address" %}
 {% endblock head_title %}
-{% block inner %}
+{% block content %}
   <h1>{% translate "Verify Your E-mail Address" %}</h1>
   {% url 'account_email' as email_url %}
   <p>
@@ -21,4 +21,4 @@ contact us if you do not receive it within a few minutes.{% endblocktranslate %}
   <p>
     {% blocktranslate %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktranslate %}
   </p>
-{% endblock inner %}
+{% endblock content %}

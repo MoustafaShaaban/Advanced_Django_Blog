@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block inner %}
+{% block content %}
     <h3 class="text-center my-5">Posts with the tag <span class="badge rounded-pill text-bg-primary">{{ tags.name|title }}</span></h3>
     {% for post in posts %}
     <div class="card mb-3" style="width: 100%;">
@@ -19,4 +19,4 @@
     {% empty %}
         <p class="mx-3">There are no posts with this tag yet.</p>
     {% endfor %}
-{% endblock inner %}
+{% endblock content %}

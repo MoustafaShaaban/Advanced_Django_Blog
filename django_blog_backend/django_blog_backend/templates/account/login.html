@@ -7,7 +7,7 @@
 {% block head_title %}
   {% translate "Sign In" %}
 {% endblock head_title %}
-{% block inner %}
+{% block content %}
   <h1>{% translate "Sign In" %}</h1>
   {% get_providers as socialaccount_providers %}
   {% if socialaccount_providers %}
@@ -49,4 +49,4 @@
        href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
     <button class="primaryAction btn btn-primary" type="submit">{% translate "Sign In" %}</button>
   </form>
-{% endblock inner %}
+{% endblock content %}
