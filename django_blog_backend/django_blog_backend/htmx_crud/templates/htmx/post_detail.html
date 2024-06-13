@@ -82,7 +82,7 @@
                       </button>
 
                       {% if user.is_authenticated %}
-                        <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' pk=post.pk %}" hx-target="#dialog">
+                        <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' slug=post.slug %}" hx-target="#commentModal">
                           Add Comment
                         </button>
 
