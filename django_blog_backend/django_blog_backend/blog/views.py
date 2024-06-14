@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -74,7 +74,7 @@ class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, g
     model = Post
     fields = ['title', 'content', 'tag']
     template_name = 'blog/posts/update_post.html'
-    success_url = reverse_lazy('blog:homepage')
+    # success_url = reverse_lazy('blog:homepage')
     success_message = "Post Updated Successfully"
 
     def test_func(self):
@@ -82,6 +82,9 @@ class UpdatePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, g
         if self.request.user == post.author:
             return True
         return False
+
+    def get_success_url(self):
+        return reverse('blog:post-detail', kwargs={'slug': self.object.slug})
 
 
 class DeletePost(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
@@ -143,7 +146,7 @@ class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin
     model = Comment
     fields = ['comment']
     template_name = 'blog/comments/update_comment.html'
-    success_url = reverse_lazy('blog:homepage')
+    # success_url = reverse_lazy('blog:homepage')
     success_message = "Comment Updated Successfully"
 
     def test_func(self):
@@ -152,12 +155,15 @@ class UpdateComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin
             return True
         return False
 
+    def get_success_url(self):
+        return reverse('blog:post-detail', kwargs={'slug': self.object.post.slug})
+
 
 class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
     """ A view to delete a specific post. """
     model = Comment
     template_name = 'blog/comments/delete_comment.html'
-    success_url = reverse_lazy('blog:homepage')
+    # success_url = reverse_lazy('blog:homepage')
     success_message = "Comment Deleted Successfully"
 
     def test_func(self):
@@ -165,6 +171,9 @@ class DeleteComment(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin
         if self.request.user == comment.user:
             return True
         return False
+
+    def get_success_url(self):
+        return reverse('blog:post-detail', kwargs={'slug': self.object.post.slug})
 
 
 @login_required

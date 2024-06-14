@@ -163,8 +163,6 @@ class HTMXUpdateCommentView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
     # success_url = reverse_lazy('htmx_crud:index')
     success_message = "Comment Updated Successfully"
 
-    def get_success_url(self):
-        return reverse("htmx_crud:post-detail", kwargs={"pk": self.object.post.pk})
 
     def test_func(self):
         comment = self.get_object()
@@ -172,12 +170,15 @@ class HTMXUpdateCommentView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
             return True
         return False
 
+    def get_success_url(self):
+        return reverse("htmx_crud:post-detail", kwargs={"pk": self.object.post.pk})
+
 
 class HTMXDeleteCommentView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
     """ A view to delete a specific post. """
     model = Comment
     template_name = 'htmx/comments/delete_comment.html'
-    success_url = reverse_lazy('htmx_crud:index')
+    # success_url = reverse_lazy('htmx_crud:index')
     success_message = "Comment Deleted Successfully"
 
     def test_func(self):
@@ -185,6 +186,9 @@ class HTMXDeleteCommentView(LoginRequiredMixin, UserPassesTestMixin, SuccessMess
         if self.request.user == comment.user:
             return True
         return False
+
+    def get_success_url(self):
+        return reverse('htmx_crud:post-detail', kwargs={'pk': self.object.post.pk})
 
 
 # @login_required
@@ -240,8 +244,8 @@ class HTMXCreateCommentView(LoginRequiredMixin, SuccessMessageMixin, generic.Cre
     model = Comment
     fields = ['comment']
     template_name = 'htmx/comments/comment_form.html'
-    success_url = reverse_lazy('htmx_crud:index')
-    success_message = "Comment Added Successfully"
+    # success_url = reverse_lazy('htmx_crud:index')
+    success_message = "Thank you for commenting, Your comment is pending admin approval."
 
     def form_valid(self, form):
         # post = get_object_or_404(Post, id=pk)
@@ -249,13 +253,15 @@ class HTMXCreateCommentView(LoginRequiredMixin, SuccessMessageMixin, generic.Cre
         form.instance.user = self.request.user
         return super().form_valid(form)
 
+    def get_success_url(self):
+        return reverse('htmx_crud:post-detail', kwargs={'pk': self.object.post.pk})
 
 class HTMXUpdatePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.UpdateView):
     """ A view to update a specific post. """
     model = Post
     fields = ['title', 'content', 'tag']
     template_name = 'htmx/htmx_update_post.html'
-    success_url = reverse_lazy('htmx_crud:index')
+    #success_url = reverse_lazy('htmx_crud:index')
     success_message = "Post Updated Successfully"
 
     def test_func(self):
@@ -270,10 +276,13 @@ class HTMXDeletePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
     model = Post
     template_name = 'htmx/htmx_delete_post.html'
     success_message = "Post Deleted Successfully"
-    success_url = reverse_lazy('htmx_crud:index')
+    # success_url = reverse_lazy('htmx_crud:index')
 
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
             return True
         return False
+
+    def get_success_url(self):
+        return reverse('htmx_crud:post-detail', kwargs={'pk': self.object.post.pk})

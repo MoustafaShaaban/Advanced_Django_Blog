@@ -82,34 +82,34 @@
                       </button>
 
                       {% if user.is_authenticated %}
-                        <button class="btn btn-primary btn-sm" hx-get="{% url 'htmx_crud:create-comment' pk=post.pk %}" hx-target="#commentModal">
-                          Add Comment
-                        </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">
+                                Add Comment
+                            </button>
 
-                          <!-- Modal -->
-                          <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                              <div class="modal-dialog">
-                                  <div class="modal-content">
-                                      <div class="modal-header">
-                                          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                          <form action="{% url 'htmx_crud:create-comment' post.pk %}" method="POST">
-                                              {% csrf_token %}
-                                              <div class="row my-2">
-                                                  {{ form.comment|as_crispy_field }}
+                            <!-- Modal -->
+                            <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Comment</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{% url 'htmx_crud:create-comment' post.pk %}" method="POST">
+                                                {% csrf_token %}
+                                                <div class="row my-2">
+                                                    {{ form.comment|as_crispy_field }}
+                                                </div>
+                                              <div class="modal-footer">
+                                                <button class="btn btn-success" type="submit">Submit</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                               </div>
-                                            <div class="modal-footer">
-                                              <button class="btn btn-success" type="submit">Submit</button>
-                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                          </form>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      {% endif %}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                   </div>
               </div>
 
@@ -133,7 +133,7 @@
                                 >Update</a>
                               </li>
                               <li>
-                                <a class="dropdown-item" hx-delete="{% url 'htmx_crud:delete-comment' pk=comment.pk %}" hx-target="closest body" hx-confirm="{{ comment.comment }} ?">Delete</a></li>
+                                <a class="dropdown-item" hx-delete="{% url 'htmx_crud:delete-comment' pk=comment.pk %}" hx-target="closest body" hx-confirm="?">Delete</a></li>
                             </ul>
                           </div>
                         {% endif %}
@@ -180,8 +180,8 @@
             return;
         }
         Swal.fire({
-          title: "Proceed?",
-          text: `Are you sure you want to delete: ${e.detail.question}`,
+          title: "Delete",
+          text: `Are you sure you want to delete?: ${e.detail.question}`,
           icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes",
