@@ -1,12 +1,9 @@
 <script>
-import { ref } from 'vue'
-import { Notify, Dialog, useQuasar, date } from 'quasar';
-import { useQuery } from "@tanstack/vue-query"
 import Multiselect from 'vue-multiselect'
 import moment from 'moment';
 
 import { useAuthStore } from '@/stores/authStore';
-import { getAllPosts, filterPostsByTitle } from "../../graphqlQueries";
+import { filterPostsByTitle } from "../../graphqlQueries";
 
 
 export default {
@@ -68,8 +65,7 @@ export default {
 <template>
     <q-page class="flex flex-center column">
         <q-btn v-if="!this.searchForm" @click="this.searchForm = true" class="q-mr-md q-mt-md">Open Search Form</q-btn>
-        <q-card v-if="this.searchForm" flat bordered class="form-card"
-            :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card v-if="this.searchForm" flat bordered class="form-card">
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">Search for post by title</div>
                 <q-space />
@@ -130,11 +126,11 @@ export default {
 
                 <q-card-actions v-if="authStore.$state.isAuthenticated">
                     <router-link :to="{ name: 'edit-post', params: { slug: post.node.slug } }">
-                        <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                        <q-btn flat color="primary">
                             Detail
                         </q-btn>
                     </router-link>
-                    <!-- <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
+                    <!-- <q-btn color="info" flat
               @click="confirmDeletePost(post.slug)">Delete</q-btn>
             <q-btn v-if="post.favorites.length > 0" color="info" flat
               @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
@@ -148,12 +144,12 @@ export default {
                         <q-card-section v-if="post.node.comments.length > 0">
                             <q-card-section v-for="comment in post.node.comments" key="comment.id">
                                 <div class="text-h5">{{ comment.comment }}</div>
-                                <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                                <q-item-label caption>
                                     by: {{ comment.user.username }}
                                 </q-item-label>
                                 <q-card-actions v-if="authStore.$state.isAuthenticated">
                                     <router-link :to="{ name: 'edit-comment', params: { id: comment.id } }">
-                                        <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                                        <q-btn flat color="primary">
                                             Edit
                                         </q-btn>
                                     </router-link>

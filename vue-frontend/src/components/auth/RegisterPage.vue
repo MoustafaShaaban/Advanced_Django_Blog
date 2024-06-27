@@ -1,7 +1,6 @@
 <template>
     <q-page class="flex flex-center">
-      <q-card v-if="!this.authStore.isAuthenticated" flat bordered class="my-card"
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+      <q-card v-if="!this.authStore.isAuthenticated" flat bordered class="my-card">
         <q-card-section>
           <div class="row items-center no-wrap">
             <div class="col">

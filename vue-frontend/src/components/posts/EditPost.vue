@@ -1,7 +1,6 @@
 <script>
 import { Notify, Cookies } from 'quasar'
 import Multiselect from 'vue-multiselect'
-import { useQuery } from '@tanstack/vue-query'
 import { axiosAPI, getAllTags } from "../../api/axios"
 
 export default {
@@ -99,7 +98,7 @@ export default {
 
 <template>
   <q-page class="flex flex-center">
-    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+    <q-card flat bordered class="my-card">
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col">
@@ -138,7 +137,7 @@ export default {
       <q-btn color="info" flat @click="commentCard = true">Add Comment</q-btn>
 
             <q-dialog v-model="commentCard">
-                <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                <q-card flat bordered class="my-card">
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">Add Comment</div>
                         <q-space />

@@ -1,11 +1,11 @@
 <script setup>
 import axios from 'axios';
-import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
-import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
+import { useQuery } from '@tanstack/vue-query';
+import { useQuasar, date, Cookies } from 'quasar';
 
 import { useAuthStore } from '@/stores/authStore';
 
-const queryClient = useQueryClient()
+
 
 const authStore = useAuthStore();
 const $q = useQuasar();
@@ -108,11 +108,11 @@ const { data, error, isPending, isLoading, isError } = useQuery({
 
             <q-card-actions v-if="authStore.$state.isAuthenticated">
                 <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
-                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                    <q-btn  flat color="primary">
                         Detail
                     </q-btn>
                 </router-link>
-                <!-- <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
+                <!-- <q-btn color="info" flat
                     @click="confirmDeletePost(post.slug)">Delete</q-btn>
                 <q-btn v-if="post.favorites.length > 0" color="info" flat
                     @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
@@ -126,12 +126,12 @@ const { data, error, isPending, isLoading, isError } = useQuery({
                     <q-card-section v-if="post.comments.length > 0">
                         <q-card-section v-for="comment in post.comments" key="comment.id">
                             <div class="text-h5">{{ comment.comment }}</div>
-                            <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                            <q-item-label caption>
                                 by: {{ comment.user.username }}
                             </q-item-label>
                             <q-card-actions v-if="authStore.$state.isAuthenticated">
                                 <router-link :to="{ name: 'edit-comment', params: { id: comment.id } }">
-                                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                                    <q-btn>
                                         Edit
                                     </q-btn>
                                 </router-link>

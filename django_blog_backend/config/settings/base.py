@@ -211,19 +211,11 @@ MEDIA_URL = "/media/"
 # TEMPLATES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#templates
-# Install app and configure loader.
-default_loaders = [
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-]
-cached_loaders = [("django.template.loaders.cached.Loader", default_loaders)]
-partial_loaders = [("template_partials.loader.Loader", cached_loaders)]
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "django_blog_backend/templates"],
-        # Comment this out when manually defining loaders.
-        # "APP_DIRS": True,
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -236,9 +228,6 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django_blog_backend.users.context_processors.allauth_settings",
             ],
-            "debug": True,
-            # TODO: Add wrap_loaded function to the called from an AppConfig.ready().
-            "loaders": partial_loaders,
         },
     },
 ]

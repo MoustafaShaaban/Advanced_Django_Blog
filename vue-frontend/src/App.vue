@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <q-layout view="hHh lpR fFf" :class="$q.dark.isActive ? 'bg-grey-9 text-white' : 'bg-white text-dark'">
+    <q-layout view="hHh lpR fFf">
 
       <q-header reveal elevated class="bg-primary text-white">
         <q-toolbar>
@@ -48,8 +48,19 @@
                 <q-icon name="info" />
               </q-item-section>
 
-              <q-item-section :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+              <q-item-section>
                 About
+              </q-item-section>
+
+            </q-item>
+
+            <q-item clickable v-ripple @click="toggleDarkMode">
+              <q-item-section avatar>
+                <q-icon name="dark_mode" />
+              </q-item-section>
+
+              <q-item-section>
+                Toggle Dark Mode
               </q-item-section>
             </q-item>
           </q-list>
@@ -66,7 +77,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'tags' }">
+                <router-link :to="{ name: 'tags' }">
                   Tags List
                 </router-link>
               </q-item-section>
@@ -78,7 +89,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'add-post' }">
+                <router-link :to="{ name: 'add-post' }">
                   Add Post
                 </router-link>
               </q-item-section>
@@ -90,7 +101,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'add-tag' }">
+                <router-link :to="{ name: 'add-tag' }">
                   RestAPI Add Tag
                 </router-link>
               </q-item-section>
@@ -102,7 +113,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-add-post' }">
+                <router-link :to="{ name: 'graphql-add-post' }">
                   GraphQL Add Post
                 </router-link>
               </q-item-section>
@@ -114,7 +125,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-post-list' }">
+                <router-link :to="{ name: 'graphql-post-list' }">
                   GraphQL Post List
                 </router-link>
               </q-item-section>
@@ -126,7 +137,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-add-tag' }">
+                <router-link :to="{ name: 'graphql-add-tag' }">
                   GraphQL Add Tag
                 </router-link>
               </q-item-section>
@@ -138,7 +149,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'user-post-list' }">
+                <router-link :to="{ name: 'user-post-list' }">
                   RESTAPI User Post List
                 </router-link>
               </q-item-section>
@@ -150,7 +161,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-user-post-list' }">
+                <router-link :to="{ name: 'graphql-user-post-list' }">
                   GraphQL User Post List
                 </router-link>
               </q-item-section>
@@ -162,7 +173,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'user-favorite-post-list' }">
+                <router-link :to="{ name: 'user-favorite-post-list' }">
                   RESTAPI User Favorite Post List
                 </router-link>
               </q-item-section>
@@ -174,7 +185,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-user-favorite-post-list' }">
+                <router-link :to="{ name: 'graphql-user-favorite-post-list' }">
                   GraphQL User Favorite Post List
                 </router-link>
               </q-item-section>
@@ -188,7 +199,7 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'post-search' }">
+                <router-link :to="{ name: 'post-search' }">
                   REST API Search
                 </router-link>
               </q-item-section>
@@ -200,19 +211,9 @@
               </q-item-section>
 
               <q-item-section>
-                <router-link :class="$q.dark.isActive ? 'text-white' : 'text-dark'" :to="{ name: 'graphql-search' }">
+                <router-link :to="{ name: 'graphql-search' }">
                   GraphQL Search
                 </router-link>
-              </q-item-section>
-            </q-item>
-            
-            <q-item clickable v-ripple @click="toggleDarkMode">
-              <q-item-section avatar>
-                <q-icon name="dark_mode" />
-              </q-item-section>
-
-              <q-item-section>
-                Toggle Dark Mode
               </q-item-section>
             </q-item>
 

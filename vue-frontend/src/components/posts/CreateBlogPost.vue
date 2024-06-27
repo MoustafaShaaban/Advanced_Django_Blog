@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import { useQuasar } from 'quasar'
 import Multiselect from 'vue-multiselect'
 import { useRouter } from 'vue-router';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { createPost, getAllTags } from '../../api/axios';
 
 const title = ref('')
@@ -78,7 +78,7 @@ function onReset() {
         <div v-if="isPending" class="alert alert-primary" role="alert">
             Adding post...
         </div>
-        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card flat bordered class="my-card">
             <q-card-section>
                 <div class="row items-center no-wrap">
                     <div class="col">

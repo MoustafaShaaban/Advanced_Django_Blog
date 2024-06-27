@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+    <q-card flat bordered class="my-card">
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col">
@@ -15,31 +15,31 @@
         A blog project built using
         <q-list bordered separator>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://www.djangoproject.com/" target="_blank">Django Web Framework</a>
+            <a href="https://www.djangoproject.com/" target="_blank">Django Web Framework</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://www.django-rest-framework.org/" target="_blank">Django REST Framework</a>
+            <a href="https://www.django-rest-framework.org/" target="_blank">Django REST Framework</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://docs.graphene-python.org/projects/django/en/latest/" target="_blank">Graphene Django</a>
+            <a href="https://docs.graphene-python.org/projects/django/en/latest/" target="_blank">Graphene Django</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://github.com/cookiecutter/cookiecutter-django/" target="_blank">Cookiecutter Django</a>
+            <a href="https://github.com/cookiecutter/cookiecutter-django/" target="_blank">Cookiecutter Django</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://vuejs.org/" target="_blank">Vue.js 3</a>
+            <a href="https://vuejs.org/" target="_blank">Vue.js 3</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://quasar.dev/" target="_blank">Quasar Framework</a>
+            <a href="https://quasar.dev/" target="_blank">Quasar Framework</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://tanstack.com/query/latest/docs/vue/overview/" target="_blank">Tanstack Vue Query</a>
+            <a href="https://tanstack.com/query/latest/docs/vue/overview/" target="_blank">Tanstack Vue Query</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://apollo.vuejs.org/" target="_blank">Vue Apollo</a>
+            <a href="https://apollo.vuejs.org/" target="_blank">Vue Apollo</a>
           </q-item>
           <q-item clickable v-ripple>
-            <a :class="$q.dark.isActive ? 'text-white' : 'text-dark'" href="https://vue-multiselect.js.org/" target="_blank">Vue-Multiselect</a>
+            <a href="https://vue-multiselect.js.org/" target="_blank">Vue-Multiselect</a>
           </q-item>
         </q-list>
       </q-card-section>

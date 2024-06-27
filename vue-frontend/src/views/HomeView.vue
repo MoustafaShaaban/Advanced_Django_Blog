@@ -270,11 +270,11 @@ function onReset() {
 
         <q-card-actions v-if="authStore.$state.isAuthenticated && authStore.$state.username === post.author.username">
           <router-link :to="{ name: 'edit-post', params: { slug: post.slug } }">
-            <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+            <q-btn flat color="primary">
               Detail
             </q-btn>
           </router-link>
-          <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" color="info" flat
+          <q-btn color="info" flat
             @click="confirmDeletePost(post.slug)">Delete</q-btn>
           <q-btn v-if="post.favorites.length > 0" color="info" flat
             @click="confirmRemovePostFromFavorites(post.id)">Remove from favorites</q-btn>
@@ -292,13 +292,13 @@ function onReset() {
             <q-card-section v-if="post.comments.length > 0">
               <q-card-section v-for="comment in post.comments" key="comment.id">
                 <div class="text-h5">{{ comment.comment }}</div>
-                <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                <q-item-label caption>
                   by: {{ comment.user }}
                 </q-item-label>
                 <q-card-actions
                   v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user">
                   <router-link :to="{ name: 'edit-comment', params: { id: comment.id } }">
-                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                    <q-btn flat color="primary">
                       Edit
                     </q-btn>
                   </router-link>
@@ -313,7 +313,7 @@ function onReset() {
       </q-card>
 
       <q-dialog v-model="card">
-        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card flat bordered class="my-card">
           <q-card-section class="row items-center q-pb-none">
             <div class="text-h6">Add Post</div>
             <q-space />

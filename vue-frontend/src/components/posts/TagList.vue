@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Dialog, Notify, useQuasar } from 'quasar';
+import { Notify } from 'quasar';
 import { useRouter } from 'vue-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query';
 
@@ -73,7 +73,7 @@ function onReset() {
         </div>
 
         <q-dialog v-model="tagCard">
-                <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                <q-card flat bordered class="my-card">
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">Add Tag</div>
                         <q-space />

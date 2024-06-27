@@ -1,13 +1,11 @@
 <script>
 import axios from 'axios';
-import { Notify, Dialog, useQuasar, date, Cookies } from 'quasar';
-import { useQuery } from "@tanstack/vue-query"
+import { Notify, Dialog, Cookies } from 'quasar';
 import Multiselect from 'vue-multiselect'
 import moment from 'moment';
 
 import { useAuthStore } from '@/stores/authStore';
-import { getAllPosts } from "../../graphqlQueries";
-import { getAllTags, axiosAPI } from '@/api/axios';
+import { axiosAPI } from '@/api/axios';
 import { createPostMutation, deletePostMutation, deleteCommentMutation, addPostToUserFavoritesMutation, likePostMutation } from '@/graphqlMutations';
 
 export default {
@@ -52,6 +50,7 @@ export default {
                 url: import.meta.env.VITE_GraphQL_URL,
                 method: 'post',
                 withCredentials: true,
+                timeout: 4000,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': Cookies.get('csrftoken')
@@ -361,13 +360,13 @@ export default {
                     <q-card-section v-if="post.comments.length > 0">
                         <q-card-section v-for="comment in post.comments" key="comment.id">
                             <div class="text-h5">{{ comment.comment }}</div>
-                            <q-item-label caption :class="$q.dark.isActive ? 'text-white' : 'text-dark'">
+                            <q-item-label caption>
                                 by: {{ comment.user.username }}
                             </q-item-label>
                             <q-card-actions
                                 v-if="authStore.$state.isAuthenticated && authStore.$state.username === comment.user.username">
                                 <router-link :to="{ name: 'graphql-edit-comment', params: { id: comment.id } }">
-                                    <q-btn :class="$q.dark.isActive ? 'text-white' : 'text-dark'" flat color="primary">
+                                    <q-btn flat color="primary">
                                         Edit
                                     </q-btn>
                                 </router-link>
@@ -382,7 +381,7 @@ export default {
             </q-card>
 
             <q-dialog v-model="postCard">
-                <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+                <q-card flat bordered class="my-card">
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">Add Post</div>
                         <q-space />

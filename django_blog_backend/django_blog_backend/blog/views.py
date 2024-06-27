@@ -15,7 +15,7 @@ from .forms import CommentForm
 class HomePage(generic.ListView):
     """Home page that shows all posts with maximum 5 posts per page."""
     model = Post
-    template_name = 'blog/index.html'
+    template_name = 'blog/posts_list.html'
     context_object_name = 'posts'
     paginate_by = 5
 

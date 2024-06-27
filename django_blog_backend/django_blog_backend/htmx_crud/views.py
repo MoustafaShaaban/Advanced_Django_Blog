@@ -276,13 +276,10 @@ class HTMXDeletePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
     model = Post
     template_name = 'htmx/htmx_delete_post.html'
     success_message = "Post Deleted Successfully"
-    # success_url = reverse_lazy('htmx_crud:index')
+    success_url = reverse_lazy('htmx_crud:index')
 
     def test_func(self):
         post = self.get_object()
         if self.request.user == post.author:
             return True
         return False
-
-    def get_success_url(self):
-        return reverse('htmx_crud:post-detail', kwargs={'pk': self.object.post.pk})

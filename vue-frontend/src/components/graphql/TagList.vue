@@ -2,13 +2,11 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { useQueryClient, useQuery, useMutation } from '@tanstack/vue-query';
-import { Dialog, Notify, useQuasar, date, Cookies } from 'quasar';
+import { Notify, Cookies } from 'quasar';
 import { useRouter } from 'vue-router';
 
-import { useAuthStore } from '@/stores/authStore';
 
 const queryClient = useQueryClient();
-const authStore = useAuthStore();
 const router = useRouter();
 const name = ref('');
 const tagCard = ref(false);
@@ -133,7 +131,7 @@ function onReset() {
         </div>
 
         <q-dialog v-model="tagCard">
-            <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+            <q-card flat bordered class="my-card">
                 <q-card-section class="row items-center q-pb-none">
                     <div class="text-h6">Add Tag</div>
                     <q-space />

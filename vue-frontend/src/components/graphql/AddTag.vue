@@ -22,7 +22,7 @@ export default {
                         "name": this.name,
                     }
                 })
-                this.$router.push("/graphql/post-list")
+                this.$router.push({name: "graphql-tags"})
                 Notify.create({
                     message: 'Tag Created Successfully',
                     type: 'positive',
@@ -51,7 +51,7 @@ export default {
 
 <template>
     <q-page class="flex flex-center">
-        <q-card flat bordered class="my-card" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'">
+        <q-card flat bordered class="my-card">
             <q-card-section>
                 <div class="row items-center no-wrap">
                     <div class="col">
