@@ -16,7 +16,10 @@
     <form
       id="post-form"
       hx-post="{{ request.path }}"
-      hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+      hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'
+      hx-target="this"
+      hx-swap="none"
+    >
       <div class="modal-body">
         <div class="col-6">
           <div class="row my-2">

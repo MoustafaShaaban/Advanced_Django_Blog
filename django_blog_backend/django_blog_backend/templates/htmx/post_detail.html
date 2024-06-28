@@ -32,13 +32,13 @@
                           <div class="form-inline my-2 my-lg-0">
                             <button
                               class="btn btn-primary btn-sm my-3"
-                              hx-get="{% url 'htmx_crud:edit_post' pk=post.pk %}"
+                              hx-get="{% url 'htmx_crud:htmx-update-post' pk=post.pk %}"
                               hx-target="#edit-post-modal"
                               hx-trigger="click"
                               data-bs-toggle="modal"
                               data-bs-target="#edit-post-modal"
 
-                              >Edit</button>
+                              >Update</button>
                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal">Delete</button>
                           </div>
                         {% endif %}

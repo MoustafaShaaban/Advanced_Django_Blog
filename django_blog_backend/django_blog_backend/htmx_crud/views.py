@@ -270,6 +270,9 @@ class HTMXUpdatePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
             return True
         return False
 
+    def get_success_url(self):
+        return reverse('htmx_crud:post-detail', kwargs={'pk': self.object.pk})
+
 
 class HTMXDeletePostView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, generic.DeleteView):
     """ A view to delete a specific post. """
