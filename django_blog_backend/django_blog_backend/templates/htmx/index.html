@@ -2,7 +2,7 @@
 load static %} {% block content %}
 <div class="container d-flex flex-column">
   <button
-    hx-get="{% url 'htmx_crud:add_post' %}"
+    hx-get="{% url 'htmx_crud:htmx-create-post' %}"
     hx-target="#add-post-modal"
     hx-trigger="click"
     data-bs-toggle="modal"
@@ -24,20 +24,39 @@ load static %} {% block content %}
   </div>
 
   <div class="row">
-    <div class="container d-flex justify-content-center align-items-center">
-      <div
-        class="col-md-6 mx-auto"
-        hx-trigger="load delay:2s, postListChanged from:body"
-        hx-get="{% url 'htmx_crud:post_list' %}"
-        hx-target="this"
-      >
-        <div
-          class="spinner-border text-primary"
-          role="status"
-          style="width: 3rem; height: 3rem"
-        >
-          <span class="visually-hidden">Loading...</span>
+    <div class="">
+      <div class="col-md-6 mx-auto">
+        <!-- Strat Blog Post List -->
+        {% for post in posts %}
+        <div class="card border-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <a href="{% url 'htmx_crud:post-detail' post.id %}"
+                >{{ post.title }}</a
+              >
+            </h5>
+            <p class="card-subtitle text-muted">
+              By {{ post.author }}, In
+              <time>{{ post.updated_at|date:'d-m-Y' }}</time>
+            </p>
+            <hr class="text-light" />
+            <p class="card-text mt-3 m-1">{{ post.content|slice:':50' }}</p>
+
+            <a
+              href="{% url 'htmx_crud:post-detail' post.id %}"
+              role="button"
+              class="card-link btn btn-primary mt-3 pt-2"
+              >Read more</a
+            >
+          </div>
         </div>
+        <hr class="text-dark" />
+
+        {% empty %}
+        <p>No Avaialble posts at this moment</p>
+        {% endfor %}
+
+        <!-- End Blog Post List -->
       </div>
     </div>
   </div>

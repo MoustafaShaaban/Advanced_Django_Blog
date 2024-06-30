@@ -5,15 +5,12 @@ from django.conf import settings
 
 
 class Tag(models.Model):
-    """Model definition for Tag."""
+    """Model definition for Blog Tags."""
 
-    # TODO: Define fields here
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, null=True)
 
     class Meta:
-        """Meta definition for Tag."""
-
         verbose_name = 'tag'
         verbose_name_plural = 'tags'
 
@@ -28,7 +25,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    """Model definition for Post."""
+    """Model definition for Blog Post."""
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -70,8 +67,6 @@ class Post(models.Model):
 
 
     class Meta:
-        """Meta definition for Post."""
-
         ordering = ['-updated_at']
         indexes = [
             models.Index(fields=['-published_at', 'author', 'updated_at'])
@@ -81,7 +76,7 @@ class Post(models.Model):
 
     def __str__(self):
         """Unicode representation of Post."""
-        return f'Author: {self.author}, Post Title: {self.title}'
+        return f'Author: {self.author}, Title: {self.title}'
 
     def get_absolute_url(self):
         """ A method to tell Django how to calculate the canonical URL (official url of a page) for an object """
@@ -94,7 +89,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    """Model definition for Comment."""
+    """Model definition for Blog Comments."""
 
     post = models.ForeignKey(
         Post,
@@ -113,8 +108,6 @@ class Comment(models.Model):
     )
 
     class Meta:
-        """Meta definition for Comment."""
-
         ordering = ['-published_at']
         indexes = [
             models.Index(fields=['-published_at'])
@@ -124,4 +117,4 @@ class Comment(models.Model):
 
     def __str__(self):
         """Unicode's representation of Comment."""
-        return f'Comment by: ({self.user}) on ({self.post.title})'
+        return f'Comment by: ({self.user}) on post: ({self.post.title})'

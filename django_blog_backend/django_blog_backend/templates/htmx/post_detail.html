@@ -39,28 +39,16 @@
                               data-bs-target="#edit-post-modal"
 
                               >Update</button>
-                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal">Delete</button>
+
+                              <button
+                              class="btn btn-danger btn-sm my-3"
+                              hx-get="{% url 'htmx_crud:htmx-delete-post' pk=post.pk %}"
+                              hx-target="#delete-post-modal"
+                              hx-trigger="click"
+                              data-bs-toggle="modal"
+                              data-bs-target="#delete-post-modal">Delete</button>
                           </div>
                         {% endif %}
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deletePostModalLabel">Modal title</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                Are you sure you want to delete this post?
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-danger" hx-delete="{% url 'htmx_crud:delete-post' pk=post.pk %}" hx-target="closest body" data-bs-dismiss="modal">Delete</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 
                         <div class="card-footer">
                             <button class="btn btn-success btn-md mt-3">
@@ -162,6 +150,15 @@
   </section>
 
   <div id="edit-post-modal"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
+  </div>
+  <div id="delete-post-modal"
     class="modal modal-blur fade"
     style="display: none"
     aria-hidden="false"
