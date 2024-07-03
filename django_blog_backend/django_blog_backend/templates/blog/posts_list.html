@@ -3,10 +3,14 @@
 <div class="row">
   <div class="">
     <div class="col-md-6 mx-auto">
-      <!-- Strat Blog Post List -->
-      <button class="btn btn-primary my-4 mx-auto">
-        <a href="{% url 'blog:create-post' %}" class="text-white">Add Post</a>
-      </button>
+
+      {% if request.user.is_authenticated %}
+        <!-- Strat Blog Post List -->
+        <button class="btn btn-primary my-4 mx-auto">
+          <a href="{% url 'blog:create-post' %}" class="text-white">Add Post</a>
+        </button>
+      {% endif %}
+
       {% for post in posts %}
       <div class="card border-primary mb-3">
         <div class="card-body">

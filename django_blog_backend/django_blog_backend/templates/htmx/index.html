@@ -1,7 +1,9 @@
 {% extends 'base.html' %} {% load crispy_forms_tags %} {% load partials %} {%
 load static %} {% block content %}
 <div class="container d-flex flex-column">
-  <button
+
+  {% if request.user.is_authenticated %}
+    <button
     hx-get="{% url 'htmx_crud:htmx-create-post' %}"
     hx-target="#add-post-modal"
     hx-trigger="click"
@@ -22,6 +24,8 @@ load static %} {% block content %}
       <div class="modal-content"></div>
     </div>
   </div>
+  {% endif %}
+
 
   <div class="row">
     <div class="">
