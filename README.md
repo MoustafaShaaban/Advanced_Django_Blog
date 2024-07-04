@@ -16,6 +16,9 @@ A blog project built using
 
 [Full Review](https://moustafashaaban.github.io/project-reviews/django/Django-Blog/Django-Blog/)
 
+> [!CAUTION]
+> Currently vue-frontend GraphQL implementation is not working correctly if you are using a chromium based web browser (like Google Chrome for example). but, it is working very well if you are using Firefox web browser.
+
 ###  Project Goals
 
 * Authenticated users can:
