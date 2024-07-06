@@ -2,20 +2,121 @@
   <div class="">
     <q-layout view="hHh lpR fFf">
 
-      <q-header reveal elevated class="bg-primary text-white">
+      <q-header reveal elevated class="bg-dark">
         <q-toolbar>
           <q-btn flat icon="menu" @click="drawerLeft = !drawerLeft" />
 
           <q-toolbar-title>
             <q-breadcrumbs v-if="authStore.$state.isAuthenticated" active-color="white" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
-              <q-breadcrumbs-el label="Tags List" icon="notes" to="/tags"  />
-              <q-breadcrumbs-el label="Rest API Post List" icon="notes" to="/"  />
-              <q-breadcrumbs-el label="GraphQL Post List" icon="notes" to="/graphql/post-list"  />
-              <q-breadcrumbs-el label="RESTAPI Search" icon="search" to="/post-search" />
-              <q-breadcrumbs-el label="GraphQL Search" icon="search" to="/graphql-search" />
+              <q-breadcrumbs-el :label="username" icon="home" />
+
+              <q-breadcrumbs-el>
+
+                <q-btn-dropdown color="dark" label="Rest API">
+                  <q-list>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Post List" icon="home" to="/" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="User Post List" icon="notes" :to="{ name: 'user-post-list' }" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="User Favorite Post List" icon="notes" :to="{ name: 'user-favorite-post-list' }" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Search" icon="search" to="/post-search" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Add Post" icon="notes" :to="{ name: 'add-post' }"  />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Tags List" icon="notes" to="/tags"  />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Add Tag" icon="notes" :to="{ name: 'add-tag' }"  />
+                      </q-item-section>
+                    </q-item>
+
+                  </q-list>
+                </q-btn-dropdown>
+
+              </q-breadcrumbs-el>
+
+              <q-breadcrumbs-el>
+
+                <q-btn-dropdown color="dark" label="GraphQL">
+                  <q-list>
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="GraphQL Post List" icon="notes" to="/graphql/post-list"  />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="User Post List" icon="notes" :to="{ name: 'graphql-user-post-list' }" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="User Favorite Post List" icon="notes" :to="{ name: 'graphql-user-favorite-post-list' }" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="GraphQL Search" icon="search" to="/graphql-search" />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Add Post" icon="notes" :to="{ name: 'graphql-add-post' }"  />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Tags List" icon="notes" to="/graphql/tags"  />
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item clickable v-close-popup>
+                      <q-item-section>
+                        <q-breadcrumbs-el label="Add Tag" icon="notes" :to="{ name: 'graphql-add-tag' }"  />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+
+              </q-breadcrumbs-el>
+
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
+
               <q-breadcrumbs-el label="Logout" icon="logout" @click="logout" to="/" />
+
             </q-breadcrumbs>
 
             <q-breadcrumbs v-else active-color="white" style="font-size: 16px">
@@ -24,6 +125,7 @@
               <q-breadcrumbs-el label="Login" icon="login" to="/login" />
               <q-breadcrumbs-el label="Register" icon="login" to="/register" />
             </q-breadcrumbs>
+
           </q-toolbar-title>
 
           <q-btn flat icon="menu" @click="drawerRight = !drawerRight" />
@@ -71,6 +173,7 @@
         <!-- drawer content -->
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
           <q-list padding>
+            
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="inbox" />
@@ -226,6 +329,7 @@
                 Logout
               </q-item-section>
             </q-item>
+
           </q-list>
         </q-scroll-area>
 
@@ -266,7 +370,7 @@
         <router-view />
       </q-page-container>
 
-      <q-footer reveal elevated class="bg-grey-8 text-white">
+      <q-footer reveal elevated class="bg-dark">
         <q-toolbar>
           <q-toolbar-title>
             <div>Footer</div>

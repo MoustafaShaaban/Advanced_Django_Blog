@@ -380,7 +380,7 @@ export default {
                 </q-card>
             </q-card>
 
-            <q-dialog v-model="postCard">
+            <q-dialog v-model="postCard" persistent>
                 <q-card flat bordered class="my-card">
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">Add Post</div>
@@ -426,8 +426,22 @@ export default {
     </main>
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .my-card
   width: 100%
-  width: 600px
+  max-width: 600px
+
+.q-dark div,
+.body--dark div
+  .multiselect__tags
+    background-color: rgb(24, 26, 27)
+    color: white
+  .multiselect__input
+    background-color: rgb(24, 26, 27)
+    color: white
+  .multiselect__content-wrapper
+      background-color: rgb(24, 26, 27)
+      color: white
+  .multiselect__placeholder
+    color: white
 </style>

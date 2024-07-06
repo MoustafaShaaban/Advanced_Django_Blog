@@ -228,7 +228,7 @@ function onReset() {
     <!-- We can assume by this point that `isSuccess === true` -->
     <span v-else-if="data.length == 0">No posts found</span>
     <div v-else class="q-mt-lg">
-      <q-card v-for="post in data" :key="post.id" class="my-card q-mt-md" flat bordered>
+      <q-card v-for="post in data" :key="post.id" class="posts-card q-mt-md" flat bordered>
         <q-item>
           <q-item-section avatar>
             <q-avatar>
@@ -312,7 +312,7 @@ function onReset() {
           </q-card>
       </q-card>
 
-      <q-dialog v-model="card">
+      <q-dialog v-model="card" persistent>
         <q-card flat bordered class="my-card">
           <q-card-section class="row items-center q-pb-none">
             <div class="text-h6">Add Post</div>
@@ -355,8 +355,27 @@ function onReset() {
   </main>
 </template>
 
-<style lang="sass" scoped>
+<style lang="sass">
+
+.posts-card
+  width: 100%
+  max-width: 900px
+
 .my-card
   width: 100%
-  width: 500px
+  max-width: 400px
+
+.q-dark div,
+.body--dark div
+  .multiselect__tags
+    background-color: rgb(24, 26, 27)
+    color: white
+  .multiselect__input
+    background-color: rgb(24, 26, 27)
+    color: white
+  .multiselect__content-wrapper
+      background-color: rgb(24, 26, 27)
+      color: white
+  .multiselect__placeholder
+    color: white
 </style>
