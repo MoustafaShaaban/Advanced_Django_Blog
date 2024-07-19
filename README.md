@@ -143,27 +143,27 @@ recieve an email activation link.
 
 * Clone the repository: git clone https://github.com/MoustafaShaaban/Advanced_Django_Blog.git
 
-* Change directory to blog_backend directory ``` cd blog_backend ```
+* Change directory to docker_blog_backend directory ``` cd docker_blog_backend ```
 
 * Build the docker image to develop the project locally using docker-compose:
 
-``` docker-compose -f local.yml build ```
+``` docker-compose -f docker-compose.local.yml build ```
 
 * Create the database by running the following commands:
 
-` docker-compose -f local.yml run --rm django python manage.py migrate `
+` docker-compose -f docker-compose.local.yml run --rm django python manage.py migrate `
 
 * Create a super user:
 
-` docker-compose -f local.yml run --rm django python manage.py createsuperuser `
+` docker-compose -f docker-compose.local.yml run --rm django python manage.py createsuperuser `
 
 * Run the test using pytest:
 
-``` docker compose -f local.yml run --rm django test blog_backend/blog ```
+``` docker compose -f docker-compose.local.yml run --rm django test docker_blog_backend/blog ```
 
 * Now run the project:
 
-``` docker-compose -f local.yml up ```
+``` docker-compose -f docker-compose.local.yml up ```
 
 * Open the web browser and go to ` http://localhost:8000/ ` to see the results.
 

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+{% block content %}
+<div class="container d-flex flex-column">
+
+  {% if request.user.is_authenticated %}
+    <button
+    hx-get="{% url 'htmx_crud:htmx-create-post' %}"
+    hx-target="#add-post-modal"
+    hx-trigger="click"
+    data-bs-toggle="modal"
+    data-bs-target="#add-post-modal"
+    class="btn btn-primary btn-sm"
+  >
+    Add post
+  </button>
+  <div
+    id="add-post-modal"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1"
+  >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+  {% endif %}
+
+
+  <div class="row">
+    <div class="">
+      <div class="col-md-6 mx-auto">
+        <!-- Strat Blog Post List -->
+        {% for post in posts %}
+        <div class="card border-primary mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              <a href="{% url 'htmx_crud:post-detail' post.id %}"
+                >{{ post.title }}</a
+              >
+            </h5>
+            <p class="card-subtitle text-muted">
+              By {{ post.author }}, In
+              <time>{{ post.updated_at|date:'d-m-Y' }}</time>
+            </p>
+            <hr class="text-light" />
+            <p class="card-text mt-3 m-1">{{ post.content|slice:':50' }}</p>
+
+            <a
+              href="{% url 'htmx_crud:post-detail' post.id %}"
+              role="button"
+              class="card-link btn btn-primary mt-3 pt-2"
+              >Read more</a
+            >
+          </div>
+        </div>
+        <hr class="text-dark" />
+
+        {% empty %}
+        <p>No Avaialble posts at this moment</p>
+        {% endfor %}
+
+        <!-- End Blog Post List -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Scripts: Bootstraps, HTMX, and custom JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.min.js"></script>
+
+{% endblock content %}

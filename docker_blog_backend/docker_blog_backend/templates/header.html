@@ -1,0 +1,113 @@
+{% load static i18n compress%} {% if request.user.is_authenticated %}
+<header class="p-3 mb-3 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">Home</a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link px-2 link-body-emphasis" href="{% url 'htmx_crud:index' %}">
+            HTMX CRUD
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'blog:graphql' %}" class="nav-link px-2 link-body-emphasis">GraphQL</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link px-2 link-body-emphasis dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Rest API
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" aria-current="page" href="{% url 'api-docs' %}">API Documentation</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'api:posts-list' %}">All Posts</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'api:user_posts-list' %}">Your Posts</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'api:comments-list' %}">All Comments</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'api:tags-list' %}">Tags</a>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="{% url 'blog:tag-list' %}" class="nav-link px-2 link-body-emphasis">Tags</a>
+        </li>
+      </ul>
+
+      <form action="{% url 'blog:search_results' %}" method="get" class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
+        role="search">
+        <input name="q" type="search" class="form-control" placeholder="Search..." aria-label="Search" />
+        <button class="btn btn-outline-success mx-2" type="submit">
+          Search
+        </button>
+      </form>
+
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
+        </a>
+        <ul class="dropdown-menu text-small">
+          <li>
+            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% translate "My Profile" %}</a>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li>
+            {# URL provided by django-allauth/account/urls.py #}
+            <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+{% else %}
+<header class="p-3">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
+        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+          <use xlink:href="#bootstrap"></use>
+        </svg>
+      </a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li>
+          <a href="{% url 'blog:homepage' %}" class="nav-link px-2 text-secondary">Home</a>
+        </li>
+      </ul>
+
+      {% comment %}
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+          aria-label="Search" />
+      </form>
+      {% endcomment %}
+
+      <div class="text-end">
+        <button type="button" class="btn btn-primary me-2">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+        </button>
+        <button type="button" class="btn btn-warning">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+{% endif %}

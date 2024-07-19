@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Update: {{comment.comment}}</h5>
+    </div>
+    <div class="modal-body">
+      <form method="post" action="{% url 'htmx_crud:update-comment' comment.id %}">
+        {% csrf_token %}
+        <div class="col">
+            <div class="row my-2">
+                {{ form.comment|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="form-inline my-2 my-lg-0">
+          <button class="btn btn-danger mx-2">
+              <a class="text-white" data-bs-dismiss="modal">Cancel</a>
+          </button>
+          <button class="btn btn-info" type="submit">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

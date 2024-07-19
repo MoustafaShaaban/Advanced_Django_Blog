@@ -1,0 +1,31 @@
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+
+{% for post in posts %}
+<div class="col-md-12">
+  <!-- Strat Blog Post List -->
+  <div class="card mb-3">
+      <div class="card-body">
+          <div class="d-flex px-2">
+              <h5 class="flex-grow-1 card-title pb-3 m-1">{{ post.title }}</h5>
+          </div>
+          <p class="card-subtitle text-muted"> By <span>{{ post.author }}</span>,  In <time>{{ post.updated_at|date:'d-m-Y' }}</time></p>
+          <hr class="text-light">
+          Tags:
+          {% for tag in post.tag.all %}
+              <span class="badge rounded-pill bg-primary"><a href="{% url 'blog:tag-post-list' tag.slug %}" class="text-light">{{ tag.name }}</a></span>
+          {% endfor %}
+
+
+          <hr class="text-light">
+          <p class="card-text pt-3 m-1">{{ post.content }}</p>
+
+          <a href="{% url 'htmx_crud:post-detail' pk=post.id %}" role="button" class="card-link btn btn-primary my-3 pt-2">Read more</a>
+
+      </div>
+  </div>
+  <!-- End Blog Post List -->
+</div>
+{% empty %}
+  <p>No Avaialble posts at this moment</p>
+{% endfor %}

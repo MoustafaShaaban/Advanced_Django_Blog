@@ -1,7 +1,0 @@
-# PostgreSQL
-# ------------------------------------------------------------------------------
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_DB=blog_backend
-POSTGRES_USER=sntPQWmscTPrLYLcILXlRlTxRTbCJpNO
-POSTGRES_PASSWORD=fvEJajfH1EO4LhtJVhIUhUNJhQK8JNN5SwkAesjPSQA9OobdPibZIKhgHYN1XrPJ
