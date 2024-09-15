@@ -2,18 +2,18 @@
   <div class="">
     <q-layout view="hHh lpR fFf">
 
-      <q-header reveal elevated class="bg-dark">
+      <q-header reveal :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark'">
         <q-toolbar>
           <q-btn flat icon="menu" @click="drawerLeft = !drawerLeft" />
 
           <q-toolbar-title>
-            <q-breadcrumbs v-if="authStore.$state.isAuthenticated" active-color="white" style="font-size: 16px">
+            <q-breadcrumbs v-if="authStore.$state.isAuthenticated" active-color="$q.dark.isActive > 'white' : 'dark'" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
               <q-breadcrumbs-el :label="username" icon="home" />
 
               <q-breadcrumbs-el>
 
-                <q-btn-dropdown color="dark" label="Rest API">
+                <q-btn-dropdown label="Rest API">
                   <q-list>
 
                     <q-item clickable v-close-popup>
@@ -65,7 +65,7 @@
 
               <q-breadcrumbs-el>
 
-                <q-btn-dropdown color="dark" label="GraphQL">
+                <q-btn-dropdown label="GraphQL">
                   <q-list>
                     <q-item clickable v-close-popup>
                       <q-item-section>
@@ -119,7 +119,7 @@
 
             </q-breadcrumbs>
 
-            <q-breadcrumbs v-else active-color="white" style="font-size: 16px">
+            <q-breadcrumbs v-else active-color="$q.dark.isActive > 'white' : 'dark'" style="font-size: 16px">
               <q-breadcrumbs-el label="Home" icon="home" to="/" />
               <q-breadcrumbs-el label="About" icon="info" to="/about" />
               <q-breadcrumbs-el label="Login" icon="login" to="/login" />
@@ -370,7 +370,7 @@
         <router-view />
       </q-page-container>
 
-      <q-footer reveal elevated class="bg-dark">
+      <q-footer reveal :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-white text-dark'">
         <q-toolbar>
           <q-toolbar-title>
             <div>Footer</div>

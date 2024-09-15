@@ -50,7 +50,8 @@ class Post(models.Model):
 
     tag = models.ManyToManyField(
         Tag,
-        related_name='posts'
+        related_name='posts',
+        blank=True
     )
 
     favorites = models.ManyToManyField(
