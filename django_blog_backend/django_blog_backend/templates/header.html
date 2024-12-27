@@ -1,93 +1,115 @@
+{% load static i18n compress%}
 <header class="p-3 mb-3 border-bottom">
-  <div class="">
+  <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <a href="{% url 'blog:homepage' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">Blog Home</a>
+      <a href="{% url 'blog:homepage' %}"
+        class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
+        Django Blog Backend
+      </a>
 
-      {% if user.is_authenticated %}
-          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link px-3 link-secondary" href="{% url 'htmx_crud:index' %}">
-                HTMX CRUD
-              </a>
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="{% url 'blog:homepage' %}" class="nav-link px-2 link-body-emphasis px-2">Home</a></li>
+        <li><a href="{% url 'about' %}" class="nav-link px-2 link-body-emphasis px-2">About</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li class="nav-item dropdown">
+          <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+            id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
+            aria-label="Toggle theme (dark)">
+            Theme
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
+            <li>
+              <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
+                aria-pressed="false">
+                Light
+                <svg class="bi ms-auto d-none">
+                  <use href="#check2"></use>
+                </svg>
+              </button>
             </li>
-              <li><a href="{% url 'blog:graphql' %}" class="nav-link px-3 link-secondary">GraphQL</a></li>
-              <li class="nav-item dropdown">
-                  <a
-                    class="nav-link link-secondary dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Rest API
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        aria-current="page"
-                        href="{% url 'api-docs' %}"
-                        >API Documentation</a
-                      >
-                    </li>
-                    <li>
-                      <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'api:posts-list' %}"
-                        >All Posts</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'api:user_posts-list' %}"
-                        >Your Posts</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'api:comments-list' %}"
-                        >All Comments</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'api:tags-list' %}">Tags</a>
-                    </li>
-                  </ul>
-                </li>
-
-              <li><a href="{% url 'blog:tag-list' %}" class="nav-link px-2 link-secondary">Tags</a></li>
+            <li>
+              <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="dark"
+                aria-pressed="true">
+                Dark
+                <svg class="bi ms-auto d-none">
+                  <use href="#check2"></use>
+                </svg>
+              </button>
+            </li>
           </ul>
+        </li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link px-2 link-body-emphasis px-2" href="{% url 'htmx_crud:index' %}">
+            HTMX CRUD
+          </a>
+        </li>
+        <li><a href="{% url 'blog:graphql' %}" class="nav-link px-2 link-body-emphasis px-2">GraphQL</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link px-2 link-body-emphasis dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Rest API
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" aria-current="page" href="{% url 'api-docs' %}">API Documentation</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a class="dropdown-item nav-link px-2 link-body-emphasis" href="{% url 'api:posts-list' %}">All Posts</a>
+            </li>
+            <li>
+              <a class="dropdown-item nav-link px-2 link-body-emphasis" href="{% url 'api:user_posts-list' %}">Your
+                Posts</a>
+            </li>
+            <li>
+              <a class="dropdown-item nav-link px-2 link-body-emphasis" href="{% url 'api:comments-list' %}">All
+                Comments</a>
+            </li>
+            <li>
+              <a class="dropdown-item nav-link px-2 link-body-emphasis" href="{% url 'api:tags-list' %}">Tags</a>
+            </li>
+          </ul>
+        </li>
 
-          <form action="{% url 'blog:search_results' %}" method="get" class="d-flex col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-              <input name="q" type="search" class="form-control" placeholder="Search..." aria-label="Search">
-              <button class="btn btn-outline-success mx-2" type="submit">
-                  Search
-              </button>
-          </form>
+        <li><a href="{% url 'blog:tag-list' %}" class="nav-link px-2 link-body-emphasis">Tags</a></li>
 
-          <div class="dropdown text-end">
-              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  {% if user.avatar %}
-                      <img src="{{ user.avatar.url }}" alt="User Avatar" width="32" height="32" class="rounded-circle">
-                  {% else %}
-                      <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                  {% endif %}
-              </a>
+        {% endif %}
+      </ul>
 
-              <ul class="dropdown-menu text-small">
-                  <li><a class="dropdown-item" href="{% url 'users:detail' request.user %}">Profile</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'account_logout' %}">Sign out</a></li>
-              </ul>
-          </div>
+      {% if request.user.is_authenticated %}
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+      </form>
+
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+        </a>
+        <ul class="dropdown-menu text-small">
+          <li><a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a></li>
+        </ul>
+      </div>
       {% else %}
-          <div class="col-md-12 text-end">
-              <button class="btn btn-outline-light me-2">
-                  <a href="{% url 'account_login' %}" class="mx-2">Sign In</a>
-              </button>
-              <button class="btn btn-warning">
-                  <a href="{% url 'account_signup' %}">Register</a>
-              </button>
-          </div>
+      <div class="text-end">
+        <a id="log-in-link" href="{% url 'account_login' %}" type="button" class="btn btn-primary me-2">Login</a>
+        {% if ACCOUNT_ALLOW_REGISTRATION %}
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="sign-up-link" href="{% url 'account_signup' %}" type="button" class="btn btn-warning">
+            Sign-up
+          </a>
+        {% endif %}
+      </div>
       {% endif %}
     </div>
   </div>

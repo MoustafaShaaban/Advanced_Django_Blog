@@ -5,7 +5,6 @@ from rest_framework.routers import SimpleRouter
 
 from django_blog_backend.users.api.views import UserViewSet
 from django_blog_backend.api import views
-
 router = DefaultRouter() if settings.DEBUG else SimpleRouter()
 
 router.register("users", UserViewSet)
@@ -13,6 +12,7 @@ router.register("posts", views.PostViewSet, basename="posts")
 router.register("user_posts", views.UserPostViewSet, basename="user_posts")
 router.register("comments", views.CommentViewSet, basename="comments")
 router.register("tags", views.TagViewSet, basename="tags")
+
 
 app_name = "api"
 urlpatterns = router.urls

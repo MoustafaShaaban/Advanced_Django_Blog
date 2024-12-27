@@ -1,6 +1,6 @@
 # Translations for the Django Blog Backend project
 # Copyright (C) 2024 Moustafa Shaaban
-# Moustafa Shaaban <Moustafa_Shaaban@zohomail.com>, 2024.
+# Moustafa Shaaban <moustafa-shaaban@example.com>, 2024.
 #
 #, fuzzy
 msgid ""

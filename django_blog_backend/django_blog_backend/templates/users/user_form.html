@@ -5,21 +5,20 @@
 {% block title %}
 
 
-  {{ user.username }}
+  {{ user.name }}
 
 
 {% endblock title %}
 {% block content %}
   <h1>
-
-
-    {{ user.username }}
-
-
+  
+  
+    {{ user.name }}
+  
+  
 </h1>
 <form class="form-horizontal"
       method="post"
-      enctype="multipart/form-data"
       action="{% url 'users:update' %}">
   {% csrf_token %}
   {{ form|crispy }}

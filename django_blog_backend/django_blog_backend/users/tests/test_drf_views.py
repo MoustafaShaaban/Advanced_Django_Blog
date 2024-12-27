@@ -6,7 +6,7 @@ from django_blog_backend.users.models import User
 
 
 class TestUserViewSet:
-    @pytest.fixture()
+    @pytest.fixture
     def api_rf(self) -> APIRequestFactory:
         return APIRequestFactory()
 
@@ -29,7 +29,6 @@ class TestUserViewSet:
         response = view.me(request)  # type: ignore[call-arg, arg-type, misc]
 
         assert response.data == {
-            "username": user.username,
-            "url": f"http://testserver/api/users/{user.username}/",
+            "url": f"http://testserver/api/users/{user.pk}/",
             "name": user.name,
         }

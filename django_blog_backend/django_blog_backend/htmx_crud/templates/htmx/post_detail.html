@@ -127,7 +127,7 @@
                         {% endif %}
                       <a href="#" class="list-group-item list-group-item-action">
                           <div class="d-flex w-100 justify-content-between">
-                              <h5 class="mb-1">Comment By: {{ comment.user|title }}</h5>
+                              <h5 class="mb-1">Comment By: {{ comment.user.name|title }}</h5>
                               <small class="text-muted">{{ comment.published_at|date:'Y-m-d' }}</small>
                           </div>
                           <p class="mb-1">{{ comment.comment }}</p>

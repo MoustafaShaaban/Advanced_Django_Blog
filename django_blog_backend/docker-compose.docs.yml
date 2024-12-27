@@ -1,0 +1,16 @@
+services:
+  docs:
+    image: django_blog_backend_local_docs
+    container_name: django_blog_backend_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./django_blog_backend:/app/django_blog_backend:z
+    ports:
+      - '9000:9000'
+    command: /start-docs

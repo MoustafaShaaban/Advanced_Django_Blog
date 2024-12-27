@@ -8,8 +8,7 @@ from factory.django import DjangoModelFactory
 from django_blog_backend.users.models import User
 
 
-class UserFactory(DjangoModelFactory):
-    username = Faker("user_name")
+class UserFactory(DjangoModelFactory[User]):
     email = Faker("email")
     name = Faker("name")
 
@@ -38,4 +37,4 @@ class UserFactory(DjangoModelFactory):
 
     class Meta:
         model = User
-        django_get_or_create = ["username"]
+        django_get_or_create = ["email"]
