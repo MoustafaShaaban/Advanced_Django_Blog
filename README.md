@@ -105,13 +105,7 @@ This project is a Django project called `blog_backend` and it has four registere
 
 * Make sure that both [PostgreSQL](https://www.postgresql.org/) database and [Mailpit](https://mailpit.axllent.org/) Email client are installed and running in your system.
 
-* Create a PostgreSQL database, This project uses PostgreSQL version 14.
-
-* Export database default url using the following terminal command, In this example PostgreSQL is installed locally, database name is django-blog-backend, and database admin credentials are => username: admin / password: 1234:
-
-```bash
-export DATABASE_URL=postgres://admin:1234@127.0.0.1:5432/django-blog-backend
-```
+* Create a PostgreSQL database, This project uses PostgreSQL version 16.
 
 * Open the terminal or CMD to create a virtual environment like Python virtual environment (venv) or pipenv and activate it.
 
@@ -126,6 +120,14 @@ export DATABASE_URL=postgres://admin:1234@127.0.0.1:5432/django-blog-backend
 * Change directory to django_blog_backend ``` cd django_blog_backend ```
 
 * Install local.txt requirements file: ``` python -m pip install -r requirements/local.txt ```
+
+* Export database default url using the following terminal command, In this example PostgreSQL is installed locally, database name is django-blog-backend, and database credentials are => username: admin / password: 1234:
+
+
+```bash
+export DATABASE_URL=postgres://admin:1234@127.0.0.1:5432/django-blog-backend
+```
+
 
 * Create the database by running the following commands:
 ``` python manage.py makemigrations ```
