@@ -21,7 +21,7 @@ class User(AbstractUser):
     first_name = CharField(_("First Name of User"), blank=True, max_length=255)  # type: ignore[assignment]
     last_name = CharField(_("Last Name of User"), blank=True, max_length=255)  # type: ignore[assignment]
     date_of_birth = DateField(_("User Date of Birth"), blank=True, default=datetime.date.today)
-    avatar = ImageField(_("User Avatar"), upload_to="users_avatar", default="default.jpg")
+    avatar = ImageField(_("User Avatar"), upload_to="images/", default="default.jpg")
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
 
