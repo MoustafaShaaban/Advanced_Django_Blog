@@ -14,7 +14,57 @@
           <hr class="dropdown-divider">
         </li>
         <li class="nav-item dropdown">
-          <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
+                        <button
+                          class="btn btn-link nav-link px-0 px-lg-2 py-2 dropdown-toggle d-flex align-items-center"
+                          id="bd-theme"
+                          type="button"
+                          aria-expanded="false"
+                          data-bs-toggle="dropdown"
+                          data-bs-display="static"
+                          aria-label="Toggle theme (dark)"
+                        >
+                          <span id="bd-theme-text">Toggle theme</span>
+                        </button>
+                        <ul
+                          class="dropdown-menu dropdown-menu-end"
+                          aria-labelledby="bd-theme-text"
+                        >
+                          <li>
+                            <button
+                              type="button"
+                              class="dropdown-item d-flex align-items-center"
+                              data-bs-theme-value="light"
+                              aria-pressed="false"
+                            >
+                            Light
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              class="dropdown-item d-flex align-items-center active"
+                              data-bs-theme-value="dark"
+                              aria-pressed="true"
+                            >
+                            Dark
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              type="button"
+                              class="dropdown-item d-flex align-items-center"
+                              data-bs-theme-value="auto"
+                              aria-pressed="false"
+                            >
+                              Auto
+                            </button>
+                          </li>
+                        </ul>
+                      </li>
+        {% comment %}
+          
+          <li class="nav-item dropdown">
+            <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
             id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static"
             aria-label="Toggle theme (dark)">
             Theme
@@ -22,18 +72,19 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text">
             <li>
               <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light"
-                aria-pressed="false">
-                Light <i class="bi bi-moon-fill"></i>
-              </button>
-            </li>
-            <li>
-              <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="dark"
-                aria-pressed="true">
-                Dark <i class="bi bi-brightness-high-fill"></i>
-              </button>
-            </li>
-          </ul>
-        </li>
+              aria-pressed="false">
+              Light <i class="bi bi-moon-fill"></i>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="dark"
+            aria-pressed="true">
+              Dark <i class="bi bi-brightness-high-fill"></i>
+            </button>
+          </li>
+        </ul>
+      </li>
+    {% endcomment %}
         {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link px-2 link-body-emphasis px-2" href="{% url 'htmx_crud:index' %}">

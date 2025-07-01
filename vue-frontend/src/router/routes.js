@@ -29,14 +29,14 @@ export const routes = [
           requireAuth: false,
         },
       },
-      // {
-      //   path: "/verify-email",
-      //   name: "verify-email",
-      //   component: () => import("@/components/auth/VerfiyEmailPage.vue"),
-      //   meta: {
-      //     requireAuth: false,
-      //   },
-      // },
+      {
+        path: "/verify-email",
+        name: "verify-email",
+        component: () => import("@/components/auth/VerfiyEmailPage.vue"),
+        meta: {
+          requireAuth: false,
+        },
+      },
       // Rest APIs Routes
       // Posts List and CRUD
       {

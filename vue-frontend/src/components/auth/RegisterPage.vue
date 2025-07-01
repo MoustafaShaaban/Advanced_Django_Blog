@@ -13,10 +13,10 @@
         <q-form @submit.prevent="register" @reset="onReset">
           <!-- <q-input filled v-model="user.name" label="Name" required lazy-rules
             :rules="[val => val && val.length > 0 || 'Name is required']" /> -->
-            <q-input filled v-model="user.email" type="email" required label="Email" lazy-rules
+          <q-input filled v-model="user.email" type="email" required label="Email" lazy-rules
             :rules="[val => val && val.length > 0 || 'Email is required']" />
-            <q-input filled v-model="user.username" type="text" label="Username" required lazy-rules
-                :rules="[val => val && val.length > 0 || 'Username is required']" />
+          <q-input filled v-model="user.username" type="text" label="Username" required lazy-rules
+            :rules="[val => val && val.length > 0 || 'Username is required']" />
           <q-input filled v-model="user.password" type="password" required label="Password" lazy-rules
             :rules="[val => val && val.length > 0 || 'Password is required']" />
           <q-input filled v-model="user.password2" type="password" required label="Confirm Password" lazy-rules
@@ -36,13 +36,30 @@
 
 <script setup>
 import { reactive, onMounted } from 'vue';
-import { Notify } from 'quasar'
+import { Notify, Cookies } from 'quasar'
 import { useRouter } from 'vue-router';
 
 import { useAuthStore } from '@/stores/authStore';
+import { axiosAPI } from '@/api/axios';
 
 const authStore = useAuthStore();
 const router = useRouter();
+
+onMounted(() => {
+  if (!Cookies.get('csrftoken')) {
+    try {
+      authStore.getCSRFToken();
+    } catch (error) {
+      Notify.create({
+        message: error.message,
+        color: "negative",
+        actions: [
+          { icon: 'close', color: 'white', round: true, }
+        ]
+      })
+    }
+  }
+});
 
 // const user = reactive({
 //   name: '',
@@ -60,39 +77,18 @@ const user = reactive({
   password2: '',
 })
 
+
 async function register() {
-  await authStore.register(user)
-    router.push('/verify-email')
-    Notify.create({
-      message: 'Registered Successfully, email confirmation link sent',
-      type: "positive",
-      actions: [
-        { icon: 'close', color: 'white', round: true, }
-      ]
-    })
-  // try {
-  //   await authStore.register(user)
-  //   router.push('/verify-email')
-  //   Notify.create({
-  //     message: 'Registered Successfully, email confirmation link sent',
-  //     type: "positive",
-  //     actions: [
-  //       { icon: 'close', color: 'white', round: true, }
-  //     ]
-  //   })
-  // } catch (error) {
-  //   Notify.create({
-  //     message: error.message,
-  //     color: "negative",
-  //     actions: [
-  //       { icon: 'close', color: 'white', round: true, }
-  //     ]
-  //   })
-  // }
+  const response = axiosAPI.post(
+    "http://localhost:8000/_allauth/browser/v1/auth/signup",
+    user
+  );
+  console.log(response)
+  router.push("/verify-email")
 }
 
 function onReset() {
-  user = null
+  user.value = null
 }
 </script>
 

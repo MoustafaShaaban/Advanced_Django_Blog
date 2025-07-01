@@ -26,9 +26,13 @@
         <a class="btn btn-primary"
            href="{% url 'account_email' %}"
            role="button">E-Mail</a>
-        <a class="btn btn-primary"
+
+           
+           {% comment %}
+            <a class="btn btn-primary"
            href="{% url 'mfa_index' %}"
            role="button">MFA</a>
+           {% endcomment %}
         <a class="btn btn-primary"
            href="{% url 'usersessions_list' %}"
            role="button">Sessions</a>

@@ -3,6 +3,7 @@ import { useLocalStorage } from "@vueuse/core";
 
 import { axiosAPI } from "../api/axios";
 import { Notify } from "quasar";
+import { useRouter } from "vue-router";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -12,7 +13,6 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async getCSRFToken() {
       const response = await axiosAPI.get("csrf/");
-
       let token = response.headers.get("X-CSRFToken");
       return token;
     },
@@ -48,19 +48,38 @@ export const useAuthStore = defineStore("auth", {
       // await axiosAPI.delete("http://localhost:8000/_allauth/browser/v1/auth/session");
     },
 
-    // async register(user) {
-    //   await axiosAPI.post(
-    //     "http://localhost:8000/_allauth/browser/v1/auth/signup",
-    //     user
-    //   );
-    //   router.push('/verify-email')
-    // },
+    async register(user) {
+      const response = axiosAPI.post(
+        "http://localhost:8000/_allauth/browser/v1/auth/signup",
+        user
+      );
+      const router = useRouter();
+      router.push("/verify-email")
+      //router.push({ name: "verify-email" });
+      // if (response.status === 201) {
+      //   router.push("/verify-email");
+      //   return;
+      // }
+      console.log(response)
+      if (response.status === 401 || response.data.flows) {
+        const flows = response.data.flows;
+        console.log(response.data);
+        console.log(flows);
+        router.push("/verify-email")
+        if (
+          flows.some((flow) => flow.id === "verify_email" && flow.is_pending)
+        ) {
+          router.push("/verify-email"); // Redirect to verification page
+          return;
+        }
+      }
+    },
 
-    // async verifyEmail(key) {
-    //   await axiosAPI.post(
-    //     "http://localhost:8000/_allauth/browser/v1/auth/email/verify",
-    //     key
-    //   );
-    // },
+    async verifyEmail(key) {
+      await axiosAPI.post(
+        "http://localhost:8000/_allauth/browser/v1/auth/email/verify",
+        key
+      );
+    },
   },
 });

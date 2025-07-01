@@ -82,7 +82,8 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "allauth.mfa",
+    'allauth.headless',
+    #"allauth.mfa",
     "allauth.socialaccount",
     "allauth.usersessions",
     "rest_framework",
@@ -291,7 +292,7 @@ ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 # https://docs.allauth.org/en/latest/account/configuration.html
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://docs.allauth.org/en/latest/account/configuration.html
 ACCOUNT_ADAPTER = "django_blog_backend.users.adapters.AccountAdapter"
 # https://docs.allauth.org/en/latest/account/forms.html
@@ -300,13 +301,14 @@ ACCOUNT_FORMS = {"signup": "django_blog_backend.users.forms.UserSignupForm"}
 SOCIALACCOUNT_ADAPTER = "django_blog_backend.users.adapters.SocialAccountAdapter"
 # https://docs.allauth.org/en/latest/socialaccount/configuration.html
 SOCIALACCOUNT_FORMS = {"signup": "django_blog_backend.users.forms.UserSocialSignupForm"}
-# HEADLESS_ONLY = True
+#HEADLESS_ONLY = True
 # These are the URLs to be implemented by your single-page application.
-# HEADLESS_FRONTEND_URLS = {
-#     "account_confirm_email": "http://localhost:8000/account/verify-email/{key}",
-#     "account_reset_password_from_key": "http://localhost:8000/account/password/reset/key/{key}",
-#     "account_signup": "http://localhost:8000/account/signup",
-# }
+# These are the URLs to be implemented by your single-page application.
+HEADLESS_FRONTEND_URLS = {
+    "account_signup": "http://localhost:5173/verify-email/{key}",
+    "account_email_verification_sent": "http://localhost:5173/verify-email",
+    "account_reset_password": "http://localhost:5173/reset-password",
+}
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
@@ -357,12 +359,21 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:5173","http://localhost:3000" ]
 MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 
 ACCOUNT_LOGIN_BY_CODE_ENABLED = True
-# ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
 ACCOUNT_PASSWORD_RESET_BY_CODE_ENABLED = True
-MFA_SUPPORTED_TYPES = [
-    "webauthn",
-    "totp",
-    "recovery_codes",
-]
-MFA_PASSKEY_LOGIN_ENABLED = True
+# MFA_SUPPORTED_TYPES = [
+#     "webauthn",
+#     "totp",
+#     "recovery_codes",
+# ]
+#MFA_PASSKEY_LOGIN_ENABLED = True
 # MFA_PASSKEY_SIGNUP_ENABLED = True
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "x-session-token",
+    "x-email-verification-key",
+    "x-password-reset-key",
+)
