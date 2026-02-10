@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.core.validators import validate_email
+import re
 
 from django_blog_backend.blog.models import Post, Comment, Tag
 
@@ -89,3 +91,34 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField(max_length=255)
+    password = serializers.CharField(
+        max_length=128,
+        write_only=True,
+        trim_whitespace=False
+    )
+
+    def validate_email(self, value):
+        # Trim and lowercase
+        email = value.strip().lower()
+
+        # Basic email validation
+        if not email:
+            raise serializers.ValidationError("Email is required")
+        
+        try:
+            validate_email(email)
+        except serializers.ValidationError:
+            raise serializers.ValidationError("Invalid email format")
+        
+        return email
+    
+    def validate(self, data):
+        # Cross-field validation if needed
+        if data.get('email') and data.get('password'):
+            if data['password'] == data['email']:
+                raise serializers.ValidationError({
+                    'password': "Password cannot be the same as email"
+                })
+        return data

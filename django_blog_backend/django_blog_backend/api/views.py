@@ -13,7 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 from django.middleware.csrf import get_token
 from django_blog_backend.blog.models import Post, Comment, Tag
-from django_blog_backend.api.serializers import PostSerializer, CommentSerializer, TagSerializer
+from django_blog_backend.api.serializers import PostSerializer, CommentSerializer, TagSerializer, LoginSerializer
 from django_blog_backend.api.permissions import PostPermissions, CommentPermissions
 from django.views.decorators.http import require_POST
 
@@ -179,6 +179,29 @@ def login_view(request):
 
     if email is None or password is None:
         return JsonResponse({'detail': 'Please provide email and password.'}, status=400)
+
+    user = authenticate(request=request, email=email, password=password)
+
+    if user is None:
+        return JsonResponse({'detail': 'Invalid credentials.'}, status=400)
+
+    login(request, user)
+    return JsonResponse({'detail': 'Successfully logged in.'})
+
+@api_view(['POST'])
+def login_api(request):
+    serializer = LoginSerializer(data=request.data)
+    
+    if not serializer.is_valid():
+        # Return generic error for security
+        return JsonResponse(
+            {'detail': 'Authentication failed'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    validated_data = serializer.validated_data
+    email = validated_data['email']
+    password = validated_data['password']
 
     user = authenticate(request=request, email=email, password=password)
 

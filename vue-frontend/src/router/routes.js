@@ -1,7 +1,7 @@
 export const routes = [
   {
     path: "/",
-    name: "home",
+    name: "",
     component: () => import("@/layouts/MainLayout.vue"),
     children: [
       {

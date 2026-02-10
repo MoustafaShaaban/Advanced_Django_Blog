@@ -26,6 +26,6 @@ urlpatterns += [
     path("user-posts/", views.UserPostsListView.as_view(), name="user-posts-list"),
     path("username/", views.username_view, name="username"),
     path('csrf/', views.get_csrf, name='csrf'),
-    path('login/', views.login_view, name='login'),
+    path('login/', views.login_api, name='login'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
